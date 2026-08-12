@@ -403,6 +403,111 @@ html[data-intro='on'] [data-drop] {
 @keyframes titleLeave { to { opacity: 0; transform: translate(-50%,-70%); } }
 @keyframes cityRush { to { transform: translateX(-112px); } }
 
+/* Articulated web-slinger choreography. These rules replace the first-pass rig. */
+.hero-intro .stage-curtain { z-index: 4; transform: translateX(0); animation: none; }
+.hero-intro .curtain-valance { transform: translateY(0); animation: none; }
+.hero-intro .intro-sky { opacity: .42; }
+.stage-floor { position: absolute; z-index: 6; inset: auto 0 0; height: 22%; background: linear-gradient(180deg, rgba(4,6,9,0), #030406 32%); border-top: 1px solid rgba(255,218,151,.16); perspective: 600px; }
+.stage-floor::after { content: ''; position: absolute; inset: 24% 0 0; background: repeating-linear-gradient(90deg, transparent 0 9.8%, rgba(255,255,255,.04) 10%), repeating-linear-gradient(0deg, transparent 0 38px, rgba(255,255,255,.035) 39px); transform: perspective(350px) rotateX(56deg); transform-origin: top; }
+
+.hero-intro .web-slinger { z-index: 9; width: 360px; height: 410px; left: -25vw; top: -15vh; transform-origin: 50% 0; animation: realisticSwing 4s cubic-bezier(.37,.01,.32,1) both; }
+.hero-intro .web-line { width: 100%; height: 100%; transition: opacity .12s; }
+.hero-intro .web-line path { stroke-width: 1.4; stroke-dasharray: none; filter: drop-shadow(0 0 2px rgba(255,255,255,.6)); }
+.hero-intro .web-line-one { animation: firstWebRelease 4s linear both; }
+.hero-intro .web-line-two { opacity: 0; animation: secondWebCatch 4s linear both; }
+.hero-intro .web-hero { width: 142px; right: 109px; bottom: 0; animation: bodyMomentum 4s cubic-bezier(.37,.01,.32,1) both; }
+.hero-intro .limb, .hero-intro .hero-head { transform-box: fill-box; transform-origin: center; }
+.hero-intro .arm-left { animation: swingArmLeft 4s ease-in-out both; }
+.hero-intro .arm-right { animation: swingArmRight 4s ease-in-out both; }
+.hero-intro .leg-left { animation: swingLegLeft 4s ease-in-out both; }
+.hero-intro .leg-right { animation: swingLegRight 4s ease-in-out both; }
+.hero-intro .hero-head { animation: headTrack 4s ease-in-out both; }
+
+.phase-landed .web-slinger, .phase-gripping .web-slinger, .phase-pulling .web-slinger, .phase-opening .web-slinger { left: 50%; top: auto; bottom: 4.5vh; width: 300px; height: 360px; transform: translateX(-50%); animation: dropAndLand .7s cubic-bezier(.16,1,.3,1) both; }
+.phase-landed .web-line, .phase-gripping .web-line, .phase-pulling .web-line, .phase-opening .web-line { opacity: 0; }
+.phase-landed .web-hero, .phase-gripping .web-hero, .phase-pulling .web-hero, .phase-opening .web-hero { width: 168px; right: 66px; bottom: 0; animation: crouchPose .7s cubic-bezier(.16,1.25,.3,1) both; }
+.phase-landed .arm-left, .phase-landed .arm-right { animation: landingArms .7s ease both; }
+.phase-landed .leg-left { animation: landingLegLeft .7s ease both; }
+.phase-landed .leg-right { animation: landingLegRight .7s ease both; }
+.phase-landed .hero-head { animation: landingHead .7s ease both; }
+
+.landing-impact { position: absolute; z-index: 8; left: 50%; bottom: 8%; width: 220px; height: 42px; transform: translateX(-50%); opacity: 0; }
+.phase-landed .landing-impact { animation: impactFlash .65s ease-out both; }
+.landing-impact::before { content: ''; position: absolute; left: 50%; bottom: 0; width: 22px; height: 6px; border-radius: 50%; background: #f3bd62; box-shadow: 0 0 28px 9px rgba(255,179,68,.45); transform: translateX(-50%); }
+.landing-impact i { position: absolute; left: 50%; bottom: 4px; width: 2px; height: 44px; background: linear-gradient(#ffd681, transparent); transform-origin: bottom; }
+.landing-impact i:nth-child(1) { transform: rotate(-68deg); }.landing-impact i:nth-child(2) { transform: rotate(-34deg); }.landing-impact i:nth-child(3) { transform: rotate(34deg); }.landing-impact i:nth-child(4) { transform: rotate(68deg); }
+
+.curtain-rope { position: absolute; z-index: -1; top: -52vh; width: 4px; height: 68vh; border-radius: 3px; background: repeating-linear-gradient(0deg,#e9c36e 0 8px,#8f621f 8px 13px); box-shadow: 0 0 0 1px #39220c, 0 2px 8px rgba(0,0,0,.65); opacity: 0; transform-origin: top; }
+.rope-left { left: 123px; }.rope-right { right: 123px; }
+.phase-gripping .curtain-rope, .phase-pulling .curtain-rope, .phase-opening .curtain-rope { opacity: 1; animation: ropeDrop .55s cubic-bezier(.2,.9,.2,1) both; }
+.phase-gripping .web-hero, .phase-pulling .web-hero, .phase-opening .web-hero { animation: standToPull .65s cubic-bezier(.16,1,.3,1) both; }
+.phase-gripping .arm-left, .phase-gripping .arm-right, .phase-pulling .arm-left, .phase-pulling .arm-right, .phase-opening .arm-left, .phase-opening .arm-right { animation: grabRopes .65s cubic-bezier(.16,1,.3,1) both; }
+.phase-gripping .leg-left, .phase-gripping .leg-right, .phase-pulling .leg-left, .phase-pulling .leg-right, .phase-opening .leg-left, .phase-opening .leg-right { animation: braceLegs .65s ease both; }
+
+.phase-pulling .web-slinger { animation: pullDown .75s cubic-bezier(.7,0,.3,1) both; }
+.phase-pulling .web-hero { animation: pullBody .75s cubic-bezier(.7,0,.3,1) both; }
+.phase-pulling .curtain-rope { animation: ropePull .75s cubic-bezier(.7,0,.3,1) both; }
+.phase-pulling .stage-curtain { filter: brightness(1.18); }
+.phase-pulling .curtain-left { transform-origin: left center; animation: curtainTensionLeft .75s ease both; }
+.phase-pulling .curtain-right { transform-origin: right center; animation: curtainTensionRight .75s ease both; }
+
+.phase-opening .curtain-left { transform: translateX(-101%) skewX(-3deg); transition: transform 1.25s cubic-bezier(.65,0,.2,1); }
+.phase-opening .curtain-right { transform: translateX(101%) skewX(3deg); transition: transform 1.25s cubic-bezier(.65,0,.2,1); }
+.phase-opening .curtain-valance { transform: translateY(-105%); transition: transform .9s .35s ease; }
+.phase-opening .curtain-rope { transform: translateY(28vh); opacity: 0; transition: transform .8s, opacity .3s .3s; }
+.phase-opening .web-slinger { animation: heroExit 1.15s .16s cubic-bezier(.5,0,.8,.3) both; }
+.phase-opening .intro-sky { opacity: 0; transition: opacity .6s; }
+
+.hero-intro .intro-title { top: 26%; animation: none; opacity: 0; }
+.phase-gripping .intro-title, .phase-pulling .intro-title { animation: titleFlash .55s forwards; }
+.phase-opening .intro-title { animation: titleLeave .32s forwards; }
+
+@keyframes realisticSwing {
+  0% { transform: translate(-12vw,-18vh) rotate(-38deg) scale(.56); }
+  18% { transform: translate(38vw,8vh) rotate(8deg) scale(.9); }
+  34% { transform: translate(92vw,26vh) rotate(48deg) scale(1.16); }
+  40% { transform: translate(111vw,7vh) rotate(68deg) scale(.78); }
+  41%,55% { transform: translate(106vw,-18vh) rotate(18deg) scale(.62); }
+  67% { transform: translate(53vw,4vh) rotate(-15deg) scale(.95) scaleX(-1); }
+  82% { transform: translate(-8vw,27vh) rotate(-57deg) scale(1.18) scaleX(-1); }
+  88% { transform: translate(-30vw,5vh) rotate(-74deg) scale(.76) scaleX(-1); }
+  89% { transform: translate(42vw,-30vh) rotate(0) scale(.55); }
+  100% { transform: translate(42vw,43vh) rotate(0) scale(1); }
+}
+@keyframes bodyMomentum { 0% { transform: rotate(-22deg); } 20% { transform: rotate(8deg); } 39% { transform: rotate(50deg); } 41% { transform: rotate(-18deg); } 68% { transform: rotate(14deg); } 88% { transform: rotate(-48deg); } 89% { transform: rotate(180deg); } 100% { transform: rotate(360deg); } }
+@keyframes firstWebRelease { 0%,38% { opacity: 1; } 40%,100% { opacity: 0; } }
+@keyframes secondWebCatch { 0%,48% { opacity: 0; } 50%,86% { opacity: 1; } 88%,100% { opacity: 0; } }
+@keyframes swingArmLeft { 0%,38% { transform: rotate(34deg); } 42%,86% { transform: rotate(-58deg); } 90%,100% { transform: rotate(24deg); } }
+@keyframes swingArmRight { 0%,38% { transform: rotate(-8deg); } 42%,86% { transform: rotate(52deg); } 90%,100% { transform: rotate(-22deg); } }
+@keyframes swingLegLeft { 0%,36% { transform: rotate(24deg); } 52%,86% { transform: rotate(-38deg); } 100% { transform: rotate(30deg); } }
+@keyframes swingLegRight { 0%,36% { transform: rotate(-28deg); } 52%,86% { transform: rotate(38deg); } 100% { transform: rotate(-30deg); } }
+@keyframes headTrack { 0%,35% { transform: rotate(8deg); } 42%,86% { transform: rotate(-12deg); } 100% { transform: rotate(0); } }
+@keyframes dropAndLand { 0% { transform: translateX(-50%) translateY(-60vh) scale(.72); } 68% { transform: translateX(-50%) translateY(3%) scale(1.08,.9); } 82% { transform: translateX(-50%) translateY(-5%) scale(.96,1.04); } 100% { transform: translateX(-50%) translateY(0) scale(1); } }
+@keyframes crouchPose { from { transform: rotate(180deg); } to { transform: rotate(0) translateY(42px) scaleY(.82); } }
+@keyframes landingArms { to { transform: rotate(32deg) translateY(16px); } }
+@keyframes landingLegLeft { to { transform: rotate(43deg) translate(-8px,-15px); } }
+@keyframes landingLegRight { to { transform: rotate(-43deg) translate(8px,-15px); } }
+@keyframes landingHead { to { transform: translateY(8px) rotate(-6deg); } }
+@keyframes impactFlash { 0% { opacity: 0; transform: translateX(-50%) scale(.2); } 22% { opacity: 1; } 100% { opacity: 0; transform: translateX(-50%) scale(1.7); } }
+@keyframes ropeDrop { from { opacity: 0; transform: translateY(-18vh); } to { opacity: 1; transform: none; } }
+@keyframes standToPull { from { transform: translateY(42px) scaleY(.82); } to { transform: translateY(4px) scale(.94); } }
+@keyframes grabRopes { to { transform: rotate(72deg) translate(-8px,-18px); } }
+@keyframes braceLegs { to { transform: rotate(8deg); } }
+@keyframes pullDown { from { transform: translateX(-50%); } to { transform: translateX(-50%) translateY(18vh); } }
+@keyframes pullBody { 0% { transform: translateY(4px) scale(.94); } 55% { transform: translateY(28px) scaleY(.86); } 100% { transform: translateY(45px) scaleY(.8); } }
+@keyframes ropePull { from { transform: none; } to { transform: translateY(18vh); } }
+@keyframes curtainTensionLeft { 50% { transform: translateX(-2.5%) skewX(-1deg); } }
+@keyframes curtainTensionRight { 50% { transform: translateX(2.5%) skewX(1deg); } }
+@keyframes heroExit { 0% { transform: translateX(-50%) translateY(18vh) scale(1); opacity: 1; } 100% { transform: translateX(-50%) translateY(75vh) scale(.72); opacity: 0; } }
+
+@media (max-width: 700px) {
+  .hero-intro .web-slinger { width: 250px; height: 310px; }
+  .hero-intro .web-hero { width: 104px; right: 73px; }
+  .phase-landed .web-slinger, .phase-gripping .web-slinger, .phase-pulling .web-slinger, .phase-opening .web-slinger { width: 230px; height: 290px; }
+  .phase-landed .web-hero, .phase-gripping .web-hero, .phase-pulling .web-hero, .phase-opening .web-hero { width: 128px; right: 51px; }
+  .rope-left { left: 88px; }.rope-right { right: 88px; }
+}
+
 /* Short route-specific transition cards shown after client-side navigation. */
 .route-arrival { position: fixed; inset: 0; z-index: 75; pointer-events: none; display: grid; place-items: center; overflow: hidden; }
 .arrival-wipe { position: absolute; inset: 0; background: rgb(var(--surface)); animation: routeWipe 1.45s cubic-bezier(.72,0,.2,1) both; }
@@ -431,6 +536,46 @@ html[data-intro='on'] [data-drop] {
 
 @media (prefers-reduced-motion: reduce) {
   .hero-intro, .route-arrival { display: none !important; }
+}
+
+/* Scroll-linked visual language for each visitor path. */
+.scroll-atmosphere { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.scroll-progress { position: absolute; z-index: 3; left: 0; right: 0; top: 0; height: 2px; transform-origin: left; background: rgb(var(--accent)); box-shadow: 0 0 12px rgb(var(--accent)); }
+.scroll-atmosphere + header, .scroll-atmosphere ~ main, .scroll-atmosphere ~ footer { position: relative; z-index: 3; }
+
+.engineering-trace { position: absolute; right: clamp(8px,2vw,28px); top: 7vh; width: 54px; height: 86vh; overflow: visible; opacity: .28; }
+.engineering-trace path { fill: none; stroke: rgb(var(--accent)); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-dasharray: 1080; filter: drop-shadow(0 0 4px rgb(var(--accent))); }
+.signal-probe { position: absolute; right: clamp(23px,3.15vw,43px); width: 18px; height: 18px; border: 1px solid rgb(var(--accent)); border-radius: 50%; background: rgb(var(--surface)); box-shadow: 0 0 0 6px rgb(var(--accent)/.08),0 0 18px rgb(var(--accent)/.32); }
+.signal-probe i { position: absolute; inset: 5px; border-radius: 50%; background: rgb(var(--accent)); }
+
+.research-scan { position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg,transparent,rgb(var(--accent-alt)/.15) 18%,rgb(var(--accent)) 50%,rgb(var(--accent-alt)/.15) 82%,transparent); box-shadow: 0 0 22px 5px rgb(var(--accent)/.07); }
+.research-lens { position: absolute; right: clamp(12px,3vw,45px); width: 58px; height: 58px; border: 1px solid rgb(var(--accent)/.5); border-radius: 50%; background: rgb(var(--surface)/.7); box-shadow: inset 0 0 0 8px rgb(var(--accent)/.04), 0 8px 24px rgb(var(--ink-950)/.12); }
+.research-lens span,.research-lens i { position: absolute; background: rgb(var(--accent)/.42); }
+.research-lens span { width: 1px; height: 76px; left: 28px; top: -9px; }.research-lens i { height: 1px; width: 76px; left: -9px; top: 28px; }
+.research-lens b { position: absolute; width: 8px; height: 8px; left: 24px; top: 24px; border: 1px solid rgb(var(--accent)); border-radius: 50%; }
+
+.lesson-line { position: absolute; left: clamp(7px,2.2vw,31px); top: 6vh; width: 70px; height: 88vh; opacity: .32; overflow: visible; }
+.lesson-line path { fill: none; stroke: rgb(var(--accent)); stroke-width: 2.2; stroke-linecap: round; stroke-dasharray: 1080; vector-effect: non-scaling-stroke; }
+.lesson-idea { position: absolute; left: clamp(31px,4.6vw,69px); width: 25px; height: 25px; border-radius: 50% 50% 48% 48%; border: 1px solid rgb(var(--accent)); background: rgb(var(--surface)); box-shadow: 0 0 18px rgb(var(--accent)/.2); }
+.lesson-idea::after { content: ''; position: absolute; width: 7px; height: 3px; left: 8px; bottom: -5px; border: 1px solid rgb(var(--accent)); border-top: 0; }
+.lesson-idea i { position: absolute; inset: 6px; border-radius: 50%; background: rgb(var(--accent)/.32); }
+.lesson-idea b { position: absolute; left: 30px; top: 5px; font: 500 8px/1 var(--font-plex-mono),monospace; color: rgb(var(--content-faint)); }
+
+.story-orbit { position: absolute; right: clamp(16px,4vw,64px); width: 70px; height: 70px; border: 1px solid rgb(var(--accent)/.45); border-radius: 50%; }
+.story-orbit::before,.story-orbit::after { content: ''; position: absolute; inset: 10px -10px; border: 1px solid rgb(var(--accent-alt)/.3); border-radius: 50%; transform: rotate(55deg); }
+.story-orbit::after { transform: rotate(-55deg); }
+.story-orbit span { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: rgb(var(--accent)); left: 30px; top: 30px; box-shadow: 0 0 14px rgb(var(--accent)); }
+.story-orbit i { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: rgb(var(--accent-alt)); }
+.story-orbit i:nth-child(1){left:1px;top:29px}.story-orbit i:nth-child(2){right:9px;top:7px}.story-orbit i:nth-child(3){right:2px;bottom:17px}
+
+.mode-engineering section { transform-origin: left center; }
+.mode-research section { transform-origin: center center; }
+.mode-scholarship section { transform-origin: left bottom; }
+.mode-everything section { transform-origin: center center; }
+
+@media (max-width: 900px) {
+  .scroll-atmosphere { opacity: .5; }
+  .engineering-trace,.signal-probe,.research-lens,.lesson-line,.lesson-idea,.story-orbit { transform: scale(.72); transform-origin: right center; }
 }
 
 /*

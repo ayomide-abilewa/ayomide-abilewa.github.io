@@ -69,11 +69,21 @@ export function riseVariants(mode: VisitorMode, reduced: boolean): Variants {
       visible: { opacity: 1, transition: { duration: 0 } },
     }
   }
+  const hiddenByMode: Record<VisitorMode, { opacity: number; y: number; x?: number; scale?: number; rotate?: number; filter?: string }> = {
+    engineering: { opacity: 0, y: 8, x: -24, scale: 0.985 },
+    research: { opacity: 0, y: 6, scale: 1.025, filter: 'blur(7px)' },
+    scholarship: { opacity: 0, y: 30, rotate: -0.8, scale: 0.97 },
+    everything: { opacity: 0, y: 18, scale: 0.94, rotate: 0.8 },
+  }
   return {
-    hidden: { opacity: 0, y: MODE_RISE[mode] },
+    hidden: hiddenByMode[mode],
     visible: {
       opacity: 1,
       y: 0,
+      x: 0,
+      scale: 1,
+      rotate: 0,
+      filter: 'blur(0px)',
       transition: MODE_TRANSITION[mode],
     },
   }
