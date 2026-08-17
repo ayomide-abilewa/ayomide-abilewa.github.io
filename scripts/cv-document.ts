@@ -56,6 +56,19 @@ export type Line =
   /** Secondary line under an entry — location, repo, coursework. */
   | { kind: 'detail'; text: string }
   | { kind: 'bullet'; text: string }
+  /**
+   * A skill group. Label and items stay separate rather than pre-joined into one
+   * string, because both renderers need to do two things a plain paragraph cannot:
+   * set the label apart from the list it introduces, and hang a wrapped line under
+   * it. A continuation landing flush at the left margin sits in the same column as
+   * the labels themselves, so "Weighted Boxes Fusion, OpenCV" reads as a seventh
+   * skill group with a missing label instead of as the tail of the sixth.
+   *
+   * The indent is a small fixed hanging indent, not a label column: the labels run
+   * from "Tools" to "Instrumentation and Control", and a column wide enough for the
+   * longest would spend a third of the measure on white space for the shortest.
+   */
+  | { kind: 'skills'; label: string; items: string }
 
 export type CvDocument = {
   variant: CvVariant
@@ -122,7 +135,7 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
     case 'skills':
       // "Label: a, b, c" — one line per group. Keyword-dense and trivially parsed.
       for (const group of skillsForVariant(variant)) {
-        lines.push({ kind: 'paragraph', text: `${group.label}: ${group.items.join(', ')}` })
+        lines.push({ kind: 'skills', label: group.label, items: group.items.join(', ') })
       }
       break
 

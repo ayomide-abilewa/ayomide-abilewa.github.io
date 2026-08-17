@@ -129,6 +129,14 @@ const ink = (value: string) => `#${value}`
  */
 const SEP = ' · '
 
+/**
+ * Hanging indent for skill groups, in points, shared by both renderers so the two
+ * formats cannot drift apart. Deliberately small: enough that a wrapped line is
+ * visibly subordinate, not a label column, which at these label lengths would spend
+ * a third of the measure on white space for the shortest of them.
+ */
+const HANG = 13
+
 // --------------------------------------------------------------------------
 // PDF
 // --------------------------------------------------------------------------
@@ -190,6 +198,29 @@ const pdf = StyleSheet.create({
   /** Ragged right. Justified text at this measure with no hyphenation gives rivers. */
   paragraph: { marginTop: 2 },
 
+  /**
+   * Hanging indent for skill groups: the first line starts at the margin, every
+   * wrapped line clears the label. Without it a continuation lands flush left, in
+   * the same column as the labels themselves, so "Weighted Boxes Fusion, OpenCV"
+   * reads as another skill group whose label went missing.
+   *
+   * Two non-obvious parts. It is padding plus a *negative* first-line indent, which
+   * is the only route to a hanging indent here — the bullet rows use a fixed-width
+   * flex column instead, and that only works because a bullet glyph is always
+   * exactly one character wide, where these labels run from "Tools" to
+   * "Instrumentation and Control".
+   *
+   * And the negative indent has to sit on the label run rather than on the wrapper,
+   * even though it is the wrapper's paragraph it indents. @react-pdf's line layout
+   * reads it as `paragraph.runs[0].attributes.indent` — the first run's own style —
+   * and a nested Text does not inherit textIndent from its parent. On the wrapper
+   * alone it resolves to 0 and the whole block just shifts right by HANG with no
+   * hanging indent at all, which is silent: there is no warning, and the output
+   * looks deliberate.
+   */
+  skills: { marginTop: 2, paddingLeft: HANG },
+  skillsLabel: { fontFamily: 'Helvetica-Bold', textIndent: -HANG },
+
   entryRow: { marginTop: 6.5, flexDirection: 'row', justifyContent: 'space-between' },
   /** An entry with nothing under it. Tighter, so a run of them reads as a list. */
   entryRowTight: { marginTop: 3.5, flexDirection: 'row', justifyContent: 'space-between' },
@@ -220,9 +251,21 @@ function PdfLine({ line }: { line: Line }) {
   switch (line.kind) {
     case 'section':
       return (
-        // `wrap={false}` stops a label being left at the foot of a page with its
-        // first entry over the break.
-        <View style={pdf.sectionWrap} wrap={false}>
+        // `wrap={false}` stops the label itself splitting; `minPresenceAhead` is what
+        // stops it being stranded. A label is the one line on the page that is
+        // worthless alone — "SELECTED PROJECTS" at the foot of page 1 with the first
+        // project overleaf tells a reader nothing and costs them a page turn to find
+        // out. 48pt reserves the label plus its first entry and the opening line of
+        // that entry's first bullet, so a section either starts properly or starts on
+        // the next page.
+        //
+        // Tuned by measuring, not guessed. 46 stranded the label; 64 was too greedy
+        // and pushed the whole of SELECTED PROJECTS overleaf, leaving 100pt — seven
+        // body lines — of white at the foot of page 1 of the technical CV. At 48 that
+        // foot closes to 16pt: the heading, the aniwe entry and its first complete
+        // bullet all land on page 1, and the reader turns the page mid-bullet-list,
+        // which is the break they would not notice.
+        <View style={pdf.sectionWrap} wrap={false} minPresenceAhead={48}>
           <Text style={pdf.section}>{line.text.toUpperCase()}</Text>
         </View>
       )
@@ -230,17 +273,35 @@ function PdfLine({ line }: { line: Line }) {
     case 'paragraph':
       return <Text style={pdf.paragraph}>{line.text}</Text>
 
+    case 'skills':
+      return (
+        <Text style={pdf.skills}>
+          <Text style={pdf.skillsLabel}>{`${line.label}: `}</Text>
+          {line.items}
+        </Text>
+      )
+
     case 'entry':
       return (
         // `wrap={false}` keeps a role line from being orphaned at a page break.
-        <View style={line.standalone ? pdf.entryRowTight : pdf.entryRow} wrap={false}>
+        //
+        // `minPresenceAhead` solves the other half of that problem, which the first
+        // build had: an entry can sit unbroken at the foot of a page and still leave
+        // its first bullet stranded at the top of the next one, so a reader turning
+        // the page meets "Designed three-tier text-to-speech degradation…" with no
+        // heading above it and no way to know what it belongs to. Reserving ~two
+        // body lines means the heading moves down with its content instead. Not for
+        // standalone entries: nothing follows them, so reserving space below only
+        // pushes a certification onto the next page for no reason.
+        <View
+          style={line.standalone ? pdf.entryRowTight : pdf.entryRow}
+          wrap={false}
+          {...(line.standalone ? {} : { minPresenceAhead: 30 })}
+        >
           <Text style={pdf.entryTitle}>
             <Text style={pdf.entryBold}>{line.title}</Text>
             {line.subtitle ? (
-              <Text style={pdf.entrySub}>
-                {SEP}
-                {line.subtitle}
-              </Text>
+              <Text style={pdf.entrySub}>{`${SEP}${line.subtitle}`}</Text>
             ) : null}
           </Text>
           {line.meta ? <Text style={pdf.entryMeta}>{line.meta}</Text> : null}
@@ -339,6 +400,19 @@ function docxLine(line: Line): Paragraph {
       return new Paragraph({
         spacing: { after: TW(2), line: LEADING },
         children: [new TextRun({ text: line.text, size: PT(BODY) })],
+      })
+
+    case 'skills':
+      return new Paragraph({
+        spacing: { before: TW(2), after: TW(0), line: LEADING },
+        // Word has a real hanging indent, so this is the one place the two renderers
+        // differ in mechanism rather than in result. Same HANG either way, so a
+        // change to the indent cannot land in one format and miss the other.
+        indent: { left: TW(HANG), hanging: TW(HANG) },
+        children: [
+          new TextRun({ text: `${line.label}: `, bold: true, size: PT(BODY) }),
+          new TextRun({ text: line.items, size: PT(BODY) }),
+        ],
       })
 
     case 'entry':
@@ -505,7 +579,8 @@ async function main() {
     console.log(
       `${variant.padEnd(12)} ${doc.stem}  ${pageCount(pdfBuffer)}pp  ` +
         `${count('section')} sections, ${count('entry')} entries, ` +
-        `${count('bullet')} bullets, ${count('paragraph')} paragraphs, ${count('detail')} details  ` +
+        `${count('bullet')} bullets, ${count('skills')} skill groups, ` +
+        `${count('paragraph')} paragraphs, ${count('detail')} details  ` +
         `(pdf ${Math.round(pdfBuffer.length / 1024)}kB, docx ${Math.round(docxBuffer.length / 1024)}kB)`,
     )
   }

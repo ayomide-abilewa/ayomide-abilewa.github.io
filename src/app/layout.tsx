@@ -99,9 +99,15 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
+  /*
+   * The browser chrome on a phone, so the address bar is part of the page rather
+   * than a strip of someone else's colour above it. These must track `--surface` in
+   * globals.css — dark is the engineering ground, light is the research page — and
+   * they had not: both were still on the palette from two passes back.
+   */
   themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#070B0D' },
-    { media: '(prefers-color-scheme: light)', color: '#FBF9F5' },
+    { media: '(prefers-color-scheme: dark)', color: '#0C1E29' },
+    { media: '(prefers-color-scheme: light)', color: '#F6F9FB' },
   ],
   width: 'device-width',
   initialScale: 1,

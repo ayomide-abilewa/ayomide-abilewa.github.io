@@ -18,21 +18,35 @@
  * clay against olive in a classroom. That second colour is what stops each path
  * reading as a monochrome theme with a highlighter through it.
  *
- * The first pass at these was tasteful and dead. Every hue sat at low chroma, the
- * near-blacks were so nearly neutral that the cyan cast never arrived, and
- * `surface-raised` was four percent off `surface`, which is to say it was the same
- * colour with a comment claiming otherwise. Tasteful and dead is the harder failure
- * to spot, because nothing in it is wrong. This pass pushes the accents out to
- * where they read as colour, puts a real cast in the darks, and opens the gap
- * between the surface tiers until a panel looks like a panel.
+ * The pass before this one raised chroma and claimed to "open the surface tiers
+ * apart". Measured afterwards, it moved `--surface` by four points of blue and
+ * `--surface-sunken` by three on a 0-255 scale: a CIE76 delta-E of about 2, which is
+ * the threshold below which two colours are the same colour to anyone not holding a
+ * swatch. Every contrast ratio in it was correct and computed. Nobody could see it.
+ * That is the failure this file is now written to prevent: contrast was the thing
+ * that could be computed, so contrast was the thing that got checked, and whether
+ * the change was *visible* — the only thing anyone actually experiences — was never
+ * measured at all.
  *
- * Contrast: every text token is checked against its own surface at 4.5:1, in
- * every mode, including the small uppercase eyebrow labels, and — because panels
- * exist — against `surface-raised` and `surface-sunken` too. The ratios in the
- * comments are computed, not estimated. `--content-faint` is the one that is easy
- * to get wrong, because it looks correct next to body copy and fails on its own;
- * it is also what set the floor for how light `surface-sunken` is allowed to be
- * in the two paper modes.
+ * So this pass is checked on both axes, and both are computed:
+ *
+ *   - contrast, at 4.5:1 for every text token against all three surface tiers in
+ *     every mode, including the small uppercase eyebrow labels. `--content-faint` is
+ *     the one that is easy to get wrong, because it looks fine beside body copy and
+ *     fails on its own; it is what sets the floor for how dark `surface-sunken` is
+ *     allowed to be in the two paper modes.
+ *   - delta-E against the value being replaced, so a token cannot be edited into a
+ *     colour indistinguishable from the one it replaced without that showing up.
+ *
+ * Where the darks are concerned that means real movement: `--surface` goes from
+ * 6 13 17 to 12 30 41, roughly doubling every channel, which is the difference
+ * between a black that hints at blue and a petrol dark that reads as a colour. The
+ * two paper modes cannot move far — paper is near white, and a near white that moves
+ * far stops being paper — so they move where paper actually shows colour instead:
+ * the sunken panels and the hairlines, at delta-E 10 and 16. They also stop looking
+ * like each other. Research is now a cool journal white (blue above red) and
+ * scholarship a warm cream (red well above blue), where both used to be warm whites
+ * a few points apart.
  *
  * `--accent-alt` is exempt from 4.5:1 and held to the 3:1 non-text floor instead.
  * It is never type: grep says it draws graticule lines, scene strokes and plot
@@ -40,35 +54,116 @@
  * as a second colour rather than a dirty version of the first.
  *
  * Values are space-separated RGB channels so Tailwind's <alpha-value> works.
+ *
+ * Each palette is declared exactly once, against every selector that needs it. It
+ * used to be written out four times over for the engineering theme — `:root`,
+ * `.mode-engineering`, `.mode-everything` and the `[data-register]` section scope —
+ * which is four chances for a palette edit to land in three places and leave the
+ * fourth behind. `themeColor` in layout.tsx and the web manifest were exactly that:
+ * both still held 070B0D, the value from two passes ago, so the browser chrome on a
+ * phone had not matched the page it framed for two redesigns.
  */
 @layer base {
-  :root {
-    /* Opening / neutral house theme: instrument dark, amber trace. */
-    --surface: 6 13 17;
-    --surface-raised: 17 33 41;
-    --surface-sunken: 3 8 11;
-    --content: 246 243 236;
-    --content-muted: 142 171 181;
-    --content-faint: 108 141 153;
-    --accent: 240 163 38;
-    --accent-strong: 253 209 132;
-    --accent-alt: 74 190 214;
-    --hairline: 30 54 64;
-    --depth-a: 0.09;
-    --depth-b: 0.055;
-
-    /* The colour the pre-paint gate holds, and the opening field's background. */
-    --intro-shade: 6 13 17;
+  /*
+   * ENGINEERING — the bench at night. Also the house theme and the opening field.
+   *
+   * A petrol dark with a live amber trace and cyan for the graticule and reference
+   * marks. This is a scope face, and it says "measurement" before a single word is
+   * read. The cast in the darks is doing real work at 12 30 41: twenty-nine points
+   * of blue over red, where the old 6 13 17 had eleven and read as black.
+   *
+   * Ratios below are (surface / raised / sunken), computed.
+   */
+  :root,
+  .mode-engineering,
+  .mode-everything,
+  [data-register='engineering'] {
+    --surface: 12 30 41;
+    --surface-raised: 23 52 67;
+    --surface-sunken: 6 17 24;
+    --content: 247 245 239; /* 15.6 / 12.0 / 17.5 */
+    --content-muted: 154 186 197; /* 8.3 / 6.3 / 9.3 */
+    --content-faint: 132 166 179; /* 6.6 / 5.0 / 7.3 */
+    --accent: 251 179 58; /* 9.4 / 7.2 / 10.5 */
+    --accent-strong: 255 220 158; /* 13.0 / 9.9 / 14.5 */
+    --accent-alt: 98 214 232; /* graphics only; 10.0 / 7.7 / 11.2 */
+    --hairline: 41 76 92;
+    --depth-a: 0.14;
+    --depth-b: 0.09;
     color-scheme: dark;
+  }
+
+  /*
+   * RESEARCH — the printed page.
+   *
+   * Cool journal white, ink-dark type, deep teal for figures and links, ochre for
+   * annotation, the colour of a margin note. Nothing glows; a paper does not, so the
+   * depth wash stays low here.
+   *
+   * The white went cool on purpose. This mode and scholarship were both warm whites
+   * five points apart, which meant the two paper paths were the same room with
+   * different accents. Blue now sits above red here and well below it there, so they
+   * read as different stock before the accents are noticed at all.
+   */
+  .mode-research,
+  [data-register='research'] {
+    --surface: 246 249 251;
+    --surface-raised: 255 255 255;
+    --surface-sunken: 229 238 243;
+    --content: 13 23 30; /* 17.2 / 18.1 / 15.4 */
+    --content-muted: 56 79 92; /* 8.1 / 8.6 / 7.3 */
+    --content-faint: 88 109 122; /* 5.1 / 5.4 / 4.6 */
+    --accent: 9 100 128; /* 6.3 / 6.7 / 5.7 */
+    --accent-strong: 6 70 92; /* 9.7 / 10.3 / 8.8 */
+    --accent-alt: 170 98 10; /* graphics only; 4.5 / 4.7 / 4.0 */
+    --hairline: 201 213 222;
+    --depth-a: 0.07;
+    --depth-b: 0.05;
+    color-scheme: light;
+  }
+
+  /*
+   * SCHOLARSHIP — a room with people in it.
+   *
+   * Cream, clay, olive, pushed further into the warm than they were: the surface
+   * carries twenty-four points of red over blue, so this is unmistakably not the
+   * research page. The clay stays dark enough to survive as button type — at the
+   * weight it wants to be, the warmest path would have been the least readable one.
+   */
+  .mode-scholarship,
+  [data-register='scholarship'] {
+    --surface: 249 241 225;
+    --surface-raised: 255 252 245;
+    --surface-sunken: 241 227 201;
+    --content: 33 23 15; /* 15.7 / 17.2 / 13.9 */
+    --content-muted: 89 67 48; /* 8.2 / 9.0 / 7.3 */
+    --content-faint: 118 94 70; /* 5.4 / 5.9 / 4.8 */
+    --accent: 178 62 18; /* 5.2 / 5.7 / 4.6 */
+    --accent-strong: 145 48 14; /* 7.1 / 7.8 / 6.3 */
+    --accent-alt: 94 118 40; /* graphics only; 4.6 / 5.0 / 4.0 */
+    --hairline: 226 207 174;
+    --depth-a: 0.08;
+    --depth-b: 0.055;
+    color-scheme: light;
+  }
+
+  :root {
+    /* The colour the pre-paint gate holds, and the opening field's background. */
+    --intro-shade: 12 30 41;
 
     /*
      * Depth, and the only depth there is.
      *
-     * Two very low-alpha radial washes, one in the accent from the top left and a
-     * quieter one in the alt colour from the top right. Flat `background-color`
-     * was the last thing making these palettes feel like swatches instead of
-     * rooms: a real scope face has a glow near the trace, and paper has more light
-     * at one edge than the other.
+     * Two radial washes, one in the accent from the top left and a quieter one in the
+     * alt colour from the top right. Flat `background-color` was the last thing making
+     * these palettes feel like swatches instead of rooms: a real scope face has a glow
+     * near the trace, and paper has more light at one edge than the other.
+     *
+     * The alphas went up by about half. At 0.09 and 0.055 the washes were doing the
+     * same thing the old surface tokens were doing — technically present, visually
+     * absent. They are still low enough that no text sits on a gradient it has not
+     * been contrast-checked against, because the wash only ever lightens toward the
+     * accent, away from the dark ground the ratios were computed on.
      *
      * It lives in a custom property so `body` and the `[data-register]` sections
      * can share one definition while each resolving `--accent` locally — the
@@ -92,145 +187,11 @@
   }
 
   /*
-   * ENGINEERING — the bench at night.
-   * Near-black with a cyan cast, one live amber trace, cyan for the graticule and
-   * reference marks. This is a scope face, and it says "measurement" before a
-   * single word is read. The cyan in the darks is doing real work now: 6 13 17 is
-   * eleven points of blue over red, which is visible as a colour where the old
-   * 7 11 13 was visible as black.
-   */
-  .mode-engineering {
-    --surface: 6 13 17;
-    --surface-raised: 17 33 41;
-    --surface-sunken: 3 8 11;
-    --content: 246 243 236; /* 17.7:1 */
-    --content-muted: 142 171 181; /* 8.1:1 */
-    --content-faint: 108 141 153; /* 5.5:1 on surface, 4.6:1 on raised */
-    --accent: 240 163 38; /* 9.3:1 */
-    --accent-strong: 253 209 132;
-    --accent-alt: 74 190 214; /* graphics only */
-    --hairline: 30 54 64;
-    --depth-a: 0.09;
-    --depth-b: 0.055;
-    color-scheme: dark;
-  }
-
-  /*
-   * RESEARCH — the printed page.
-   * Warm white stock, ink-dark type, teal for figures and links, ochre for
-   * annotation, the colour of a margin note. Nothing glows; a paper does not, so
-   * this is the mode where the depth wash is turned nearly off.
-   *
-   * `surface-sunken` is lighter than it was for one reason: at 234 228 217 the
-   * faint token measured 4.2:1 on it, so every eyebrow label inside a sunken panel
-   * failed. The panel gave up a little of its depth so the labels could pass.
-   */
-  .mode-research {
-    --surface: 250 248 243;
-    --surface-raised: 255 255 255;
-    --surface-sunken: 237 231 220;
-    --content: 10 18 22; /* 18.4:1 */
-    --content-muted: 48 68 78; /* 9.6:1 */
-    --content-faint: 84 106 115; /* 5.4:1 on surface, 4.6:1 on sunken */
-    --accent: 22 116 141; /* 5.1:1 */
-    --accent-strong: 12 84 103;
-    --accent-alt: 181 112 20; /* 3.7:1 — graphics only */
-    --hairline: 216 206 189;
-    --depth-a: 0.05;
-    --depth-b: 0.038;
-    color-scheme: light;
-  }
-
-  /*
-   * SCHOLARSHIP — a room with people in it.
-   * Cream, clay, olive. Warm without being sentimental, and the darker clay is
-   * deliberate: at the original weight it failed contrast as a button, which
-   * would have made the warmest path the least readable one. The olive went from
-   * 92 107 60 to 86 112 46, which is the difference between olive and mud.
-   */
-  .mode-scholarship {
-    --surface: 244 239 231;
-    --surface-raised: 253 251 247;
-    --surface-sunken: 238 230 216;
-    --content: 26 20 16; /* 16.5:1 */
-    --content-muted: 78 63 51; /* 8.8:1 */
-    --content-faint: 120 100 82; /* 4.9:1 on surface, 4.5:1 on sunken */
-    --accent: 176 74 32; /* 4.8:1 */
-    --accent-strong: 143 56 22;
-    --accent-alt: 86 112 46; /* 4.9:1 — graphics only */
-    --hairline: 214 202 183;
-    --depth-a: 0.055;
-    --depth-b: 0.04;
-    color-scheme: light;
-  }
-
-  /* EVERYTHING — starts on the bench; sections retune as you scroll. */
-  .mode-everything {
-    --surface: 6 13 17;
-    --surface-raised: 17 33 41;
-    --surface-sunken: 3 8 11;
-    --content: 246 243 236;
-    --content-muted: 142 171 181;
-    --content-faint: 108 141 153;
-    --accent: 240 163 38;
-    --accent-strong: 253 209 132;
-    --accent-alt: 74 190 214;
-    --hairline: 30 54 64;
-    --depth-a: 0.09;
-    --depth-b: 0.055;
-    color-scheme: dark;
-  }
-
-  /* Section-scoped retuning, used by /everything to pass through each world. */
-  [data-register='research'] {
-    --surface: 250 248 243;
-    --surface-raised: 255 255 255;
-    --surface-sunken: 237 231 220;
-    --content: 10 18 22;
-    --content-muted: 48 68 78;
-    --content-faint: 84 106 115;
-    --accent: 22 116 141;
-    --accent-strong: 12 84 103;
-    --accent-alt: 181 112 20;
-    --hairline: 216 206 189;
-    --depth-a: 0.05;
-    --depth-b: 0.038;
-  }
-
-  [data-register='scholarship'] {
-    --surface: 244 239 231;
-    --surface-raised: 253 251 247;
-    --surface-sunken: 238 230 216;
-    --content: 26 20 16;
-    --content-muted: 78 63 51;
-    --content-faint: 120 100 82;
-    --accent: 176 74 32;
-    --accent-strong: 143 56 22;
-    --accent-alt: 86 112 46;
-    --hairline: 214 202 183;
-    --depth-a: 0.055;
-    --depth-b: 0.04;
-  }
-
-  [data-register='engineering'] {
-    --surface: 6 13 17;
-    --surface-raised: 17 33 41;
-    --surface-sunken: 3 8 11;
-    --content: 246 243 236;
-    --content-muted: 142 171 181;
-    --content-faint: 108 141 153;
-    --accent: 240 163 38;
-    --accent-strong: 253 209 132;
-    --accent-alt: 74 190 214;
-    --hairline: 30 54 64;
-    --depth-a: 0.09;
-    --depth-b: 0.055;
-  }
-
-  /*
    * Each world in /everything carries its own wash, anchored to the section rather
    * than the viewport, so scrolling from the bench into the paper mode crosses a
-   * visible seam between two lit rooms instead of two flat fills.
+   * visible seam between two lit rooms instead of two flat fills. The palettes the
+   * seam is between are up in the three blocks above, where each `[data-register]`
+   * selector is declared alongside the `.mode-*` class that shares its values.
    */
   [data-register] {
     background-image: var(--surface-depth);
@@ -1009,8 +970,28 @@ html[data-intro='on'] .page-enter {
 
 /*
  * REDUCED MOTION.
- * Cinematic sequences are replaced by their resolved end state elsewhere in
- * component code; this is the blanket safety net for anything CSS-driven.
+ *
+ * The setting is called reduced *motion*, and that is the whole of what this block
+ * removes: things that travel, loop, or run on their own. It does not remove
+ * feedback. A colour that arrives over 200ms instead of instantly is not motion —
+ * it is the interface acknowledging you, and it is the difference between a page
+ * that is calm and a page that is dead.
+ *
+ * This distinction used to be lost here. The block clamped `transition-duration`
+ * to 0.01ms on `*`, which is the copy-pasted internet default, and it took every
+ * fade and every colour change on the site down with the movement. Note that
+ * Windows 11 maps Settings → Accessibility → Visual effects → Animation effects
+ * straight onto this query, so a machine with that switch off got a site with no
+ * transitions at all — and no way to tell that from a site nobody had bothered to
+ * finish. The comment at the end of the old block even claimed the hover lift
+ * "stays", which the blanket above it had made untrue.
+ *
+ * So: durations are left exactly as authored, and `transition-property` is
+ * narrowed instead. Colour, opacity and shadow keep their curves; transform,
+ * clip-path, width and everything else that would move or reflow is simply not a
+ * transitionable property in here. Note this cannot *invent* a transition on an
+ * element that had none — with no authored duration the computed duration is 0s,
+ * so the property list has nothing to run.
  */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -1022,12 +1003,33 @@ html[data-intro='on'] .page-enter {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+    transition-property: opacity, color, background-color, border-color, fill, stroke,
+      box-shadow, outline-color !important;
   }
 
   /*
-   * The blanket above cannot resolve a progress-based timeline — a scroll-driven
+   * Movement removed at the source, not just un-animated.
+   *
+   * With transform out of the property list above, these lifts would still happen —
+   * they would just happen in one frame, and a control that jumps 2px the instant
+   * the pointer crosses it is worse than either a smooth lift or no lift at all.
+   * Every one of these elements also changes colour or border on the same trigger,
+   * so the affordance survives the transform being taken away.
+   */
+  .btn-live:hover,
+  .btn-live:active,
+  .panel-live:hover,
+  .panel-live:focus-within,
+  .row-live:hover .row-arrow,
+  .row-live:focus-within .row-arrow,
+  .row-live:hover .row-index,
+  .row-live:focus-within .row-index {
+    transform: none !important;
+  }
+
+  /*
+   * The clamp above cannot resolve a progress-based timeline — a scroll-driven
    * animation takes its position from the scrollport, not from a duration, so
    * clamping the duration leaves it wherever the spec and the browser happen to
    * agree it should be. Both of these are therefore switched off by name and given
@@ -1044,7 +1046,17 @@ html[data-intro='on'] .page-enter {
     clip-path: none !important;
   }
 
-  /* A 2px lift on hover is not motion anybody asked to be spared. It stays. */
+  /*
+   * The cue is a travelling dot; there is no static version of it worth keeping. Its
+   * last keyframe is `translateY(1000%)` at zero opacity, so the clamp alone would
+   * leave an invisible dot parked 60-odd pixels below its track — harmless until
+   * something downstream stops clipping. Resolved by name instead. The measurement
+   * line it rides stays; the line was never the animation.
+   */
+  .scroll-cue-dot {
+    animation: none !important;
+    opacity: 0 !important;
+  }
 }
 
 @media print {
