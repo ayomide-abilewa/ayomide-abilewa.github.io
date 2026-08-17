@@ -26,7 +26,7 @@ export function RepoEvidence() {
     <div>
       <RevealGroup as="ul" className="border-t border-hairline">
         {withCode.map((project) => (
-          <RevealItem as="li" key={project.slug} className="border-b border-hairline">
+          <RevealItem as="li" key={project.slug} className="row-live border-b border-hairline">
             <a
               href={project.repo}
               target="_blank"

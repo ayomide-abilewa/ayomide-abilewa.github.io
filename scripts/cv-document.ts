@@ -5,8 +5,8 @@ import {
   CV_SECTION_TITLES,
   CV_SHOWS_COURSEWORK,
   CV_STEM,
-  bulletsFor,
   certificationsForVariant,
+  cvBulletsFor,
   experienceForVariant,
   leadershipForVariant,
   projectsForVariant,
@@ -27,14 +27,32 @@ import {
  * that is what makes both outputs ATS-parseable. An applicant
  * tracking system reads a linear stream of strings, so a linear stream of
  * strings is exactly what this builds.
+ *
+ * What this file does *not* do is print everything it knows. Bullets come through
+ * `cvBulletsFor`, which caps each entry at the strongest few; leadership and
+ * projects come through their own per-variant limits. That restraint is the
+ * difference between a document somebody edited and a report somebody ran: an
+ * uncapped generator produces five bullets under every single role, which is a
+ * shape no experienced hand ever sets, and which pushed the full CV to three pages.
+ * The website carries the complete set instead, where there is room for it.
  */
 
 /** One line of a document: a heading, a paragraph, an entry head, or a bullet. */
 export type Line =
   | { kind: 'section'; text: string }
   | { kind: 'paragraph'; text: string }
-  /** Role/degree/project line. `meta` sits on the right, tab-aligned. */
-  | { kind: 'entry'; title: string; subtitle?: string; meta?: string }
+  /**
+   * Role/degree/project line. `meta` sits on the right, tab-aligned.
+   *
+   * `standalone` marks an entry that nothing hangs off — a certification, where the
+   * whole fact is on the one line. It changes two things in the renderers: the gap
+   * above it tightens, because a run of dated one-liners should read as a list
+   * rather than as five orphaned headings; and it drops "keep with next", which
+   * exists to stop a role being separated from its bullets. Five consecutive
+   * keep-with-next paragraphs is how Word ends up shunting a whole block onto the
+   * following page and leaving a hole behind it.
+   */
+  | { kind: 'entry'; title: string; subtitle?: string; meta?: string; standalone?: true }
   /** Secondary line under an entry — location, repo, coursework. */
   | { kind: 'detail'; text: string }
   | { kind: 'bullet'; text: string }
@@ -91,7 +109,7 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
           meta: `${dates(item.start, item.end)}${item.expected ? ' (expected)' : ''}`,
         })
         lines.push({ kind: 'detail', text: item.location })
-        for (const text of bulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
+        for (const text of cvBulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
         if (CV_SHOWS_COURSEWORK[variant] && item.coursework.length > 0) {
           lines.push({
             kind: 'detail',
@@ -117,7 +135,7 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
           meta: dates(item.start, item.end),
         })
         lines.push({ kind: 'detail', text: item.location })
-        for (const text of bulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
+        for (const text of cvBulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
       }
       break
 
@@ -129,7 +147,7 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
           subtitle: item.technologies.slice(0, 4).join(', '),
           meta: item.period,
         })
-        for (const text of bulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
+        for (const text of cvBulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
         // The repo is evidence, so it goes in. Absent where none exists — the
         // pipe anomaly work has no public repository and must not imply one.
         if (item.repo) {
@@ -139,8 +157,11 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
       break
 
     case 'research-interests':
+      // Colon, not a full stop. The descriptions are elaborations of the label,
+      // not new sentences, and "Detection under degraded conditions. How to keep
+      // precision steady..." reads as two fragments where one idea was intended.
       for (const interest of profile.researchInterests) {
-        lines.push({ kind: 'bullet', text: `${interest.label}. ${interest.description}` })
+        lines.push({ kind: 'bullet', text: `${interest.label}: ${interest.description}` })
       }
       break
 
@@ -152,7 +173,7 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
           subtitle: item.organisation,
           meta: dates(item.start, item.end),
         })
-        const bullets = bulletsFor(item, variant)
+        const bullets = cvBulletsFor(item, variant)
         if (bullets.length > 0) {
           for (const text of bullets) lines.push({ kind: 'bullet', text })
         } else {
@@ -162,8 +183,18 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
       break
 
     case 'certifications':
+      // Entries, not bullets. The year belongs in the same right-hand column the
+      // reader has already been scanning for every degree and every role — a
+      // certification list that abandons that column for "Name. Issuer, Year."
+      // sentences is a different document glued onto the end of this one.
       for (const item of certificationsForVariant(variant)) {
-        lines.push({ kind: 'bullet', text: `${item.name}. ${item.issuer}, ${item.year}.` })
+        lines.push({
+          kind: 'entry',
+          title: item.name,
+          subtitle: item.issuer,
+          meta: item.year,
+          standalone: true,
+        })
       }
       break
   }

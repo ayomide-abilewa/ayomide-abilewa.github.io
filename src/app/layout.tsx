@@ -110,13 +110,19 @@ export const viewport: Viewport = {
 
 /** Person structured data. Facts only — same source as the CVs. */
 function personJsonLd() {
+  // Derived rather than typed out. The degree had been written four different
+  // ways across this site, and this is the copy a machine reads and republishes,
+  // so it is the worst one to leave drifting. JSON.stringify drops the key if
+  // there is no education entry, which is better than printing "undefined".
+  const enrolled = profile.education[0]
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: profile.identity.name,
     url: SITE_URL,
     email: `mailto:${profile.identity.email}`,
-    jobTitle: 'Electrical and Electronics Engineering Student',
+    jobTitle: enrolled ? `${enrolled.field} student` : undefined,
     description: DESCRIPTION,
     address: {
       '@type': 'PostalAddress',

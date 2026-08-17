@@ -223,7 +223,7 @@ export function AboutStory() {
           {lessons.map(({ project, lesson }) => (
             <li
               key={project.slug}
-              className="grid gap-x-8 gap-y-2 border-b border-hairline py-5 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]"
+              className="row-live grid gap-x-8 gap-y-2 border-b border-hairline py-5 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]"
             >
               <p className="lg:pt-0.5">
                 <Link
@@ -232,6 +232,9 @@ export function AboutStory() {
                   className="text-caption font-medium text-content transition-colors hover:text-accent"
                 >
                   {project.name}
+                  <span className="row-arrow ml-1.5 text-content-faint" aria-hidden="true">
+                    →
+                  </span>
                 </Link>
                 <span className="mt-0.5 block font-mono text-micro text-content-faint">
                   {project.period}

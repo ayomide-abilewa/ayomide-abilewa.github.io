@@ -25,8 +25,8 @@ import { SettledTrace } from '@/components/brand/SettledTrace'
  */
 
 const FACTS = [
-  'B.Sc. Electrical & Electronics Engineering · Obafemi Awolowo University · expected 2027',
-  'Electrical & Instrumentation intern · Chevron Nigeria',
+  'B.Sc. Electronic and Electrical Engineering · Obafemi Awolowo University · expected 2027',
+  'Electrical and Instrumentation intern · Chevron Nigeria',
   'Lagos, Nigeria',
 ]
 

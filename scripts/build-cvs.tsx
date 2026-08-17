@@ -6,9 +6,11 @@ import {
   AlignmentType,
   BorderStyle,
   Document as DocxDocument,
+  Footer,
   HeadingLevel,
   LevelFormat,
   Packer,
+  PageNumber,
   Paragraph,
   TabStopType,
   TextRun,
@@ -33,6 +35,10 @@ import { buildDocument, type CvDocument, type Line } from './cv-document'
  *   - dates and headings as plain text in reading order
  *   - bare URLs rather than hyperlink markup, which parsers mangle less often
  *
+ * Colour and rules are not on that list because they cost nothing: a parser reads
+ * the text stream and never sees them, so the ink below and the hairlines are
+ * free to do the work of making the page look set by a person.
+ *
  * The bullet character is "•" with a real indent rather than a hyphen: Word
  * numbering carries the semantics for accessibility, and the PDF draws the glyph
  * in a fixed-width column so wrapped lines align under the text, not the bullet.
@@ -41,36 +47,75 @@ import { buildDocument, type CvDocument, type Line } from './cv-document'
 const OUT_DIR = join(process.cwd(), 'public', 'cv')
 
 // --------------------------------------------------------------------------
+// Measure
+// --------------------------------------------------------------------------
+
+/**
+ * The page box, in points. A4 is 595.28 × 841.89.
+ *
+ * The margins are deliberately asymmetric — 54pt in from the left, 72pt in from the
+ * right — which leaves a 469pt text column instead of the 503pt one this file used
+ * to set. At 9.6pt Helvetica that is roughly 97 characters a line. Still wide for
+ * continuous prose, and it is a compromise: pulling it to the 70-odd characters a
+ * book would use costs a third page, and two pages is the brief. What makes 97
+ * readable is the rest of the change — ragged right instead of justified, more
+ * leading than before, and headings you can find without reading them.
+ *
+ * The first version of this pass set the right margin at 88pt for a 453pt column,
+ * and the page-count readback at the bottom of this file immediately caught what
+ * that cost: three of the four variants ran to three pages. 72pt is where the
+ * column gets most of the benefit and the documents still close on two.
+ *
+ * The wide right margin is not wasted space. Dates hang at its edge, so the eye
+ * gets a straight vertical line to scan down for chronology, which is the second
+ * thing anybody looks for after the name.
+ */
+const PAGE = { top: 46, bottom: 40, left: 54, right: 72 } as const
+const MEASURE = Math.round(595 - PAGE.left - PAGE.right)
+
+/** One body size, shared by both formats so they cannot drift apart. */
+const BODY = 9.6
+
+// --------------------------------------------------------------------------
 // Ink
 // --------------------------------------------------------------------------
 
 /**
- * The document's ink, mixed for paper rather than for a screen.
+ * Two hues, and that is the whole palette.
  *
- * These are warm neutrals: each step carries a little more red than green and a
- * little more green than blue, which is how ink on off-white stock actually looks
- * and which quietly agrees with the warm paper tone the website uses. The earlier
- * draft of this file used a well-known CSS framework's default grey ramp, and that
- * is exactly the problem — a reader who has seen a hundred generated documents has
- * seen those five values a hundred times. A CV should look like someone set it.
+ * The text ramp is warm neutral: each step carries a little more red than green
+ * and a little more green than blue, which is how ink on off-white stock actually
+ * looks. The earlier draft stopped there, and five warm greys on white is not a
+ * design — it is the absence of one. A reader who has seen a hundred generated
+ * documents has seen that page.
+ *
+ * So there is one accent, and it is borrowed rather than invented: `#1E5A6B` is
+ * the `--accent-strong` of the website's research mode, the register the site
+ * already uses for the printed page. Amber is the house colour on screen and is
+ * unreadable on paper at this size; the teal is the same idea translated into ink.
+ * It appears four times — the role line, the section labels, the section rules,
+ * the bullets — and nowhere else. Four is a rhythm. Six would be decoration.
  *
  * Stored as bare hex because Word wants it that way; `ink()` adds the `#` for the
  * PDF. One source, so the two formats cannot disagree about colour either.
  *
- * Contrast against white, measured: body 16.9:1, secondary 9.6:1, meta 5.9:1 —
- * all past AA, which matters because these are also read on screen before print.
+ * Contrast against white, measured: body 16.9:1, secondary 10.7:1, meta 5.9:1,
+ * accent 6.6:1 — all past AA, which matters because these are read on screen
+ * before they are ever printed. `accentSoft` and `accentFaint` carry no text.
  */
 const INK = {
-  /** Body text and headings. Near-black, warm, never pure #000. */
+  /** Body text. Near-black, warm, never pure #000. */
   body: '191614',
-  /** Organisation names and the role line under the name. */
-  secondary: '4A443E',
-  /** Dates, locations, coursework, repository lines. */
+  /** Organisation names, and the subtitle half of an entry line. */
+  secondary: '43403C',
+  /** Dates, locations, coursework, repository lines, the folio. */
   meta: '6B635A',
-  /** The rule under the contact block. */
-  rule: '8C837A',
-  /** The hairline under each section heading. */
-  hairline: 'CFC7BD',
+  /** The role line, the section labels, the rule under the contact block. */
+  accent: '1E5A6B',
+  /** Bullet glyphs: the accent, stepped back so it marks without shouting. */
+  accentSoft: '6E9CAA',
+  /** The hairline above each section label. */
+  accentFaint: 'BFD2D8',
 } as const
 
 const ink = (value: string) => `#${value}`
@@ -89,61 +134,98 @@ const SEP = ' · '
 // --------------------------------------------------------------------------
 
 /**
- * A4 with 46pt margins. Type is 9.5pt on 1.42 leading — small enough to keep the
- * technical and full variants near two pages, large enough to stay readable when
- * printed, which is still how some panels review these.
+ * Vertical rhythm, in points, largest gap to smallest: 13 before a section rule,
+ * 6.5 before an entry, 2 between bullets, 1 before a detail line. Every gap is
+ * bigger than the one below it in the hierarchy and there are no near-ties, which
+ * is what lets you see the structure of the page before you read a word of it.
+ *
+ * The ratios matter more than the absolute values, which is what made fitting the
+ * documents back onto two pages a tuning job rather than a redesign: the whole
+ * scale came down about 20% and the hierarchy it encodes is untouched.
+ *
+ * The section labels are 8.4pt against 9.6pt body, and that is on purpose. Set in
+ * caps with 1.35pt of tracking, in the accent, under a rule, an 8.4pt label reads
+ * as larger than the body it heads — cap height, colour and the rule do the work
+ * that size would otherwise have to. The version of this file that set them at 9pt
+ * bold black had them competing with the body text on the only axis they shared.
  */
 const pdf = StyleSheet.create({
   page: {
-    paddingTop: 46,
-    paddingBottom: 46,
-    paddingHorizontal: 46,
+    paddingTop: PAGE.top,
+    paddingBottom: PAGE.bottom,
+    paddingLeft: PAGE.left,
+    paddingRight: PAGE.right,
     fontFamily: 'Helvetica',
-    fontSize: 9.5,
-    lineHeight: 1.42,
+    fontSize: BODY,
+    lineHeight: 1.44,
     color: ink(INK.body),
   },
-  name: { fontSize: 19, fontFamily: 'Helvetica-Bold', letterSpacing: -0.3 },
-  role: { marginTop: 3, fontSize: 10, color: ink(INK.secondary) },
-  contact: { marginTop: 6, fontSize: 8.5, color: ink(INK.meta) },
-  links: { marginTop: 2, fontSize: 8.5, color: ink(INK.meta) },
+
+  name: { fontSize: 20, fontFamily: 'Helvetica-Bold', letterSpacing: -0.4 },
+  role: { marginTop: 3, fontSize: 10.2, color: ink(INK.accent) },
+  contact: { marginTop: 6, fontSize: 8.4, color: ink(INK.meta) },
+  links: { marginTop: 1.5, fontSize: 8.4, color: ink(INK.meta) },
   rule: {
-    marginTop: 10,
-    marginBottom: 4,
-    borderBottomWidth: 0.75,
-    borderBottomColor: ink(INK.rule),
+    marginTop: 9,
+    marginBottom: 2,
+    borderBottomWidth: 1.2,
+    borderBottomColor: ink(INK.accent),
   },
 
-  section: {
+  /** The rule belongs above the label, marking the boundary the label then names. */
+  sectionWrap: {
     marginTop: 13,
-    marginBottom: 4,
-    paddingBottom: 2,
-    fontSize: 9,
+    marginBottom: 3,
+    paddingTop: 4,
+    borderTopWidth: 0.7,
+    borderTopColor: ink(INK.accentFaint),
+  },
+  section: {
+    fontSize: 8.4,
     fontFamily: 'Helvetica-Bold',
-    letterSpacing: 1,
-    borderBottomWidth: 0.5,
-    borderBottomColor: ink(INK.hairline),
+    letterSpacing: 1.35,
+    color: ink(INK.accent),
   },
 
-  paragraph: { marginTop: 2, textAlign: 'justify' },
+  /** Ragged right. Justified text at this measure with no hyphenation gives rivers. */
+  paragraph: { marginTop: 2 },
 
-  entryRow: { marginTop: 6, flexDirection: 'row', justifyContent: 'space-between' },
-  entryTitle: { flexShrink: 1, paddingRight: 12 },
-  entryBold: { fontFamily: 'Helvetica-Bold' },
+  entryRow: { marginTop: 6.5, flexDirection: 'row', justifyContent: 'space-between' },
+  /** An entry with nothing under it. Tighter, so a run of them reads as a list. */
+  entryRowTight: { marginTop: 3.5, flexDirection: 'row', justifyContent: 'space-between' },
+  entryTitle: { flexShrink: 1, paddingRight: 14 },
+  entryBold: { fontSize: 10, fontFamily: 'Helvetica-Bold' },
   entrySub: { color: ink(INK.secondary) },
-  entryMeta: { fontSize: 8.5, color: ink(INK.meta) },
+  entryMeta: { flexShrink: 0, fontSize: 8.4, color: ink(INK.meta), textAlign: 'right' },
 
-  detail: { fontSize: 8.5, color: ink(INK.meta) },
+  detail: { marginTop: 1, fontSize: 8.6, color: ink(INK.meta) },
 
-  bulletRow: { marginTop: 1.5, flexDirection: 'row' },
-  bulletGlyph: { width: 10 },
-  bulletText: { flex: 1, textAlign: 'justify' },
+  bulletRow: { marginTop: 2, flexDirection: 'row' },
+  bulletGlyph: { width: 11, color: ink(INK.accentSoft) },
+  bulletText: { flex: 1 },
+
+  /** Folio, so a printed copy that gets separated can be put back together. */
+  folio: {
+    position: 'absolute',
+    bottom: 22,
+    left: PAGE.left,
+    right: PAGE.right,
+    fontSize: 7.8,
+    color: ink(INK.meta),
+    textAlign: 'right',
+  },
 })
 
 function PdfLine({ line }: { line: Line }) {
   switch (line.kind) {
     case 'section':
-      return <Text style={pdf.section}>{line.text.toUpperCase()}</Text>
+      return (
+        // `wrap={false}` stops a label being left at the foot of a page with its
+        // first entry over the break.
+        <View style={pdf.sectionWrap} wrap={false}>
+          <Text style={pdf.section}>{line.text.toUpperCase()}</Text>
+        </View>
+      )
 
     case 'paragraph':
       return <Text style={pdf.paragraph}>{line.text}</Text>
@@ -151,7 +233,7 @@ function PdfLine({ line }: { line: Line }) {
     case 'entry':
       return (
         // `wrap={false}` keeps a role line from being orphaned at a page break.
-        <View style={pdf.entryRow} wrap={false}>
+        <View style={line.standalone ? pdf.entryRowTight : pdf.entryRow} wrap={false}>
           <Text style={pdf.entryTitle}>
             <Text style={pdf.entryBold}>{line.title}</Text>
             {line.subtitle ? (
@@ -197,6 +279,15 @@ function PdfCv({ doc }: { doc: CvDocument }) {
         {doc.lines.map((line, i) => (
           <PdfLine key={`${line.kind}-${i}`} line={line} />
         ))}
+
+        {/* Nothing to fold back together on a one-page CV, so it says nothing. */}
+        <Text
+          fixed
+          style={pdf.folio}
+          render={({ pageNumber, totalPages }) =>
+            totalPages > 1 ? `${doc.name}${SEP}${pageNumber} of ${totalPages}` : ''
+          }
+        />
       </Page>
     </Document>
   )
@@ -206,16 +297,22 @@ function PdfCv({ doc }: { doc: CvDocument }) {
 // DOCX
 // --------------------------------------------------------------------------
 
-/** Half-points, the unit Word uses for font size. 9.5pt → 19. */
+/** Half-points, the unit Word uses for font size. 9.6pt → 19. */
 const PT = (points: number) => Math.round(points * 2)
 /** Twips: 1pt = 20 twips. Used for spacing and indents. */
 const TW = (points: number) => Math.round(points * 20)
 
 /**
- * Right tab stop for the date column: A4 is 595pt wide, less 46pt of margin on
- * each side, so the text column ends at 503pt.
+ * Word's `line` is relative to single spacing, where 240 is single — and single
+ * for Calibri already carries about 1.15 of leading. 300 is therefore roughly the
+ * 1.44 the PDF sets, not 1.25.
  */
-const RIGHT_TAB = TW(595 - 46 * 2)
+const LEADING = 300
+
+/**
+ * Right tab stop for the date column, at the same 469pt the PDF's dates hang at.
+ */
+const RIGHT_TAB = TW(MEASURE)
 
 function docxLine(line: Line): Paragraph {
   switch (line.kind) {
@@ -225,57 +322,59 @@ function docxLine(line: Line): Paragraph {
         // and a parser can both follow.
         heading: HeadingLevel.HEADING_2,
         spacing: { before: TW(11), after: TW(3) },
-        border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: INK.hairline, space: 2 } },
+        border: { top: { style: BorderStyle.SINGLE, size: 4, color: INK.accentFaint, space: 4 } },
+        keepNext: true,
         children: [
           new TextRun({
             text: line.text.toUpperCase(),
             bold: true,
-            size: PT(9),
-            color: INK.body,
-            characterSpacing: 20,
+            size: PT(8.4),
+            color: INK.accent,
+            characterSpacing: 27,
           }),
         ],
       })
 
     case 'paragraph':
       return new Paragraph({
-        spacing: { after: TW(2), line: 264 },
-        children: [new TextRun({ text: line.text, size: PT(9.5) })],
+        spacing: { after: TW(2), line: LEADING },
+        children: [new TextRun({ text: line.text, size: PT(BODY) })],
       })
 
     case 'entry':
       return new Paragraph({
-        spacing: { before: TW(5), after: TW(0) },
+        spacing: { before: TW(line.standalone ? 3 : 6), after: TW(0) },
         tabStops: [{ type: TabStopType.RIGHT, position: RIGHT_TAB }],
-        keepNext: true,
+        // Only where something follows that must not be separated from it.
+        keepNext: !line.standalone,
         children: [
-          new TextRun({ text: line.title, bold: true, size: PT(9.5) }),
+          new TextRun({ text: line.title, bold: true, size: PT(10) }),
           ...(line.subtitle
             ? [
                 new TextRun({
                   text: `${SEP}${line.subtitle}`,
-                  size: PT(9.5),
+                  size: PT(BODY),
                   color: INK.secondary,
                 }),
               ]
             : []),
           ...(line.meta
-            ? [new TextRun({ text: `\t${line.meta}`, size: PT(8.5), color: INK.meta })]
+            ? [new TextRun({ text: `\t${line.meta}`, size: PT(8.4), color: INK.meta })]
             : []),
         ],
       })
 
     case 'detail':
       return new Paragraph({
-        spacing: { after: TW(0), line: 252 },
-        children: [new TextRun({ text: line.text, size: PT(8.5), color: INK.meta })],
+        spacing: { before: TW(1), after: TW(0), line: 264 },
+        children: [new TextRun({ text: line.text, size: PT(8.6), color: INK.meta })],
       })
 
     case 'bullet':
       return new Paragraph({
         numbering: { reference: 'cv-bullets', level: 0 },
-        spacing: { before: TW(1), after: TW(1), line: 264 },
-        children: [new TextRun({ text: line.text, size: PT(9.5) })],
+        spacing: { before: TW(2), after: TW(0), line: LEADING },
+        children: [new TextRun({ text: line.text, size: PT(BODY) })],
       })
   }
 }
@@ -283,23 +382,41 @@ function docxLine(line: Line): Paragraph {
 function docxFile(doc: CvDocument): DocxDocument {
   const head: Paragraph[] = [
     new Paragraph({
-      spacing: { after: TW(1) },
-      children: [new TextRun({ text: doc.name, bold: true, size: PT(19) })],
+      spacing: { after: TW(2) },
+      children: [new TextRun({ text: doc.name, bold: true, size: PT(20) })],
     }),
     new Paragraph({
-      spacing: { after: TW(3) },
-      children: [new TextRun({ text: doc.title, size: PT(10), color: INK.secondary })],
+      spacing: { after: TW(4) },
+      children: [new TextRun({ text: doc.title, size: PT(10.2), color: INK.accent })],
     }),
     new Paragraph({
       spacing: { after: TW(0) },
-      children: [new TextRun({ text: doc.contact, size: PT(8.5), color: INK.meta })],
+      children: [new TextRun({ text: doc.contact, size: PT(8.4), color: INK.meta })],
     }),
     new Paragraph({
-      spacing: { after: TW(6) },
-      border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: INK.rule, space: 6 } },
-      children: [new TextRun({ text: doc.links, size: PT(8.5), color: INK.meta })],
+      spacing: { after: TW(4) },
+      border: { bottom: { style: BorderStyle.SINGLE, size: 10, color: INK.accent, space: 6 } },
+      children: [new TextRun({ text: doc.links, size: PT(8.4), color: INK.meta })],
     }),
   ]
+
+  /**
+   * The PDF drops its folio when the document turns out to be one page; Word
+   * cannot know that at authoring time, so this one always prints.
+   */
+  const folio = new Footer({
+    children: [
+      new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        children: [
+          new TextRun({ text: `${doc.name}${SEP}`, size: PT(7.8), color: INK.meta }),
+          new TextRun({ children: [PageNumber.CURRENT], size: PT(7.8), color: INK.meta }),
+          new TextRun({ text: ' of ', size: PT(7.8), color: INK.meta }),
+          new TextRun({ children: [PageNumber.TOTAL_PAGES], size: PT(7.8), color: INK.meta }),
+        ],
+      }),
+    ],
+  })
 
   return new DocxDocument({
     title: `${doc.name} · ${doc.label}`,
@@ -307,8 +424,8 @@ function docxFile(doc: CvDocument): DocxDocument {
     description: doc.title,
     styles: {
       default: {
-        document: { run: { font: 'Calibri', size: PT(9.5), color: INK.body } },
-        heading2: { run: { font: 'Calibri', bold: true, color: INK.body } },
+        document: { run: { font: 'Calibri', size: PT(BODY), color: INK.body } },
+        heading2: { run: { font: 'Calibri', bold: true, color: INK.accent } },
       },
     },
     numbering: {
@@ -321,7 +438,14 @@ function docxFile(doc: CvDocument): DocxDocument {
               format: LevelFormat.BULLET,
               text: '•',
               alignment: AlignmentType.LEFT,
-              style: { paragraph: { indent: { left: TW(11), hanging: TW(11) } } },
+              style: {
+                // `run` belongs under `style`, not beside it. Put it at the top
+                // level and docx's types reject it — and before this typechecked,
+                // the glyph was quietly printing in body ink. It colours the
+                // bullet only, never the text after it, same split as the PDF.
+                run: { color: INK.accentSoft, size: PT(BODY) },
+                paragraph: { indent: { left: TW(11), hanging: TW(11) } },
+              },
             },
           ],
         },
@@ -331,11 +455,17 @@ function docxFile(doc: CvDocument): DocxDocument {
       {
         properties: {
           page: {
-            // A4 in twips, with 46pt margins to match the PDF.
+            // A4 in twips, with the PDF's asymmetric margins.
             size: { width: 11906, height: 16838 },
-            margin: { top: TW(46), bottom: TW(46), left: TW(46), right: TW(46) },
+            margin: {
+              top: TW(PAGE.top),
+              bottom: TW(PAGE.bottom),
+              left: TW(PAGE.left),
+              right: TW(PAGE.right),
+            },
           },
         },
+        footers: { default: folio },
         children: [...head, ...doc.lines.map(docxLine)],
       },
     ],
@@ -343,6 +473,21 @@ function docxFile(doc: CvDocument): DocxDocument {
 }
 
 // --------------------------------------------------------------------------
+
+/**
+ * Page count, read back out of the PDF we just wrote.
+ *
+ * Two pages is the brief for all four, and it is a content constraint before it is
+ * a typographic one: nobody experienced sends a three-page undergraduate CV, and
+ * the fix when one runs long is to cut an entry, not to shave the leading. This
+ * readback is what makes that decision visible — it caught the first draft of the
+ * redesign at three pages, and it caught the full variant again after the bullet
+ * cap, which is how the leadership limit in `select.ts` got its number.
+ */
+function pageCount(buffer: Buffer): number {
+  const matches = buffer.toString('latin1').match(/\/Type\s*\/Page[^s]/g)
+  return matches ? matches.length : 0
+}
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true })
@@ -356,15 +501,16 @@ async function main() {
     const docxBuffer = await Packer.toBuffer(docxFile(doc))
     await writeFile(join(OUT_DIR, `${doc.stem}.docx`), docxBuffer)
 
-    const bullets = doc.lines.filter((l) => l.kind === 'bullet').length
-    const sections = doc.lines.filter((l) => l.kind === 'section').length
+    const count = (kind: Line['kind']) => doc.lines.filter((l) => l.kind === kind).length
     console.log(
-      `${variant.padEnd(12)} ${doc.stem}  ${sections} sections, ${bullets} bullets  ` +
+      `${variant.padEnd(12)} ${doc.stem}  ${pageCount(pdfBuffer)}pp  ` +
+        `${count('section')} sections, ${count('entry')} entries, ` +
+        `${count('bullet')} bullets, ${count('paragraph')} paragraphs, ${count('detail')} details  ` +
         `(pdf ${Math.round(pdfBuffer.length / 1024)}kB, docx ${Math.round(docxBuffer.length / 1024)}kB)`,
     )
   }
 
-  console.log(`\n8 files written to public/cv/`)
+  console.log(`\n8 files written to public/cv/ — ${MEASURE}pt measure, ${BODY}pt body`)
 }
 
 main().catch((error) => {

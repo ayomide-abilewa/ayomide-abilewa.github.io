@@ -6,8 +6,8 @@ import {
   CV_SECTION_ORDER,
   CV_SECTION_TITLES,
   CV_SHOWS_COURSEWORK,
-  bulletsFor,
   certificationsForVariant,
+  cvBulletsFor,
   experienceForVariant,
   leadershipForVariant,
   projectsForVariant,
@@ -19,9 +19,19 @@ import {
  * On-screen rendering of a generated CV.
  *
  * The point of this component is fidelity: it walks `CV_SECTION_ORDER` and pulls
- * bullets through `bulletsFor`, exactly as `scripts/build-cvs.tsx` does. What you
+ * bullets through `cvBulletsFor`, exactly as `scripts/build-cvs.tsx` does. What you
  * read here is what the PDF and the DOCX contain, in the same order, so the
- * preview cannot quietly disagree with the file you download.
+ * preview cannot quietly disagree with the file you download. That includes the
+ * cuts — the documents print the strongest few bullets per entry rather than every
+ * bullet tagged for the variant, and so does this. The complete set is on /about
+ * and the project pages, which have the room a two-page document does not.
+ *
+ * That extends to the typesetting. The documents put a rule above each section
+ * label rather than a hairline beneath it, set the label small and letterspaced in
+ * the accent, colour the role line, and mark bullets with a middot — and so does
+ * this. The one thing that cannot carry across is the ink itself: the generated
+ * files are set in a fixed teal chosen for paper, and this renders in whichever
+ * accent the visitor's mode is using. Same decisions, translated.
  *
  * One deliberate difference from the documents: links are rendered as their plain
  * `cvText`, because that is what an ATS parser sees in the generated files, and
@@ -33,7 +43,7 @@ import {
 
 function SectionTitle({ children }: { children: string }) {
   return (
-    <h3 className="mb-2.5 border-b border-hairline pb-1 font-mono text-micro uppercase tracking-[0.14em] text-content">
+    <h3 className="mb-3 border-t border-accent/30 pt-2 font-mono text-micro uppercase tracking-[0.16em] text-accent">
       {children}
     </h3>
   )
@@ -42,10 +52,12 @@ function SectionTitle({ children }: { children: string }) {
 function Bullets({ items }: { items: string[] }) {
   if (items.length === 0) return null
   return (
-    <ul className="mt-1.5 space-y-1">
+    <ul className="mt-2 space-y-1.5">
       {items.map((item) => (
         <li key={item} className="relative pl-4 text-caption leading-relaxed text-content-muted">
-          <span aria-hidden="true" className="absolute left-0 top-[0.55em] h-px w-2 bg-accent" />
+          <span aria-hidden="true" className="absolute left-0 top-0 text-accent/70">
+            •
+          </span>
           {item}
         </li>
       ))}
@@ -101,7 +113,7 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
                 meta={`${education.start}–${education.end}${education.expected ? ' (expected)' : ''}`}
               />
               <p className="text-caption text-content-faint">{education.location}</p>
-              <Bullets items={bulletsFor(education, variant)} />
+              <Bullets items={cvBulletsFor(education, variant)} />
               {CV_SHOWS_COURSEWORK[variant] && education.coursework.length > 0 && (
                 <p className="mt-1.5 text-caption leading-relaxed text-content-muted">
                   <span className="text-content">Relevant coursework: </span>
@@ -138,7 +150,7 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
                 meta={`${item.start}–${item.end}`}
               />
               <p className="text-caption text-content-faint">{item.location}</p>
-              <Bullets items={bulletsFor(item, variant)} />
+              <Bullets items={cvBulletsFor(item, variant)} />
             </div>
           ))}
         </div>
@@ -154,7 +166,7 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
                 subtitle={project.technologies.slice(0, 4).join(', ')}
                 meta={project.period}
               />
-              <Bullets items={bulletsFor(project, variant)} />
+              <Bullets items={cvBulletsFor(project, variant)} />
               {project.repo && (
                 <p className="mt-1 font-mono text-micro text-content-faint">
                   {project.repo.replace('https://', '')}
@@ -170,7 +182,7 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
         <ul className="space-y-1.5">
           {profile.researchInterests.map((interest) => (
             <li key={interest.id} className="text-caption leading-relaxed text-content-muted">
-              <span className="font-medium text-content">{interest.label}. </span>
+              <span className="font-medium text-content">{interest.label}: </span>
               {interest.description}
             </li>
           ))}
@@ -181,7 +193,7 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
       return (
         <div className="space-y-4">
           {leadershipForVariant(variant).map((item) => {
-            const bullets = bulletsFor(item, variant)
+            const bullets = cvBulletsFor(item, variant)
             return (
               <div key={item.id}>
                 <EntryHead
@@ -203,20 +215,19 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
       )
 
     case 'certifications':
+      // Entry heads, like every other dated thing in the document, so the year
+      // lands in the column the reader is already scanning.
       return (
-        <ul className="space-y-1">
+        <div className="space-y-2">
           {certificationsForVariant(variant).map((item) => (
-            <li
+            <EntryHead
               key={`${item.name}-${item.year}`}
-              className="flex flex-wrap items-baseline justify-between gap-x-6 text-caption text-content-muted"
-            >
-              <span>
-                <span className="text-content">{item.name}</span>. {item.issuer}
-              </span>
-              <span className="font-mono text-micro text-content-faint">{item.year}</span>
-            </li>
+              title={item.name}
+              subtitle={item.issuer}
+              meta={item.year}
+            />
           ))}
-        </ul>
+        </div>
       )
   }
 }
@@ -231,9 +242,9 @@ export function CvPreview({ variant }: { variant: CvVariant }) {
       className="rounded-panel border border-hairline bg-surface p-6 sm:p-9"
     >
       {/* Document head. Exactly the fields the generated files carry. */}
-      <header className="border-b border-hairline pb-4">
+      <header className="border-b-2 border-accent/70 pb-4">
         <h2 className="text-h3 font-medium tracking-tight text-content">{identity.name}</h2>
-        <p className="mt-1 text-caption text-content-muted text-pretty">{identity.title}</p>
+        <p className="mt-1 text-caption text-accent text-pretty">{identity.title}</p>
         <p className="mt-2.5 font-mono text-micro leading-relaxed text-content-faint">
           {identity.location} · {identity.email} · {identity.phone}
           <br />
@@ -242,7 +253,7 @@ export function CvPreview({ variant }: { variant: CvVariant }) {
         </p>
       </header>
 
-      <div className="mt-6 space-y-6">
+      <div className="mt-7 space-y-7">
         {CV_SECTION_ORDER[variant].map((section) => (
           <section key={section} aria-label={titles[section] ?? section}>
             <SectionTitle>{titles[section] ?? section}</SectionTitle>

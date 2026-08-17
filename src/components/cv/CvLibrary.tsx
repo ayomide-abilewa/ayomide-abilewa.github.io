@@ -37,7 +37,7 @@ import { CvPreview } from '@/components/cv/CvPreview'
 
 /** The one line that explains why four files exist rather than one. */
 const WHY =
-  'Same verified facts in all four. What changes is which of them lead, which section comes first, how much detail each carries, and how long the document runs.'
+  'Every line in all four is drawn from the same verified source. What changes is which of them lead, which section comes first, how much detail each carries — and what each one leaves out, because all four stop at two pages.'
 
 function VariantTabs({
   active,
@@ -65,7 +65,7 @@ function VariantTabs({
             aria-selected={selected}
             aria-controls={`cv-panel-${variant}`}
             onClick={() => onSelect(variant)}
-            className={`rounded-panel border p-4 text-left transition-colors ${
+            className={`panel-live rounded-panel border p-4 text-left ${
               selected
                 ? 'border-accent bg-surface-sunken/60'
                 : 'border-hairline hover:border-accent/60'
@@ -323,6 +323,13 @@ export function CvLibrary() {
             they answer different questions about it.
           </p>
           <p>
+            <span className="text-content">And from what gets cut.</span> Tagging decides what is
+            eligible; a per-version limit decides how much actually prints. Each entry contributes
+            its strongest three or four bullets rather than everything it has, and the scholarship
+            version is the only one that lists all five leadership roles. Two pages is a hard stop,
+            and choosing what to leave out is most of the work.
+          </p>
+          <p>
             <span className="text-content">Where it does not.</span> No version gets a stronger
             phrasing of a claim than the others, and nothing is added to fill a section out. Where a
             project has no public repository the CV says so; where work is unfinished it is listed as
@@ -341,7 +348,7 @@ export function CvLibrary() {
           {CV_VARIANTS.map((variant) => (
             <li
               key={variant}
-              className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3 border-b border-hairline py-5"
+              className="row-live flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3 border-b border-hairline py-5"
             >
               <span className="min-w-0">
                 <span className="block text-body font-medium text-content">

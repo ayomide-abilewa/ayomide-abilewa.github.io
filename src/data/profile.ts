@@ -48,6 +48,17 @@ export const profile: Profile = {
    * because a CV summary does not need it, and no "he", because writing about
    * yourself in the third person on your own document reads as a press release.
    *
+   * None of them opens by naming the degree, and that is the rule worth keeping.
+   * `identity.title` prints "Electronic and Electrical Engineering student" two
+   * lines above, and in three of the four variants the education entry states the
+   * degree and the institution immediately below — so a summary beginning
+   * "Electronic and electrical engineering student at Obafemi Awolowo University"
+   * put one fact on the page three times inside six lines. That is what two
+   * correct fields concatenated look like, and it happened in the most valuable
+   * space on the document. Each of these opens instead on what its reader cannot
+   * get from the header: the design habit, the research question, the teaching,
+   * the range.
+   *
    * Punctuation matters as much as vocabulary here. A pair of em dashes bracketing
    * an aside can make the summaries feel overly formal, so these
    * use the ordinary marks a person reaches for: colons, commas, full stops. The
@@ -55,13 +66,13 @@ export const profile: Profile = {
    */
   summaries: {
     technical:
-      'Electronic and electrical engineering student who builds embedded and computer-vision systems, with a habit of designing for the conditions that break them: poor lighting, no network, unreliable input. Currently rotating through the electrical and instrumentation team at Chevron Nigeria, working with the control loops and signal standards behind the same measurement problems at industrial scale.',
+      'Builds embedded and computer-vision systems, with a habit of designing for the conditions that break them: poor lighting, no network, unreliable input. Currently rotating through the electrical and instrumentation team at Chevron Nigeria, working with the control loops and signal standards behind the same measurement problems at industrial scale.',
     research:
-      'Electronic and electrical engineering student at Obafemi Awolowo University, expected 2027, working on measurement and detection under non-ideal conditions. Recent work covers a two-stage cascaded detector that fuses RGB and edge-enhanced models for pipe anomaly identification, a multi-sensor multispectral acquisition node, and control-systems practice on Quanser robotics hardware using MATLAB and Simulink.',
+      'Most of the work so far has gone into measurement and detection under non-ideal conditions. Recent projects: a two-stage cascaded detector that fuses RGB and edge-enhanced models for pipe anomaly identification, a multi-sensor multispectral acquisition node, and control-systems practice on Quanser robotics hardware using MATLAB and Simulink.',
     scholarship:
-      'Electronic and electrical engineering student at Obafemi Awolowo University, teaching electronics since 2023 alongside the degree. Currently interning on Chevron Nigeria’s electrical and instrumentation team. Leads SPAW 3.0, a six-session embedded systems and entrepreneurship curriculum for secondary school students, and instructs a practical electronics workshop for students with no prior background.',
+      'Has taught electronics since 2023, alongside the degree rather than after it. Leads SPAW 3.0, a six-session embedded systems and entrepreneurship curriculum for secondary school students, and instructs a practical electronics workshop for students with no prior background. Currently interning on Chevron Nigeria’s electrical and instrumentation team.',
     general:
-      'Electronic and electrical engineering student at Obafemi Awolowo University, expected 2027, working across embedded systems, instrumentation and computer vision. Currently interning on Chevron Nigeria’s electrical and instrumentation team. Has built sensing and detection systems from microcontroller nodes up to full-stack applications, and leads an embedded systems curriculum for secondary school students.',
+      'Works across embedded systems, instrumentation and computer vision. Has built sensing and detection systems from microcontroller nodes up to full-stack applications, and has taught electronics to secondary school students since 2023. Currently interning on Chevron Nigeria’s electrical and instrumentation team.',
   },
 
   education: [
@@ -311,7 +322,7 @@ export const profile: Profile = {
       },
       bullets: [
         {
-          text: 'Built an AI costume-rating booth in Python and Streamlit with ten original hosts, per-session mood and quirk variation, and vision-language scoring across seven criteria collapsed into a single ranked score.',
+          text: 'Shipped an AI costume-rating booth in Python and Streamlit with ten original hosts, per-session mood and quirk variation, and vision-language scoring across seven criteria collapsed into a single ranked score.',
           emphasis: ['technical', 'general'],
         },
         {
@@ -333,7 +344,7 @@ export const profile: Profile = {
       name: 'AI-Powered Smart Attendance System',
       tagline:
         'Face-recognition attendance for real lecture halls — detection, embedding and cosine matching behind a full-stack application built for lecturers, not for a benchmark.',
-      period: 'Feb – Mar 2026',
+      period: 'Feb–Mar 2026',
       status: 'complete',
       statusNote: 'Defended at a final-year group project review; invited to develop an extended production version.',
       repo: 'https://github.com/ayomide-abilewa/Smart-Attendance-System',
@@ -434,7 +445,7 @@ export const profile: Profile = {
       },
       bullets: [
         {
-          text: 'Built an AI-powered attendance system using YuNet face detection and SFace recognition with cosine similarity matching, delivering the computer-vision pipeline and a Flask REST API backend.',
+          text: 'Owned the computer-vision pipeline and Flask REST API backend for an AI-powered attendance system using YuNet face detection and SFace recognition with cosine similarity matching.',
           emphasis: ['technical', 'research', 'general'],
         },
         {
@@ -464,7 +475,7 @@ export const profile: Profile = {
       name: 'Live Video Pipe Anomaly Detection',
       tagline:
         'A two-stage cascaded detector that runs RGB and edge-enhanced models in parallel and fuses their boxes, so precision holds up across lighting and surface conditions.',
-      period: '2026 – present',
+      period: '2026–Present',
       status: 'in-progress',
       statusNote: 'In progress. No public repository yet.',
       technologies: ['Python', 'YOLOv8', 'YOLOv11', 'Weighted Boxes Fusion', 'OpenCV'],
@@ -540,7 +551,7 @@ export const profile: Profile = {
           emphasis: ['technical', 'research', 'general'],
         },
         {
-          text: 'Built a parallel ensemble of RGB and edge-enhanced YOLO models merged with Weighted Boxes Fusion to improve precision across varied lighting and surface conditions.',
+          text: 'Assembled a parallel ensemble of RGB and edge-enhanced YOLO models merged with Weighted Boxes Fusion to improve precision across varied lighting and surface conditions.',
           emphasis: ['technical', 'research', 'general'],
         },
       ],
@@ -778,7 +789,7 @@ export const profile: Profile = {
       },
       bullets: [
         {
-          text: 'Built an Arduino fire alarm with flame and smoke sensing that raises a local alarm and sends an SMS notification through a GSM module.',
+          text: 'Wired an Arduino fire alarm with flame and smoke sensing that raises a local alarm and sends an SMS notification through a GSM module.',
           emphasis: ['technical', 'general'],
         },
       ],
@@ -792,7 +803,7 @@ export const profile: Profile = {
       emphasis: ['technical', 'research', 'scholarship', 'general'],
     },
     {
-      label: 'Embedded & Hardware',
+      label: 'Embedded and Hardware',
       items: [
         'Arduino',
         'ESP32',
@@ -805,7 +816,7 @@ export const profile: Profile = {
       emphasis: ['technical', 'research', 'general'],
     },
     {
-      label: 'AI & Machine Learning',
+      label: 'AI and Machine Learning',
       items: [
         'YOLOv8/v11',
         'OpenCV',
@@ -816,7 +827,7 @@ export const profile: Profile = {
       emphasis: ['technical', 'research', 'general'],
     },
     {
-      label: 'Instrumentation & Control',
+      label: 'Instrumentation and Control',
       items: [
         'P&ID interpretation',
         'PID control loops',

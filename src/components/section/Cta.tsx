@@ -35,8 +35,13 @@ const WEIGHT: Record<NonNullable<Action['weight']>, string> = {
     'border border-transparent text-content-muted underline decoration-hairline underline-offset-4 hover:text-accent hover:decoration-accent',
 }
 
+/*
+ * `btn-live` carries the hover lift and the click press. It is transform-only, so
+ * it composes with all three weights above rather than competing with their
+ * colours. See globals.css.
+ */
 const BASE =
-  'inline-flex items-center gap-2 rounded-control px-4 py-2.5 text-caption font-medium transition-colors duration-200'
+  'btn-live inline-flex items-center gap-2 rounded-control px-4 py-2.5 text-caption font-medium'
 
 function ExternalMark() {
   return (

@@ -48,13 +48,15 @@ export function ProjectRow({
   index: number
 }) {
   return (
-    <RevealItem as="li" className="border-b border-hairline">
+    /* `row-live` wipes an accent rule along the bottom edge on hover or focus;
+       `row-index` and `row-arrow` are what move inside it. See globals.css. */
+    <RevealItem as="li" className="row-live border-b border-hairline">
       <Link
         href={`/work/${project.slug}/`}
         onClick={() => track({ name: 'project_opened', slug: project.slug, mode })}
         className="group grid gap-x-6 gap-y-2 py-7 sm:grid-cols-[3rem_1fr_auto]"
       >
-        <span className="hidden pt-1 font-mono text-micro text-content-faint sm:block">
+        <span className="row-index hidden pt-1 font-mono text-micro text-content-faint sm:block">
           {String(index + 1).padStart(2, '0')}
         </span>
 
@@ -81,7 +83,7 @@ export function ProjectRow({
 
         <span
           aria-hidden="true"
-          className="hidden self-center text-content-faint transition-[color,transform] duration-200 group-hover:translate-x-1 group-hover:text-accent sm:block"
+          className="row-arrow hidden self-center text-content-faint transition-colors duration-200 group-hover:text-accent sm:block"
         >
           →
         </span>

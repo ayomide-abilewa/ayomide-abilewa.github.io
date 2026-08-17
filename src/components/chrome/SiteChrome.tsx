@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { Header } from './Header'
 import { Footer } from './Footer'
 import { RouteSweep } from '@/components/motion/RouteSweep'
+import { PageEnter } from '@/components/motion/PageEnter'
 
 /**
  * Page frame. Skip link first in the tab order, then persistent nav, then the
@@ -21,7 +22,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       </a>
       <Header />
       <main id="main" className="flex-1">
-        {children}
+        <PageEnter>{children}</PageEnter>
       </main>
       <Footer />
     </div>

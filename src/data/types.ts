@@ -42,6 +42,25 @@ export const CV_FOR_MODE: Record<VisitorMode, CvVariant> = {
 /**
  * A single verified statement, tagged with the CV variants it belongs in.
  * `emphasis` is the tailoring mechanism: same fact, different audiences.
+ *
+ * Two conventions hold across every bullet in `profile.ts`, and both are about
+ * how the finished page reads rather than about any single line.
+ *
+ * Tense follows the work, not the section: present for something still true
+ * ("Rotate across", "Teach circuit"), past for something finished ("Operated",
+ * "Wired"), present participle for a build still under way ("Developing").
+ *
+ * No two bullets that can print in the *same* document open with the same verb.
+ * Four project entries each starting "Built a…" stacked down one column is the
+ * clearest signal a reader gets that a machine assembled the page — a person
+ * writing five entries hears the repetition by the third and reaches for a better
+ * verb, which is usually a more specific one anyway. Note that the constraint is
+ * per-variant, not global: "Applied PID control" and "Applied instrumentation"
+ * coexist happily because their `emphasis` sets are disjoint and no one document
+ * ever shows both. Check overlap, not the whole file.
+ *
+ * Bullets are also authored strongest-first within each entry, because the CV
+ * generator prints only the leading few — see `cvBulletsFor` in `lib/select.ts`.
  */
 export type Bullet = {
   text: string
@@ -166,6 +185,13 @@ export type Project = {
   name: string
   /** One honest line. No superlatives that the source material cannot support. */
   tagline: string
+  /**
+   * When the work happened. Free text, but it prints beside `dates()` output in
+   * the generated CVs, so it follows the same convention: an en dash with no
+   * spaces around it, and a capitalised "Present". A projects column reading
+   * "2026 – present" next to an experience column reading "Mar 2025–Present" is
+   * the sort of thing that makes a document look assembled rather than set.
+   */
   period: string
   status: ProjectStatus
   statusNote?: string

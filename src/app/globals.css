@@ -18,68 +18,126 @@
  * clay against olive in a classroom. That second colour is what stops each path
  * reading as a monochrome theme with a highlighter through it.
  *
+ * The first pass at these was tasteful and dead. Every hue sat at low chroma, the
+ * near-blacks were so nearly neutral that the cyan cast never arrived, and
+ * `surface-raised` was four percent off `surface`, which is to say it was the same
+ * colour with a comment claiming otherwise. Tasteful and dead is the harder failure
+ * to spot, because nothing in it is wrong. This pass pushes the accents out to
+ * where they read as colour, puts a real cast in the darks, and opens the gap
+ * between the surface tiers until a panel looks like a panel.
+ *
  * Contrast: every text token is checked against its own surface at 4.5:1, in
- * every mode, including the small uppercase eyebrow labels. `--content-faint` is
- * the one that is easy to get wrong, because it looks correct next to body copy
- * and fails on its own.
+ * every mode, including the small uppercase eyebrow labels, and — because panels
+ * exist — against `surface-raised` and `surface-sunken` too. The ratios in the
+ * comments are computed, not estimated. `--content-faint` is the one that is easy
+ * to get wrong, because it looks correct next to body copy and fails on its own;
+ * it is also what set the floor for how light `surface-sunken` is allowed to be
+ * in the two paper modes.
+ *
+ * `--accent-alt` is exempt from 4.5:1 and held to the 3:1 non-text floor instead.
+ * It is never type: grep says it draws graticule lines, scene strokes and plot
+ * marks, and nothing else. That exemption is what buys it enough chroma to read
+ * as a second colour rather than a dirty version of the first.
  *
  * Values are space-separated RGB channels so Tailwind's <alpha-value> works.
  */
 @layer base {
   :root {
     /* Opening / neutral house theme: instrument dark, amber trace. */
-    --surface: 7 11 13;
-    --surface-raised: 19 28 32;
-    --surface-sunken: 4 7 8;
-    --content: 245 241 234;
-    --content-muted: 151 169 175;
-    --content-faint: 110 133 141;
-    --accent: 224 154 46;
-    --accent-strong: 245 201 122;
-    --accent-alt: 78 150 166;
-    --hairline: 36 51 58;
+    --surface: 6 13 17;
+    --surface-raised: 17 33 41;
+    --surface-sunken: 3 8 11;
+    --content: 246 243 236;
+    --content-muted: 142 171 181;
+    --content-faint: 108 141 153;
+    --accent: 240 163 38;
+    --accent-strong: 253 209 132;
+    --accent-alt: 74 190 214;
+    --hairline: 30 54 64;
+    --depth-a: 0.09;
+    --depth-b: 0.055;
 
     /* The colour the pre-paint gate holds, and the opening field's background. */
-    --intro-shade: 7 11 13;
+    --intro-shade: 6 13 17;
     color-scheme: dark;
+
+    /*
+     * Depth, and the only depth there is.
+     *
+     * Two very low-alpha radial washes, one in the accent from the top left and a
+     * quieter one in the alt colour from the top right. Flat `background-color`
+     * was the last thing making these palettes feel like swatches instead of
+     * rooms: a real scope face has a glow near the trace, and paper has more light
+     * at one edge than the other.
+     *
+     * It lives in a custom property so `body` and the `[data-register]` sections
+     * can share one definition while each resolving `--accent` locally — the
+     * nested `var()`s are substituted where `var(--surface-depth)` is *used*, not
+     * where it is declared, so /everything gets three different washes from this
+     * one rule. Alphas are per mode: a wash that reads as light on the bench reads
+     * as a coffee stain on paper.
+     *
+     * Cost is one paint of two gradients. Nothing animates, nothing repeats.
+     */
+    --surface-depth: radial-gradient(
+        115% 78% at 12% -8%,
+        rgb(var(--accent) / var(--depth-a)) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        88% 58% at 96% 3%,
+        rgb(var(--accent-alt) / var(--depth-b)) 0%,
+        transparent 55%
+      );
   }
 
   /*
    * ENGINEERING — the bench at night.
    * Near-black with a cyan cast, one live amber trace, cyan for the graticule and
    * reference marks. This is a scope face, and it says "measurement" before a
-   * single word is read.
+   * single word is read. The cyan in the darks is doing real work now: 6 13 17 is
+   * eleven points of blue over red, which is visible as a colour where the old
+   * 7 11 13 was visible as black.
    */
   .mode-engineering {
-    --surface: 7 11 13;
-    --surface-raised: 19 28 32;
-    --surface-sunken: 4 7 8;
-    --content: 245 241 234;
-    --content-muted: 151 169 175; /* 7.9:1 */
-    --content-faint: 110 133 141; /* 4.96:1 */
-    --accent: 224 154 46; /* 8.1:1 */
-    --accent-strong: 245 201 122;
-    --accent-alt: 78 150 166;
-    --hairline: 36 51 58;
+    --surface: 6 13 17;
+    --surface-raised: 17 33 41;
+    --surface-sunken: 3 8 11;
+    --content: 246 243 236; /* 17.7:1 */
+    --content-muted: 142 171 181; /* 8.1:1 */
+    --content-faint: 108 141 153; /* 5.5:1 on surface, 4.6:1 on raised */
+    --accent: 240 163 38; /* 9.3:1 */
+    --accent-strong: 253 209 132;
+    --accent-alt: 74 190 214; /* graphics only */
+    --hairline: 30 54 64;
+    --depth-a: 0.09;
+    --depth-b: 0.055;
     color-scheme: dark;
   }
 
   /*
    * RESEARCH — the printed page.
    * Warm white stock, ink-dark type, teal for figures and links, ochre for
-   * annotation, the colour of a margin note. Nothing glows; a paper does not.
+   * annotation, the colour of a margin note. Nothing glows; a paper does not, so
+   * this is the mode where the depth wash is turned nearly off.
+   *
+   * `surface-sunken` is lighter than it was for one reason: at 234 228 217 the
+   * faint token measured 4.2:1 on it, so every eyebrow label inside a sunken panel
+   * failed. The panel gave up a little of its depth so the labels could pass.
    */
   .mode-research {
-    --surface: 251 249 245;
+    --surface: 250 248 243;
     --surface-raised: 255 255 255;
-    --surface-sunken: 234 228 217;
-    --content: 13 20 23;
-    --content-muted: 53 71 79; /* 10.4:1 */
-    --content-faint: 92 113 120; /* 4.86:1 */
-    --accent: 46 116 136; /* 5.0:1 */
-    --accent-strong: 31 90 107;
-    --accent-alt: 168 118 46;
-    --hairline: 216 207 192;
+    --surface-sunken: 237 231 220;
+    --content: 10 18 22; /* 18.4:1 */
+    --content-muted: 48 68 78; /* 9.6:1 */
+    --content-faint: 84 106 115; /* 5.4:1 on surface, 4.6:1 on sunken */
+    --accent: 22 116 141; /* 5.1:1 */
+    --accent-strong: 12 84 103;
+    --accent-alt: 181 112 20; /* 3.7:1 — graphics only */
+    --hairline: 216 206 189;
+    --depth-a: 0.05;
+    --depth-b: 0.038;
     color-scheme: light;
   }
 
@@ -87,75 +145,96 @@
    * SCHOLARSHIP — a room with people in it.
    * Cream, clay, olive. Warm without being sentimental, and the darker clay is
    * deliberate: at the original weight it failed contrast as a button, which
-   * would have made the warmest path the least readable one.
+   * would have made the warmest path the least readable one. The olive went from
+   * 92 107 60 to 86 112 46, which is the difference between olive and mud.
    */
   .mode-scholarship {
-    --surface: 245 241 234;
-    --surface-raised: 251 249 245;
-    --surface-sunken: 216 207 192;
-    --content: 23 19 16;
-    --content-muted: 74 62 53; /* 9.6:1 */
-    --content-faint: 122 104 87; /* 4.69:1 */
-    --accent: 168 78 40; /* 4.88:1 */
-    --accent-strong: 138 62 30;
-    --accent-alt: 92 107 60;
-    --hairline: 216 207 192;
+    --surface: 244 239 231;
+    --surface-raised: 253 251 247;
+    --surface-sunken: 238 230 216;
+    --content: 26 20 16; /* 16.5:1 */
+    --content-muted: 78 63 51; /* 8.8:1 */
+    --content-faint: 120 100 82; /* 4.9:1 on surface, 4.5:1 on sunken */
+    --accent: 176 74 32; /* 4.8:1 */
+    --accent-strong: 143 56 22;
+    --accent-alt: 86 112 46; /* 4.9:1 — graphics only */
+    --hairline: 214 202 183;
+    --depth-a: 0.055;
+    --depth-b: 0.04;
     color-scheme: light;
   }
 
   /* EVERYTHING — starts on the bench; sections retune as you scroll. */
   .mode-everything {
-    --surface: 7 11 13;
-    --surface-raised: 19 28 32;
-    --surface-sunken: 4 7 8;
-    --content: 245 241 234;
-    --content-muted: 151 169 175;
-    --content-faint: 110 133 141;
-    --accent: 224 154 46;
-    --accent-strong: 245 201 122;
-    --accent-alt: 78 150 166;
-    --hairline: 36 51 58;
+    --surface: 6 13 17;
+    --surface-raised: 17 33 41;
+    --surface-sunken: 3 8 11;
+    --content: 246 243 236;
+    --content-muted: 142 171 181;
+    --content-faint: 108 141 153;
+    --accent: 240 163 38;
+    --accent-strong: 253 209 132;
+    --accent-alt: 74 190 214;
+    --hairline: 30 54 64;
+    --depth-a: 0.09;
+    --depth-b: 0.055;
     color-scheme: dark;
   }
 
   /* Section-scoped retuning, used by /everything to pass through each world. */
   [data-register='research'] {
-    --surface: 251 249 245;
+    --surface: 250 248 243;
     --surface-raised: 255 255 255;
-    --surface-sunken: 234 228 217;
-    --content: 13 20 23;
-    --content-muted: 53 71 79;
-    --content-faint: 92 113 120;
-    --accent: 46 116 136;
-    --accent-strong: 31 90 107;
-    --accent-alt: 168 118 46;
-    --hairline: 216 207 192;
+    --surface-sunken: 237 231 220;
+    --content: 10 18 22;
+    --content-muted: 48 68 78;
+    --content-faint: 84 106 115;
+    --accent: 22 116 141;
+    --accent-strong: 12 84 103;
+    --accent-alt: 181 112 20;
+    --hairline: 216 206 189;
+    --depth-a: 0.05;
+    --depth-b: 0.038;
   }
 
   [data-register='scholarship'] {
-    --surface: 245 241 234;
-    --surface-raised: 251 249 245;
-    --surface-sunken: 216 207 192;
-    --content: 23 19 16;
-    --content-muted: 74 62 53;
-    --content-faint: 122 104 87;
-    --accent: 168 78 40;
-    --accent-strong: 138 62 30;
-    --accent-alt: 92 107 60;
-    --hairline: 216 207 192;
+    --surface: 244 239 231;
+    --surface-raised: 253 251 247;
+    --surface-sunken: 238 230 216;
+    --content: 26 20 16;
+    --content-muted: 78 63 51;
+    --content-faint: 120 100 82;
+    --accent: 176 74 32;
+    --accent-strong: 143 56 22;
+    --accent-alt: 86 112 46;
+    --hairline: 214 202 183;
+    --depth-a: 0.055;
+    --depth-b: 0.04;
   }
 
   [data-register='engineering'] {
-    --surface: 7 11 13;
-    --surface-raised: 19 28 32;
-    --surface-sunken: 4 7 8;
-    --content: 245 241 234;
-    --content-muted: 151 169 175;
-    --content-faint: 110 133 141;
-    --accent: 224 154 46;
-    --accent-strong: 245 201 122;
-    --accent-alt: 78 150 166;
-    --hairline: 36 51 58;
+    --surface: 6 13 17;
+    --surface-raised: 17 33 41;
+    --surface-sunken: 3 8 11;
+    --content: 246 243 236;
+    --content-muted: 142 171 181;
+    --content-faint: 108 141 153;
+    --accent: 240 163 38;
+    --accent-strong: 253 209 132;
+    --accent-alt: 74 190 214;
+    --hairline: 30 54 64;
+    --depth-a: 0.09;
+    --depth-b: 0.055;
+  }
+
+  /*
+   * Each world in /everything carries its own wash, anchored to the section rather
+   * than the viewport, so scrolling from the bench into the paper mode crosses a
+   * visible seam between two lit rooms instead of two flat fills.
+   */
+  [data-register] {
+    background-image: var(--surface-depth);
+    background-repeat: no-repeat;
   }
 
   * {
@@ -179,6 +258,30 @@
     /* Mode transition: the site retunes rather than reloads. */
     transition: background-color 480ms cubic-bezier(0.4, 0, 0.2, 1),
       color 480ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /*
+   * The wash, on a fixed layer of its own.
+   *
+   * The point is that the light stays put in the room while the page moves past it,
+   * which `background-attachment: fixed` on the body also achieves — and then makes
+   * the browser re-sample and repaint the gradient on every scroll frame. It is the
+   * same cost that got the backdrop blur scoped away from phones, and iOS Safari has
+   * historically ignored the declaration outright. A fixed-position layer composites
+   * once and scrolling never touches it again.
+   *
+   * `z-index: -1` paints it above the body's own background colour and below every
+   * piece of content, which is exactly the slot a wash wants. The nested `var()`s in
+   * `--surface-depth` resolve here, so it inherits the active mode's accent.
+   */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: var(--surface-depth);
+    background-repeat: no-repeat;
+    pointer-events: none;
   }
 
   /* Research mode reads as a paper: serif display, not sans. */
@@ -392,15 +495,15 @@ html[data-intro='on'] [data-drop] {
    * is a contradiction in terms — so the tokens are redeclared here and everything
    * inside inherits the bench regardless of which mode is set on <html>.
    */
-  --surface: 7 11 13;
-  --surface-raised: 19 28 32;
-  --content: 245 241 234;
-  --content-muted: 151 169 175;
-  --content-faint: 110 133 141;
-  --accent: 224 154 46;
-  --accent-strong: 245 201 122;
-  --accent-alt: 78 150 166;
-  --hairline: 36 51 58;
+  --surface: 6 13 17;
+  --surface-raised: 17 33 41;
+  --content: 246 243 236;
+  --content-muted: 142 171 181;
+  --content-faint: 108 141 153;
+  --accent: 240 163 38;
+  --accent-strong: 253 209 132;
+  --accent-alt: 74 190 214;
+  --hairline: 30 54 64;
 
   position: fixed;
   inset: 0;
@@ -564,6 +667,266 @@ html[data-intro='on'] [data-drop] {
   }
 }
 
+/* ---------------------------------------------------------------------------
+ * PAGE ENTER — the content arrives, rather than being already there.
+ *
+ * The full-screen route card is not coming back: it ran for 1.45s over finished
+ * content and duplicated the heading underneath it. But deleting it left the site
+ * with nothing between the click and the page, and a static export is fast enough
+ * that "nothing" reads as a hard cut. This is the middle: the new page rises 14px
+ * into place over half a second while the sweep runs along the top edge. It covers
+ * no words, blocks no clicks, and is one composited layer for one animation.
+ *
+ * Keyed on the pathname in PageEnter.tsx, so it re-runs per navigation.
+ * --------------------------------------------------------------------------- */
+.page-enter {
+  animation: page-enter 520ms cubic-bezier(0.16, 0.84, 0.24, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * On a first visit to the landing page the opening sequence owns the entrance and
+ * [data-drop] owns the content. Two entrances at once is one too many.
+ */
+html[data-intro='on'] .page-enter {
+  animation: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * SCROLL-DRIVEN MOTION.
+ *
+ * Everything in this block is driven by `scroll()` and `view()` timelines, which
+ * means the browser advances it off the main thread from scroll position alone.
+ * No listener, no rAF, no IntersectionObserver, no JavaScript at all — and no
+ * cost when nothing is scrolling.
+ *
+ * All of it is inside @supports. Where the timelines are not implemented the
+ * elements simply sit in their finished state: the progress line stays hidden and
+ * every rule is a full-width rule. That is the whole fallback, and it is why this
+ * can be used on ordinary content rules rather than only on decoration.
+ * --------------------------------------------------------------------------- */
+
+/*
+ * Reading position, along the bottom edge of the sticky header.
+ *
+ * Hidden until it can actually be driven, because a progress line frozen at 0%
+ * is worse than no progress line.
+ */
+.read-progress {
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 1.5px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, rgb(var(--accent) / 0.3), rgb(var(--accent)));
+  pointer-events: none;
+}
+
+@keyframes read-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes trace-draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .read-progress {
+    animation-name: read-progress;
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root block);
+  }
+
+  /*
+   * Every rule on the site now draws itself as it comes into view, left to right,
+   * at the speed you are scrolling. It is the same gesture as the opening sweep and
+   * the route sweep, repeated at section scale — which is the point: one idea about
+   * how a line arrives, applied everywhere a line arrives.
+   *
+   * `entry 10%` to `cover 30%` means it starts once the rule is properly on screen
+   * and finishes well before the middle, so you read a completed rule, never a
+   * half-drawn one.
+   *
+   * Two selectors because `.trace-rule` paints its own gradient and `.draw-in` does
+   * not — the latter is for things that already draw themselves and only want the
+   * reveal, chiefly the SVG trace dividers.
+   */
+  .trace-rule,
+  .draw-in {
+    animation-name: trace-draw;
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 30%;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * LIVE ROWS.
+ *
+ * The site is mostly lists of things you can open — six projects, four CVs, six
+ * lessons, the repositories. A colour change on hover is the least a row can do,
+ * and it was all any of them did.
+ *
+ * So a row now answers in three places at once: an accent rule wipes in along its
+ * bottom edge, the arrow travels, and the leading mono index steps out of the way.
+ * All three are transforms and colours on elements that are already there, driven
+ * by :hover and :focus-within so the keyboard gets the same feedback as the mouse.
+ * --------------------------------------------------------------------------- */
+.row-live {
+  position: relative;
+}
+
+.row-live::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 1px;
+  background: rgb(var(--accent));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 440ms cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+
+.row-live:hover::after,
+.row-live:focus-within::after {
+  transform: scaleX(1);
+}
+
+.row-arrow {
+  display: inline-block;
+  transition: transform 320ms cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+
+.row-live:hover .row-arrow,
+.row-live:focus-within .row-arrow {
+  transform: translate3d(7px, 0, 0);
+}
+
+.row-index {
+  transition: color 260ms ease, transform 380ms cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+
+.row-live:hover .row-index,
+.row-live:focus-within .row-index {
+  color: rgb(var(--accent));
+  transform: translate3d(3px, 0, 0);
+}
+
+/*
+ * Buttons and panels answer with a press, not just a colour.
+ *
+ * These two live in `@layer components` on purpose. Unlayered CSS outranks every
+ * Tailwind utility no matter how specific the utility is, so an unlayered
+ * `.panel-live:hover { border-color: … }` would override the `border-accent` on the
+ * CV page's *selected* tab and dim the one border that means "you are here". Inside
+ * the layer, utilities win — which is the rule these classes want: set the default
+ * response, lose to anything a component states explicitly.
+ */
+@layer components {
+  /*
+   * One pixel up on hover and back down on click. Small deliberately — these sit
+   * next to body copy and a card-sized lift on a 40px control reads as a bug — but
+   * a control that moves when you touch it feels connected in a way a colour swap
+   * never does, and every exit on the site goes through this class.
+   *
+   * Transform only. Border and background stay with the weight classes in Cta.tsx,
+   * which is why it composes with all three weights without fighting any of them.
+   */
+  .btn-live {
+    transition: transform 200ms cubic-bezier(0.16, 0.84, 0.24, 1), color 200ms ease,
+      background-color 200ms ease, border-color 200ms ease;
+  }
+
+  .btn-live:hover {
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .btn-live:active {
+    transform: translate3d(0, 1px, 0);
+    transition-duration: 60ms;
+  }
+
+  /*
+   * Panels lift. A 2px rise and a hairline turning to accent is enough to say
+   * "this is a thing, and the thing is clickable" without a shadow or a scale.
+   */
+  .panel-live {
+    transition: transform 360ms cubic-bezier(0.16, 0.84, 0.24, 1), border-color 260ms ease,
+      background-color 260ms ease;
+  }
+
+  .panel-live:hover,
+  .panel-live:focus-within {
+    transform: translate3d(0, -2px, 0);
+    border-color: rgb(var(--accent) / 0.6);
+  }
+}
+
+/*
+ * The mark in the header takes a fresh reading when you hover it.
+ *
+ * The dash array is longer than the path, so at offset 0 — the resting state —
+ * the trace is a continuous line. Hover moves the offset a full dash and back,
+ * which reads as the pen sweeping across again. One property, no layout, and it
+ * is the sort of thing you only notice on the second visit.
+ */
+.probe-trace {
+  stroke-dasharray: 34;
+}
+
+@keyframes probe-redraw {
+  from {
+    stroke-dashoffset: 34;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.group:hover .probe-trace {
+  animation: probe-redraw 720ms cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+
+/* The rule under the nav link the route just landed on. */
+.nav-active {
+  position: absolute;
+  inset: auto 0.625rem -1px 0.625rem;
+  height: 1.5px;
+  background: rgb(var(--accent));
+  transform-origin: 0 50%;
+  animation: nav-active 420ms cubic-bezier(0.16, 0.84, 0.24, 1) both;
+}
+
+@keyframes nav-active {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 @media (max-width: 700px) {
   .acquire-band {
     width: min(94vw, 62rem);
@@ -600,9 +963,9 @@ html[data-intro='on'] [data-drop] {
 }
 
 .lofi {
-  --surface: 7 11 13;
-  --surface-raised: 7 11 13;
-  --surface-sunken: 7 11 13;
+  --surface: 6 13 17;
+  --surface-raised: 6 13 17;
+  --surface-sunken: 6 13 17;
   --content: 216 226 229;
   --content-muted: 151 169 175;
   --content-faint: 122 143 150;
@@ -610,6 +973,27 @@ html[data-intro='on'] [data-drop] {
   --accent-strong: 126 220 168;
   --accent-alt: 126 220 168;
   --hairline: 53 71 79;
+}
+
+/* One flat colour, no lighting. The whole point of the tier is that it is flat. */
+.lofi [data-register] {
+  background-image: none;
+}
+
+.lofi body::before {
+  display: none;
+}
+
+/* No scroll-driven or hover-driven motion either. */
+.lofi .read-progress {
+  display: none;
+}
+
+.lofi .panel-live:hover,
+.lofi .panel-live:focus-within,
+.lofi .btn-live:hover,
+.lofi .btn-live:active {
+  transform: none;
 }
 
 .lofi img,
@@ -641,10 +1025,39 @@ html[data-intro='on'] [data-drop] {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /*
+   * The blanket above cannot resolve a progress-based timeline — a scroll-driven
+   * animation takes its position from the scrollport, not from a duration, so
+   * clamping the duration leaves it wherever the spec and the browser happen to
+   * agree it should be. Both of these are therefore switched off by name and given
+   * their finished state explicitly: no progress line, and every rule full width.
+   */
+  .read-progress {
+    display: none;
+  }
+
+  .trace-rule,
+  .draw-in {
+    animation: none !important;
+    animation-timeline: auto !important;
+    clip-path: none !important;
+  }
+
+  /* A 2px lift on hover is not motion anybody asked to be spared. It stays. */
 }
 
 @media print {
   .no-print {
     display: none !important;
+  }
+
+  /* Two gradients of accent wash is a lot of somebody else's toner. */
+  body::before {
+    display: none !important;
+  }
+
+  [data-register] {
+    background-image: none !important;
   }
 }

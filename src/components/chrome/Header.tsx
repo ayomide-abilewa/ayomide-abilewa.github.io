@@ -31,7 +31,9 @@ function ProbeMark({ className = '' }: { className?: string }) {
       <path d="M7 2.5 L11 2.5 L11 11 L9 14 L7 11 Z" fill="currentColor" opacity="0.75" />
       <rect x="7" y="6" width="4" height="2.2" fill="rgb(var(--accent))" />
       <path d="M9 14 L9 17" stroke="rgb(var(--accent))" strokeWidth="1.2" />
+      {/* Redraws itself on hover — the trace taking a fresh reading. */}
       <path
+        className="probe-trace"
         d="M9 17.5 L15 17.5 L17 14 L19 21 L21 17.5 L33 17.5"
         fill="none"
         stroke="rgb(var(--accent))"
@@ -56,6 +58,9 @@ export function Header() {
       className="header-bar sticky top-0 z-50 border-b border-hairline/70"
       data-lofi-hide="false"
     >
+      {/* Reading position. Scroll-driven in CSS, so it costs no scroll listener. */}
+      <div className="read-progress" aria-hidden="true" />
+
       <div className="shell flex h-14 items-center gap-4">
         <Link
           href="/"
@@ -76,13 +81,13 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 aria-current={active ? 'page' : undefined}
-                className={`rounded-control px-2.5 py-1.5 text-caption transition-colors ${
-                  active
-                    ? 'text-accent'
-                    : 'text-content-muted hover:text-content'
+                className={`relative rounded-control px-2.5 py-1.5 text-caption transition-colors ${
+                  active ? 'text-accent' : 'text-content-muted hover:text-content'
                 }`}
               >
                 {link.label}
+                {/* Wipes in under whichever link the route just landed on. */}
+                {active ? <span className="nav-active" aria-hidden="true" /> : null}
               </Link>
             )
           })}

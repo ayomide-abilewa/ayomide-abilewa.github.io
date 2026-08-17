@@ -76,7 +76,15 @@ export function SettledTrace({
   )
 }
 
-/** Thin divider version — a rule that happens to be a step response. */
+/**
+ * Thin divider version — a rule that happens to be a step response.
+ *
+ * No `motion` here on purpose. It is used several times per page, often below the
+ * fold, and it should draw itself when you reach it rather than while you are
+ * somewhere else. `draw-in` gives it a scroll-driven clip reveal that costs no
+ * JavaScript and no listener; where the timeline is unsupported it is simply a
+ * finished rule. See globals.css.
+ */
 export function TraceDivider({ className = '' }: { className?: string }) {
   const id = useId()
   const width = 640
@@ -84,7 +92,7 @@ export function TraceDivider({ className = '' }: { className?: string }) {
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
-      className={`h-4 w-full ${className}`}
+      className={`draw-in h-4 w-full ${className}`}
       fill="none"
       preserveAspectRatio="none"
       aria-hidden="true"

@@ -73,7 +73,7 @@ export function EngineeringPath() {
 
           <dl className="grid-field-fine rounded-panel border border-hairline bg-surface-sunken/40 p-6">
             {[
-              { k: 'Discipline', v: 'Electronic & Electrical Engineering, OAU' },
+              { k: 'Discipline', v: 'Electronic and Electrical Engineering, OAU' },
               { k: 'Currently', v: 'E&I intern, Chevron Nigeria' },
               { k: 'Works in', v: 'Python · C/C++ · MATLAB · Verilog' },
               { k: 'Builds on', v: 'ESP32 · Arduino · STM32 · Raspberry Pi · FPGA' },

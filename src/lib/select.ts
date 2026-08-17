@@ -106,6 +106,42 @@ export function bulletsFor(
   return source.bullets.filter((b) => b.emphasis.includes(variant)).map((b) => b.text)
 }
 
+/**
+ * How many bullets a single entry may contribute to a CV.
+ *
+ * The website carries every bullet: it has the room, and a reader who chose to be
+ * on that page. A document does not, and the discipline of cutting is most of what
+ * separates a CV somebody set from a CV something assembled — five bullets under
+ * every single role is the shape of a data dump, and a reader working through forty
+ * applications reads the first two of each anyway. Four is the professional
+ * convention for a role worth detailing, and nothing here needs more.
+ *
+ * Bullets in `profile.ts` are authored strongest-first, so taking the head of the
+ * list is a priority cut rather than a truncation. `general` is tightest because it
+ * is the version read without a specific question in mind, and because it is the
+ * only one carrying every section: breadth gets paid for in depth.
+ */
+export const CV_BULLET_LIMIT: Record<CvVariant, number> = {
+  technical: 4,
+  research: 4,
+  scholarship: 4,
+  general: 3,
+}
+
+/**
+ * Bullets for one entry of a CV: tagged for the variant, capped, strongest first.
+ *
+ * Deliberately separate from `bulletsFor`. The site pages call that one and show
+ * everything; only the four documents — and the preview that promises to match
+ * them — come through here.
+ */
+export function cvBulletsFor(
+  source: { bullets: { text: string; emphasis: CvVariant[] }[] },
+  variant: CvVariant,
+): string[] {
+  return bulletsFor(source, variant).slice(0, CV_BULLET_LIMIT[variant])
+}
+
 /** Section identifiers used by the CV templates. */
 export type CvSection =
   | 'summary'
@@ -209,12 +245,18 @@ export const CV_SECTION_TITLES: Record<CvVariant, Partial<Record<CvSection, stri
 /**
  * How many projects each variant carries, and how much of each.
  * Length and detail level are part of tailoring, not an accident.
+ *
+ * The technical CV is the only one that takes all five, because a hiring engineer
+ * reading it is looking for range. The other three take four, which is what fits
+ * once each project is given three bullets rather than one — four projects with
+ * evidence beats five projects with a line each, and the page-count readback in
+ * `scripts/build-cvs.tsx` is what settled the number.
  */
 export const CV_PROJECT_LIMIT: Record<CvVariant, number> = {
   technical: 5,
   research: 4,
   scholarship: 4,
-  general: 5,
+  general: 4,
 }
 
 /** Research CV lists coursework; a technical CV does not need it. */
@@ -223,6 +265,28 @@ export const CV_SHOWS_COURSEWORK: Record<CvVariant, boolean> = {
   research: true,
   scholarship: true,
   general: false,
+}
+
+/**
+ * How many leadership entries each variant carries.
+ *
+ * Five is the whole set, and only the scholarship CV should print all five: for
+ * that reader the community work *is* the case, so the campus ambassador role and
+ * the departmental editorial work earn their lines. Everywhere else they are the
+ * fourth and fifth most interesting thing in the section, and a reader who has
+ * already seen SPAW and the Zero-to-Hero workshop learns nothing new from them. A
+ * CV that lists everything is asking the reader to do the editing.
+ *
+ * The full CV takes two rather than three because it is the only variant carrying
+ * every section at once, and something has to give: it inherits the technical CV's
+ * six skill lines *and* the scholarship CV's entry count, which is exactly 70pt
+ * more than two pages hold. Two leadership entries is what that costs.
+ */
+export const CV_LEADERSHIP_LIMIT: Record<CvVariant, number> = {
+  technical: 2,
+  research: 3,
+  scholarship: 5,
+  general: 2,
 }
 
 export function projectsForVariant(variant: CvVariant): Project[] {
@@ -236,9 +300,8 @@ export function experienceForVariant(variant: CvVariant): Experience[] {
 
 export function leadershipForVariant(variant: CvVariant): LeadershipRole[] {
   const mode = MODE_FOR_VARIANT[variant]
-  const ordered = leadershipForMode(mode)
-  // A technical CV mentions teaching briefly; a scholarship CV leads with it.
-  return variant === 'technical' ? ordered.slice(0, 2) : ordered
+  // Ranked first, then cut — so each variant keeps the entries that matter to it.
+  return leadershipForMode(mode).slice(0, CV_LEADERSHIP_LIMIT[variant])
 }
 
 /**
@@ -267,7 +330,7 @@ export const CV_DESCRIPTIONS: Record<CvVariant, { title: string; bestFor: string
   general: {
     title: 'Full CV',
     bestFor:
-      'A balanced view of all of it. The safe choice if you are not sure which of the other three fits.',
+      'A balanced read across all of it — engineering, research and teaching — rather than depth in one. The safe choice if you are not sure which of the other three fits.',
   },
 }
 
@@ -314,11 +377,13 @@ export function cvShape(variant: CvVariant): CvShape {
   const experience = experienceForVariant(variant)
   const leadership = leadershipForVariant(variant)
 
+  // `cvBulletsFor`, not `bulletsFor` — this number is printed on /cv as a fact
+  // about the downloadable files, so it has to count what those files carry.
   const bullets =
-    experience.reduce((n, item) => n + bulletsFor(item, variant).length, 0) +
-    projects.reduce((n, item) => n + bulletsFor(item, variant).length, 0) +
-    leadership.reduce((n, item) => n + bulletsFor(item, variant).length, 0) +
-    profile.education.reduce((n, item) => n + bulletsFor(item, variant).length, 0)
+    experience.reduce((n, item) => n + cvBulletsFor(item, variant).length, 0) +
+    projects.reduce((n, item) => n + cvBulletsFor(item, variant).length, 0) +
+    leadership.reduce((n, item) => n + cvBulletsFor(item, variant).length, 0) +
+    profile.education.reduce((n, item) => n + cvBulletsFor(item, variant).length, 0)
 
   return {
     sections: CV_SECTION_ORDER[variant],
