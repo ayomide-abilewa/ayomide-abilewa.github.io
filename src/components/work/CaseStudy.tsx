@@ -118,7 +118,7 @@ export function CaseStudy({ project }: { project: Project }) {
         </Reveal>
       </header>
 
-      <Section id="problem" eyebrow="The problem" heading="What was actually wrong">
+      <Section id="problem" eyebrow="The problem" heading="What was wrong">
         <div className="grid gap-x-14 gap-y-9 lg:grid-cols-2">
           <Field label="Problem">
             <p className="text-body text-content-muted text-pretty">{project.problem}</p>
@@ -147,7 +147,7 @@ export function CaseStudy({ project }: { project: Project }) {
           id="architecture"
           eyebrow="Architecture"
           heading="Hardware and software, block by block"
-          lede="Stored as nodes and edges rather than as a picture, so the labels stay searchable and the diagram cannot drift out of step with the project it describes."
+          lede="Read left to right: what comes in, what it passes through, what comes out."
         >
           <ArchitectureDiagram architecture={project.architecture} />
         </Section>
@@ -212,7 +212,7 @@ export function CaseStudy({ project }: { project: Project }) {
         id="next"
         eyebrow="Keep going"
         heading="Next in this order"
-        lede="Ordered for the lens you are reading through — switch it in the header and this changes too."
+        lede="Whichever of the six is closest to what you just read."
       >
         <nav aria-label="Other projects" className="border-t border-hairline">
           {previous && <NeighbourLink project={previous} direction="previous" mode={mode} />}

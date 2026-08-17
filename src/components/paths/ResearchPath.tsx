@@ -87,7 +87,7 @@ export function ResearchPath() {
           number="02"
           eyebrow="Current investigation"
           heading="Two-stage cascaded detection for pipe anomalies"
-          lede="Method first, then what has come out of it so far. This one is still in progress and I have written it that way — there is no repository yet and no final figure I am willing to quote."
+          lede="Method first, then what has come out of it so far. This one is unfinished and written that way: no repository yet, and no final figure I am willing to quote."
         >
           <LeadProject project={lead} mode={MODE} lens="method" limit={5} />
         </Section>
@@ -98,7 +98,7 @@ export function ResearchPath() {
         number="03"
         eyebrow="Related work"
         heading="Instrumentation, acquisition and control"
-        lede="Ordered by proximity to the questions above rather than by recency."
+        lede="Ordered by how close each one sits to the questions above."
       >
         <ProjectList projects={projects} mode={MODE} />
       </Section>
@@ -127,7 +127,7 @@ export function ResearchPath() {
         number="06"
         eyebrow="Methods and tooling"
         heading="What the work is done with"
-        lede="Stated at the level I actually hold it. Where I am at fundamentals, it says fundamentals — overstating this is the fastest way to waste an interview."
+        lede="Stated at the level I hold it. Overstating this is the fastest way to waste an interview."
       >
         <SkillGrid groups={skillsForVariant(VARIANT)} />
         <div className="mt-14">

@@ -54,7 +54,7 @@ export function EverythingPath() {
         eyebrow="All of it, in one pass"
         heading="One person, read three different ways — engineering, research and the teaching that came out of both."
         lede="Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. Embedded systems, computer vision and instrumentation, currently interning on Chevron Nigeria's electrical and instrumentation team."
-        detail="This page passes through all three worlds in sequence. If you would rather read only one of them, the switcher in the header reorders everything around that audience instead."
+        detail="Six builds, three years, five questions I keep coming back to, and a curriculum that came out of all of it."
         actions={[
           { label: 'Start the pass', href: '#build', weight: 'primary' },
           {
@@ -74,7 +74,7 @@ export function EverythingPath() {
         register="engineering"
         eyebrow="One — what I build"
         heading="Systems that measure the physical world"
-        lede="Ordered chronologically here rather than by audience, so you can see the line from a 2023 fire alarm to a 2026 cascaded detector."
+        lede="In order, from a 2023 fire alarm that rang a buzzer to a 2026 detector that gives two models different views of the same frame."
       >
         <ProjectList projects={projectsForMode(MODE)} mode={MODE} />
         <div className="mt-16">
@@ -93,7 +93,7 @@ export function EverythingPath() {
         register="research"
         eyebrow="Two — what I am curious about"
         heading="The questions underneath the projects"
-        lede="Five interests, each one wired to work that already exists rather than asserted on its own."
+        lede="Five of them. Select one and it shows you the builds it came out of."
       >
         <InterestGraph interests={profile.researchInterests} />
         <div className="mt-16">
@@ -108,7 +108,7 @@ export function EverythingPath() {
         register="scholarship"
         eyebrow="Three — how I got here"
         heading="Five years, in the order they happened"
-        lede="The teaching starts in 2023 and does not stop, which is the thread that connects the rest."
+        lede="From a first-year student to a plant rotation, with a classroom running the whole way through."
       >
         <div className="grid gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
           <Timeline entries={profile.timeline} />
@@ -145,7 +145,7 @@ export function EverythingPath() {
         id="next"
         eyebrow="Next"
         heading="Pick a direction"
-        lede="Or switch the lens in the header and this whole site reorganises around one audience."
+        lede="Six case studies, four CV versions, one email address."
       >
         <CtaRow
           label="Next steps"

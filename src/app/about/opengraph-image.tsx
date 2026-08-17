@@ -12,6 +12,6 @@ export default function Image() {
     eyebrow: 'About',
     title: 'A fire alarm, and everything after it',
     subtitle:
-      'Six builds, in order, and what each one actually taught. The first one taught me that an alarm nobody hears is not finished.',
+      'Six builds, in order, and what each one taught. The first one taught me that an alarm nobody hears is not finished.',
   })
 }

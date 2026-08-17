@@ -62,22 +62,22 @@ const INTRO: Record<VisitorMode, { heading: string; lede: string }> = {
   engineering: {
     heading:
       'Every project I have built starts with the same question: what is going to go wrong with this in the field?',
-    lede: 'Six builds between 2023 and now. All of them measure something physical, and all of them were designed against a specific failure mode rather than a benchmark. This page is the sequence behind them and the reasoning that carried over from one to the next.',
+    lede: 'Six builds between 2023 and now, every one of them measuring something physical. This is the order they happened in, and what each one handed to the next.',
   },
   research: {
     heading:
       'My interest is narrow and it has not really changed: what happens to a measurement once conditions stop cooperating.',
-    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. This page covers the academic footing, the lab and field work behind that question, and how I ended up at detection under degraded conditions rather than somewhere else.',
+    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. The question got specific with the pipe work: a wet surface reflects nothing like a dry one, and colour alone cannot recover what is lost.',
   },
   scholarship: {
     heading:
       'I started teaching electronics in 2023, the same year I built my first working system. Neither one has stopped since.',
-    lede: 'This page is the sequence in the order it happened: university from 2021, teaching and a first build in 2023, a robotics lab in 2024, an oil and gas rotation in 2025, and a curriculum for secondary school students running underneath all of it.',
+    lede: 'University from 2021. Teaching and a first build in 2023. A robotics lab in 2024. An oil and gas rotation in 2025. A curriculum for secondary school students running underneath all of it.',
   },
   everything: {
     heading:
       'One person, five years, and a habit of turning whatever I have just learned into something someone else can use.',
-    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. Embedded systems, instrumentation and computer vision, currently interning on Chevron Nigeria’s electrical and instrumentation team — and teaching the same material to students who have never seen a circuit before.',
+    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. Embedded systems, instrumentation and computer vision, currently interning on Chevron Nigeria’s electrical and instrumentation team. Teaching the same material to students who have never seen a circuit before.',
   },
 }
 
@@ -88,11 +88,11 @@ const INTRO: Record<VisitorMode, { heading: string; lede: string }> = {
  */
 const THREAD_CLOSE: Record<VisitorMode, string> = {
   engineering:
-    'That is the whole method, and it is why the case studies here are organised around decisions instead of screenshots: each choice sits next to the failure it exists to survive. The most complete example is aniwe, where a blocked venue network, a hall too loud for voice detection and a five-minute setup window each produced a specific piece of the architecture.',
+    'The clearest example is aniwe. A blocked venue network, a hall too loud for voice detection and a five-minute setup window each produced a specific piece of the architecture. Open its decisions section and every row names the failure it was built against.',
   research:
-    'The research question falls out of that history rather than being picked because it sounds current: detection precision holds under one imaging condition and falls apart under another, and the interesting work is in that gap. The pipe anomaly detector is my current attempt at it — two models given genuinely different views of the same frame, then reconciled rather than ranked.',
+    'The question came out of the builds, one at a time. Detection precision holds under one imaging condition and collapses under another, and the interesting work is in that gap. The pipe anomaly detector is my current attempt at it: two models given genuinely different views of the same frame, then reconciled.',
   scholarship:
-    'If there is one pattern I would ask a committee to weigh, it is this one: access turns into curriculum. A robotics lab became an orientation presentation on the Quanser Aero 2. A term of circuit work became Circuit Zero to Hero, for students with no background at all. Six sessions of embedded systems and entrepreneurship became SPAW, now in its third cohort, and I rewrite the lesson plans each time from whatever went wrong in the last one.',
+    'One pattern is worth a committee’s attention: access turns into curriculum. A robotics lab became an orientation presentation on the Quanser Aero 2. A term of circuit work became Circuit Zero to Hero, for students with no background at all. Six sessions of embedded systems and entrepreneurship became SPAW, now in its third cohort, and I rewrite the lesson plans each time from whatever went wrong in the last one.',
   everything:
     'The two halves feed each other. Designing a system against the specific ways it can fail turns out to be the clearest way to explain it to someone who is learning, and having to teach something is what exposes the parts I only thought I understood.',
 }
@@ -159,16 +159,16 @@ export function AboutStory() {
         key="thread"
         id="thread"
         eyebrow="The thread"
-        heading="What actually connects the work"
-        lede="Written once, and the same on every reading of this site — only the last paragraph changes with the lens."
+        heading="It started with an alarm nobody could hear"
+        lede="Six builds, three years, and one lesson that keeps arriving in a new disguise: a measurement is not finished until it reaches somebody who can act on it."
       >
         <div className="max-w-measure space-y-5 text-body-lg text-content-muted text-pretty">
           <p>
             The first thing I built, in 2023, was a fire alarm that detected flame and smoke and rang
             a buzzer. The lesson it taught me had nothing to do with sensors: a local alarm only helps
-            somebody who is already in earshot, so the build was not actually finished until a GSM
-            module could get the alert out of the building. Detection and notification turned out to
-            be two different problems wearing one name.
+            somebody who is already in earshot, so the build was not finished until a GSM module could
+            get the alert out of the building. Detection and notification turned out to be two
+            different problems wearing one name.
           </p>
           <p>
             Everything since has had that shape. A fan that matches its speed to the temperature
@@ -199,7 +199,7 @@ export function AboutStory() {
         id="journey"
         eyebrow="Journey"
         heading="Five years, in the order they happened"
-        lede="No compression and no rearranging — the same twelve entries in every mode, because the sequence is the point."
+        lede="The gap between learning something and teaching it is usually about a term."
       >
         <div className="grid gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
           <Timeline entries={profile.timeline} />
@@ -216,8 +216,8 @@ export function AboutStory() {
         key="lessons"
         id="lessons"
         eyebrow="How I work"
-        heading="What each build actually taught me"
-        lede="Generated from the case studies rather than written out here as a list of principles — every line below belongs to a specific project, and links to it."
+        heading="Six builds, six things I did not know before"
+        lede="One line per project. Each links to the build that taught it."
       >
         <ol className="border-t border-hairline">
           {lessons.map(({ project, lesson }) => (
@@ -249,8 +249,8 @@ export function AboutStory() {
         key="experience"
         id="experience"
         eyebrow="Experience"
-        heading="Where the work has happened"
-        lede="Three places: an oil and gas facilities team, a robotics research lab, and a tutorial room. The bullets you see here are the same ones this audience's CV carries."
+        heading="A facilities team, a robotics lab, and a tutorial room"
+        lede="The Chevron rotation is where a control loop stopped being coursework and started having 3–15 PSI behind it."
       >
         <ExperienceList items={experienceForMode(mode)} variant={variant} />
       </Section>
@@ -261,8 +261,8 @@ export function AboutStory() {
         key="teaching"
         id="teaching"
         eyebrow="Teaching and leadership"
-        heading="What I do with what I learn"
-        lede="Curriculum design, coordinating tutors, workshops for people starting from nothing — listed by what the role actually involved rather than by its title."
+        heading="Whatever I get access to becomes a lesson plan"
+        lede="Circuit Zero to Hero starts with students who have never held a multimeter. Read the bullets, not the titles."
       >
         <LeadershipList items={leadershipForMode(mode)} variant={variant} />
       </Section>
@@ -341,8 +341,8 @@ export function AboutStory() {
       <Section
         id="next"
         eyebrow="Next"
-        heading="Where to go from here"
-        lede="The case studies carry the detail behind every claim above. The CV carries the compressed version, in four flavours."
+        heading="The detail is in the case studies"
+        lede="Every claim above has a build behind it. The CV is the short version, in whichever shape suits you."
       >
         <CtaRow
           label="Next steps"

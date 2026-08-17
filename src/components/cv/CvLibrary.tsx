@@ -258,7 +258,7 @@ export function CvLibrary() {
         id="versions"
         eyebrow="Pick a version"
         heading="Which one you want depends on who you are"
-        lede="Choosing here updates the preview below and both download buttons. Nothing is hidden behind the choice — all four stay available."
+        lede="Choosing here updates the preview and both download buttons."
       >
         <VariantTabs active={active} onSelect={choose} recommended={recommended} />
 
@@ -308,9 +308,9 @@ export function CvLibrary() {
 
       <Section
         id="compare"
-        eyebrow="What actually differs"
+        eyebrow="What differs"
         heading="The four versions, side by side"
-        lede="Counted from the same selection rules that generate the files, so these numbers cannot drift away from what you download. The first section of each is highlighted — that is the tailoring you notice first."
+        lede="Every number here is counted from the rules that generate the files. The first section of each is highlighted; that is the tailoring a reader notices first."
       >
         <ComparisonTable active={active} />
 
@@ -373,7 +373,7 @@ export function CvLibrary() {
         id="next"
         eyebrow="Next"
         heading="A CV is a summary. The detail is on this site."
-        lede="Every claim in every version appears somewhere here with the reasoning behind it — which is the part a document cannot carry."
+        lede="Every claim in all four appears somewhere on this site with the reasoning behind it. That is the part a two-page document cannot carry."
       >
         <CtaRow
           label="Next steps"

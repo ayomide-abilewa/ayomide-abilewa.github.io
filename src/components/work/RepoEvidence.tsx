@@ -55,10 +55,10 @@ export function RepoEvidence() {
 
       {withoutCode.length > 0 && (
         <p className="mt-6 max-w-measure text-caption text-content-muted text-pretty">
-          The remaining {withoutCode.length} projects are hardware and coursework builds without
-          public repositories — {withoutCode.map((p) => p.name).join(', ')}. They are documented
-          here from their real specifications, wiring and results rather than linked to code that
-          does not exist.
+          The remaining {withoutCode.length} projects are hardware and coursework builds with no
+          public repository: {withoutCode.map((p) => p.name).join(', ')}. Each is documented here
+          from its specifications, wiring and results, and each page says on it that there is no code
+          to link.
         </p>
       )}
 

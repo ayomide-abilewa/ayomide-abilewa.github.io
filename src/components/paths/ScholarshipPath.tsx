@@ -78,7 +78,7 @@ export function ScholarshipPath() {
         id="journey"
         eyebrow="Journey"
         heading="Five years, in the order they happened"
-        lede="No compression and no rearranging. The teaching starts in 2023 and has not stopped since, which is the part I would want you to look at."
+        lede="The teaching starts in 2023 and has not stopped since. That is the line I would look at first."
       >
         <Timeline entries={profile.timeline} />
       </Section>
@@ -87,7 +87,7 @@ export function ScholarshipPath() {
         id="teaching"
         eyebrow="Teaching and leadership"
         heading="What I do with what I learn"
-        lede="Curriculum design, coordinating tutors, running workshops for people who have never held a multimeter. Listed by what the role actually involved, because the titles on their own tell you very little."
+        lede="Curriculum design, coordinating tutors, and workshops for people who have never held a multimeter. The bullets say more than the titles do."
       >
         <LeadershipList items={leadership} variant={VARIANT} />
       </Section>
@@ -134,7 +134,7 @@ export function ScholarshipPath() {
         id="direction"
         eyebrow="Direction"
         heading="What is already in motion"
-        lede="Commitments with dates on them rather than ambitions. Ambitions are easy to write and I would not fund one either."
+        lede="Commitments with dates on them. Ambitions are easy to write, and I would not fund one either."
       >
         <TickList
           className="max-w-measure"

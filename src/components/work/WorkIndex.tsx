@@ -27,7 +27,7 @@ import { Reveal } from '@/components/motion/Reveal'
 
 const REST_NOTE: Record<string, string> = {
   research:
-    'Built as engineering rather than as investigation — no method or evaluation to report, so the research path does not lead with them.',
+    'Engineering builds with no method or evaluation to report, so they sit below the ones that have.',
   scholarship:
     'Solo engineering builds with no teaching or community dimension, so they sit below the rest here.',
 }
@@ -52,7 +52,7 @@ export function WorkIndex() {
           </p>
 
           <h1 className="mt-5 max-w-[38ch] text-h1 font-medium tracking-tight text-balance">
-            Everything built so far, in the order that suits how you are reading.
+            Six systems, and the thing that nearly broke each one.
           </h1>
 
           <div className="mt-2 h-6 w-full max-w-[22rem]">
@@ -68,8 +68,8 @@ export function WorkIndex() {
           <p className="mt-4 max-w-measure text-body text-content-muted text-pretty">
             Each one opens as a case study: the problem, the approach, the architecture, the
             decisions and what came out of it. {withCode} of the {profile.projects.length} have
-            public repositories — the rest are hardware and coursework builds documented from their
-            real specifications rather than linked to code that does not exist.
+            public repositories. The rest are hardware and coursework builds, documented from their
+            real specifications; where there is no code to link, the page says so.
           </p>
 
           <CtaRow
@@ -94,7 +94,7 @@ export function WorkIndex() {
         id="index"
         eyebrow="Index"
         heading={unset ? 'All six projects' : `Ordered for ${MODE_LABELS[mode]}`}
-        lede="Switch the lens in the header and this order changes with it. Nothing is removed — the ranking moves."
+        lede="The one at the top is the one I would show you first."
       >
         <ProjectList projects={ranked} mode={mode} />
 
@@ -114,7 +114,7 @@ export function WorkIndex() {
         id="next"
         eyebrow="Next"
         heading="Where to go from here"
-        lede="The case studies carry the detail. The CV carries the summary. Either is a fine place to continue."
+        lede="The case studies have the detail. The CV has the summary."
       >
         <CtaRow
           label="Next steps"

@@ -96,7 +96,7 @@ export function EngineeringPath() {
           id="lead"
           eyebrow="How I work"
           heading="Every feature in this repository exists because of a specific way the evening could have gone wrong."
-          lede="This is the clearest example of the habit: find the failure first, then build the thing that survives it. The order matters — features designed the other way round tend to break in exactly the situation you built them for."
+          lede="Find the failure first, then build the thing that survives it. The venue ISP blocked files.pythonhosted.org, so every sound effect is synthesised in the browser and the last text-to-speech tier is the browser too. Nothing this booth needs arrives over the network."
         >
           <LeadProject project={lead} mode={MODE} lens="decisions" limit={4} />
         </Section>
@@ -114,8 +114,8 @@ export function EngineeringPath() {
       <Section
         id="stack"
         eyebrow="Stack"
-        heading="What I actually reach for"
-        lede="Everything here is on this list because I have used it, not to fill out a grid. Where I am still at fundamentals level, it says fundamentals."
+        heading="Nothing on this list is aspirational"
+        lede="Everything here is something I have used on something that ran. Where I am still at fundamentals, the list says fundamentals."
       >
         <SkillGrid groups={skillsForVariant(VARIANT)} />
       </Section>
@@ -133,7 +133,7 @@ export function EngineeringPath() {
         id="source"
         eyebrow="Evidence"
         heading="Read the source"
-        lede="Not a contribution graph. Just the projects on this site whose code you can open and check for yourself."
+        lede="The projects here whose code you can open and check line by line. The hardware builds have no repository, and each one says so on its own page."
       >
         <RepoEvidence />
       </Section>
@@ -153,8 +153,8 @@ export function EngineeringPath() {
       <Section
         id="next"
         eyebrow="Next"
-        heading="Where to go from here"
-        lede="Whether you are hiring, building something similar, or just want the detail behind any of the above."
+        heading="If you are hiring, start with the CV"
+        lede="If you are building something similar, start with the case studies. Either way, email reaches me faster than anything else here."
       >
         <CtaRow
           label="Engineering next steps"
