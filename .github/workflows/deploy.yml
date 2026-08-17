@@ -24,7 +24,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Analytics is opt-in and inert until this repository variable exists.
+      # Set Settings → Variables → Actions → NEXT_PUBLIC_PLAUSIBLE_DOMAIN to the
+      # site domain to switch it on; with the variable unset the value is empty,
+      # no third-party script is emitted, and the footer keeps saying "no trackers".
       - run: npm run build
+        env:
+          NEXT_PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.NEXT_PUBLIC_PLAUSIBLE_DOMAIN }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

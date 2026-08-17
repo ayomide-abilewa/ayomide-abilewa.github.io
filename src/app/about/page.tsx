@@ -20,23 +20,17 @@ export const metadata: Metadata = {
   title: 'About — the thread through the work',
   description: DESCRIPTION,
   alternates: { canonical: '/about/' },
+  /* No `images` key — ./opengraph-image.tsx fills og:image and twitter:image.
+     See the note in app/layout.tsx: a hand-written /og/*.png path here overrode
+     the generated card with a file that has never existed. */
   openGraph: {
     title: 'About Ayomide Abilewa',
     description: DESCRIPTION,
     url: '/about/',
-    images: [
-      {
-        url: '/og/about.png',
-        width: 1200,
-        height: 630,
-        alt: 'About Ayomide Abilewa — embedded systems, instrumentation and teaching',
-      },
-    ],
   },
   twitter: {
     title: 'About Ayomide Abilewa',
     description: DESCRIPTION,
-    images: ['/og/about.png'],
   },
 }
 

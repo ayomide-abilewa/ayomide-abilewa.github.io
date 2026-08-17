@@ -30,24 +30,20 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
     description: project.tagline,
     keywords: [...project.technologies, ...project.domains],
     alternates: { canonical: url },
+    /* No `images` key — ./opengraph-image.tsx renders a per-project card and
+       fills og:image and twitter:image from it. See the note in app/layout.tsx:
+       the hand-written /og/work-<slug>.png paths that used to be here overrode
+       those generated cards with files that have never existed, so every one of
+       the seven case studies shared as a broken preview. */
     openGraph: {
       type: 'article',
       title: `${project.name} — Ayomide Abilewa`,
       description: project.tagline,
       url,
-      images: [
-        {
-          url: `/og/work-${project.slug}.png`,
-          width: 1200,
-          height: 630,
-          alt: `${project.name} — case study`,
-        },
-      ],
     },
     twitter: {
       title: `${project.name} — Ayomide Abilewa`,
       description: project.tagline,
-      images: [`/og/work-${project.slug}.png`],
     },
   }
 }

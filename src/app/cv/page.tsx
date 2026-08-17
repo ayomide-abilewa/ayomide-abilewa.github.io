@@ -16,23 +16,17 @@ export const metadata: Metadata = {
   title: 'CV — four versions, one source',
   description: DESCRIPTION,
   alternates: { canonical: '/cv/' },
+  /* No `images` key — ./opengraph-image.tsx fills og:image and twitter:image.
+     See the note in app/layout.tsx: a hand-written /og/*.png path here overrode
+     the generated card with a file that has never existed. */
   openGraph: {
     title: 'Ayomide Abilewa — CV',
     description: DESCRIPTION,
     url: '/cv/',
-    images: [
-      {
-        url: '/og/cv.png',
-        width: 1200,
-        height: 630,
-        alt: 'Ayomide Abilewa — four tailored CV versions in PDF and Word',
-      },
-    ],
   },
   twitter: {
     title: 'Ayomide Abilewa — CV',
     description: DESCRIPTION,
-    images: ['/og/cv.png'],
   },
 }
 

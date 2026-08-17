@@ -61,6 +61,14 @@ export const metadata: Metadata = {
     'Chevron Nigeria',
   ],
   alternates: { canonical: '/' },
+  /**
+   * No `images` key on either block, deliberately.
+   *
+   * Every route ships an `opengraph-image.tsx`, and Next's file convention
+   * populates og:image AND twitter:image from it. Declaring images here as well
+   * used to win the twitter tag and point it at /og/default.png, which has never
+   * existed — so every X share rendered a broken card while og:image was fine.
+   */
   openGraph: {
     type: 'profile',
     siteName: 'Ayomide Abilewa',
@@ -69,20 +77,11 @@ export const metadata: Metadata = {
     url: SITE_URL,
     firstName: 'Ayomide',
     lastName: 'Abilewa',
-    images: [
-      {
-        url: '/og/default.png',
-        width: 1200,
-        height: 630,
-        alt: 'Ayomide Abilewa — embedded systems and instrumentation',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ayomide Abilewa — Embedded Systems & Instrumentation',
     description: DESCRIPTION,
-    images: ['/og/default.png'],
   },
   robots: {
     index: true,
@@ -146,6 +145,28 @@ function personJsonLd() {
 }
 
 /**
+ * Analytics, only if asked for.
+ *
+ * `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` is read at build time — Next inlines the value
+ * and dead-code-eliminates this whole block when it is unset, which is the only
+ * way to gate a third-party script in a static export. Unset is the default and
+ * what ships today: no request to any third party appears in the HTML, and
+ * `track()` degrades to nothing. See lib/analytics.ts.
+ *
+ * To turn it on: create the site in Plausible, then build with
+ *   NEXT_PUBLIC_PLAUSIBLE_DOMAIN=ayomide-abilewa.github.io npm run build
+ * or set the same variable in the GitHub Actions workflow env.
+ *
+ * The stub matters. Plausible's script is `defer`red, so it does not exist for
+ * the first second or so of the page — exactly when someone picks a path. The
+ * stub gives `window.plausible` a queue immediately; the real script drains it on
+ * arrival, so early events are counted rather than dropped.
+ */
+const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN
+const PLAUSIBLE_STUB =
+  'window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}'
+
+/**
  * Pre-paint decisions, inlined and synchronous.
  *
  * Two things have to be known before the browser paints anything:
@@ -155,9 +176,10 @@ function personJsonLd() {
  *      paper theme takes over. Route wins over the stored session choice, since
  *      the route is an explicit request.
  *   2. Whether the opening sequence will run — otherwise the page paints once,
- *      revealed, and is then covered by the curtain, which looks like a bug.
- *      Deciding here also means reduced-motion and returning visitors never see
- *      a black shade flash on their way to content they were always going to get.
+ *      revealed, and is then covered by the opening field, which looks like a bug.
+ *      Deciding here also means reduced-motion visitors, and anyone who has
+ *      already watched it this session, never see a black shade flash on their way
+ *      to content they were always going to get.
  *
  * Kept to a few hundred bytes, wrapped in try/catch (private browsing throws on
  * sessionStorage), and a no-op when scripting is off — nothing is hidden by
@@ -171,6 +193,7 @@ var byPath={'/engineering':'engineering','/research':'research','/scholarship':'
 var m=byPath[p]||(s&&s.getItem('aa.mode'))||null;
 if(m&&/^(engineering|research|scholarship|everything)$/.test(m)){d.classList.add('mode-'+m);d.setAttribute('data-mode',m);}
 if(p!=='/')return;
+if(s&&s.getItem('aa.intro')==='seen')return;
 if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 d.setAttribute('data-intro','on');
 }catch(e){}})();`
@@ -184,9 +207,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: PRE_PAINT }} />
+        {PLAUSIBLE_DOMAIN && (
+          <>
+            <script
+              defer
+              data-domain={PLAUSIBLE_DOMAIN}
+              src="https://plausible.io/js/script.js"
+            />
+            <script dangerouslySetInnerHTML={{ __html: PLAUSIBLE_STUB }} />
+          </>
+        )}
       </head>
       <body className="min-h-dvh bg-surface font-sans text-body text-content antialiased">
-        {/* Holds the dark until <Opening> mounts its own curtain over it. */}
+        {/* Holds the dark until <Opening> mounts its own field over it. */}
         <div className="intro-shade" aria-hidden="true" />
         <script
           type="application/ld+json"

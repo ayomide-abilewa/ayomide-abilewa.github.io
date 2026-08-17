@@ -5,6 +5,16 @@ import { profile } from '@/data/profile'
 import { useMode } from '@/lib/mode'
 import { track } from '@/lib/analytics'
 
+/**
+ * The privacy line has to stay true in both builds. With no analytics domain set
+ * nothing third-party ships at all; with one set, Plausible is loaded — cookieless
+ * and with no personal data or fingerprint, but it would make "no trackers" a lie.
+ * Inlined at build time, so only the accurate branch reaches the bundle.
+ */
+const PRIVACY_LINE = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN
+  ? 'No cookies. No personal data.'
+  : 'No cookies. No trackers.'
+
 export function Footer() {
   const { mode, lofi, toggleLofi } = useMode()
   const { identity } = profile
@@ -89,7 +99,7 @@ export function Footer() {
             © {identity.name}. Built with Next.js, deployed on GitHub Pages.
           </p>
           <p className="font-mono text-micro tracking-[0.1em] text-content-faint">
-            No cookies. No trackers.
+            {PRIVACY_LINE}
           </p>
         </div>
       </div>
