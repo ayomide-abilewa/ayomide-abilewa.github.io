@@ -1,5 +1,3 @@
-'use client'
-
 import type { CSSProperties } from 'react'
 import { profile } from '@/data/profile'
 import { SettledTrace } from '@/components/brand/SettledTrace'
@@ -7,12 +5,20 @@ import { SettledTrace } from '@/components/brand/SettledTrace'
 /**
  * Landing hero.
  *
- * This is the payoff of the opening: the curtain draws back and this content
- * drops in behind it. The drop is CSS-only, driven by the `data-intro` attribute
- * flip in <Opening> — see globals.css. Staggering happens through
+ * A server component: there is no state and no handler left in here, so none of
+ * this text costs the visitor any JavaScript. Only the underline is a client
+ * component, and only because it draws itself.
+ *
+ * This is the payoff of the opening: the acquisition field lifts and this content
+ * drops in underneath it. The drop is CSS-only, driven by the `data-intro`
+ * attribute flip in <Opening> — see globals.css. Staggering happens through
  * `--drop-delay`, so a visitor who never sees the sequence (reduced motion,
  * second visit, low-fidelity tier) gets exactly this markup with no transform
  * and no wait.
+ *
+ * The underline below the name is the same curve the opening settles into, drawn
+ * from the same function. That is the entire handoff: no shared element, no
+ * layout animation, just the same shape arriving where it belongs.
  *
  * Copy rule: every claim below is traceable to the CV or a repository. No
  * adjectives standing in for evidence.
@@ -23,12 +29,6 @@ const FACTS = [
   'Electrical & Instrumentation intern · Chevron Nigeria',
   'Lagos, Nigeria',
 ]
-
-function scrollToChooser() {
-  const target = document.getElementById('choose')
-  if (!target) return
-  target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
 
 export function LandingHero() {
   return (
@@ -47,13 +47,19 @@ export function LandingHero() {
         </h1>
 
         {/* The settled trace, doubling as the underline. Same curve as the
-            opening sequence resolves into, and as the favicon. */}
+            opening sequence resolves into, and as the favicon.
+
+            `afterIntro` holds the draw until the opening hands the page over.
+            The row itself is on screen at 300ms via --drop-delay, but on a first
+            visit that is still behind the acquisition field; a draw starting at
+            340ms would be over before anyone could see it. The trace resolves
+            the offset itself, so a repeat visitor still gets it at 340ms. */}
         <div
           className="mt-1 h-9 w-full max-w-[34rem] sm:h-11"
           data-drop
           style={{ '--drop-delay': '300ms' } as CSSProperties}
         >
-          <SettledTrace className="h-full w-full" delay={0.34} strokeWidth={2} />
+          <SettledTrace className="h-full w-full" delay={0.34} strokeWidth={2} afterIntro />
         </div>
 
         <p
@@ -89,10 +95,15 @@ export function LandingHero() {
       </div>
 
       {/* Scroll cue. A sampling dot travelling down a measurement line — the
-          same visual language, doing an actual navigational job. */}
-      <button
-        type="button"
-        onClick={scrollToChooser}
+          same visual language, doing an actual navigational job.
+
+          An anchor rather than a button with scrollIntoView: the smooth scroll is
+          already CSS on <html>, which means it is switched off automatically under
+          prefers-reduced-motion. The JS version overrode that and animated the
+          scroll anyway — one of those bugs that only ever bites the people the
+          setting exists for. It also now works with no JavaScript at all. */}
+      <a
+        href="#choose"
         className="group mt-14 flex items-center gap-3 self-start text-left"
         data-drop
         style={{ '--drop-delay': '700ms' } as CSSProperties}
@@ -106,7 +117,7 @@ export function LandingHero() {
         <span className="font-mono text-micro uppercase tracking-[0.14em] text-content-faint transition-colors group-hover:text-accent">
           What brings you here?
         </span>
-      </button>
+      </a>
     </section>
   )
 }

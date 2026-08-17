@@ -74,3 +74,80 @@ export function tracePath(width: number, height: number, options: TraceOptions =
 export function traceRulePath(width: number, height: number): string {
   return tracePath(width, height, { zeta: 0.34, omega: 17, lead: 0.55, samples: 120 })
 }
+
+/* ------------------------------------------------------------------------- *
+ * Acquisition — the opening sequence's geometry.
+ * ------------------------------------------------------------------------- */
+
+/**
+ * Deterministic per-sample noise in [-1, 1].
+ *
+ * A hash rather than a PRNG so sample *i* always gets the same offset: the
+ * region behind the sweep has to be perfectly still. Seeded randomness would
+ * re-roll every frame and make the settled part of the trace crawl.
+ */
+function sampleNoise(i: number): number {
+  const x = Math.sin(i * 12.9898) * 43758.5453
+  return (x - Math.floor(x)) * 2 - 1
+}
+
+/** The y value of the settled curve at normalised x position `u` (0–1). */
+export function traceYAt(
+  width: number,
+  height: number,
+  u: number,
+  options: TraceOptions = {},
+): number {
+  const { zeta, omega, lead } = { ...DEFAULTS, ...options }
+  const baseY = height * 0.94
+  const span = height * 0.5 - baseY
+  if (u <= lead) return baseY
+  const p = (u - lead) / (1 - lead)
+  return baseY + span * stepResponse(p, zeta, omega)
+}
+
+/**
+ * The trace as it is being acquired, swept left to right.
+ *
+ * This is the opening sequence: an instrument sweeping across a reading that is
+ * noisy at the beam and settled behind it. `sweep` is 0 at the left edge and 1 at
+ * the right, and only the portion already swept is emitted, so the path grows
+ * rather than being revealed by a mask.
+ *
+ * Two things decay the noise, and both matter:
+ *   - distance behind the beam, so each sample locks in shortly after acquisition
+ *   - global progress, so the last samples are already clean when they arrive
+ *
+ * At `sweep = 1` both terms are zero and the output is byte-identical to
+ * `tracePath(width, height)`. That equality is the whole point: the opening
+ * resolves into the exact curve that becomes the name underline, the section
+ * dividers and the favicon, so the sequence hands off to the brand rather than
+ * being wiped away by it.
+ */
+export function acquisitionPath(
+  width: number,
+  height: number,
+  sweep: number,
+  options: TraceOptions = {},
+): string {
+  const opts = { ...DEFAULTS, ...options }
+  const { samples } = opts
+  const progress = Math.min(Math.max(sweep, 0), 1)
+  const settling = 1 - progress
+  const amplitude = height * 0.17 * settling
+
+  const points: string[] = []
+  for (let i = 0; i <= samples; i++) {
+    const u = i / samples
+    if (u > progress) break
+    const y = traceYAt(width, height, u, opts)
+    // Only a narrow window behind the beam is still unstable.
+    const jitter = amplitude * Math.exp(-(progress - u) * 22) * sampleNoise(i)
+    const command = points.length === 0 ? 'M' : 'L'
+    points.push(`${command} ${(u * width).toFixed(2)} ${(y + jitter).toFixed(2)}`)
+  }
+
+  // Below one point there is no line to draw; start flat at the baseline.
+  if (points.length === 0) return `M 0 ${(height * 0.94).toFixed(2)}`
+  return points.join(' ')
+}

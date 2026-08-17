@@ -49,7 +49,11 @@ export function Header() {
 
   return (
     <header
-      className="sticky top-0 z-50 border-b border-hairline/70 bg-surface/85 backdrop-blur-sm"
+      /* `header-bar` rather than bg-surface/85 + backdrop-blur-sm: the blur is
+         scoped to fine pointers in globals.css. On phones a sticky blurred bar
+         forces the compositor to re-sample the backdrop every scroll frame, and
+         it is the one element guaranteed to be on screen for all of it. */
+      className="header-bar sticky top-0 z-50 border-b border-hairline/70"
       data-lofi-hide="false"
     >
       <div className="shell flex h-14 items-center gap-4">

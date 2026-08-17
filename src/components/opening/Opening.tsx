@@ -1,48 +1,46 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { useMode } from '@/lib/mode'
 import { track } from '@/lib/analytics'
+import { acquisitionPath } from '@/lib/trace'
+import { INTRO_TIMING as TIMING } from '@/lib/motion'
 
-type Phase = 'swinging' | 'landed' | 'opening' | 'done'
+/**
+ * The opening: signal acquisition.
+ *
+ * An instrument sweeps across an unsettled reading. The trace is noisy at the
+ * beam and locks in behind it, kicking, overshooting and ringing down into the
+ * exact step response that becomes the name underline on the page below — same
+ * curve, same maths, same file. The sequence resolves *into* the identity
+ * instead of being cleared away to make room for it.
+ *
+ * Three deliberate constraints, all learned from the version this replaces:
+ *
+ *   1. It is short. 1.5s end to end, and the page is revealed at 1.0s — before the
+ *      field has finished lifting, so the content is already dropping in behind
+ *      it. Nobody is held at the door. The version this replaces ran 4.9s.
+ *   2. Timings live in one object, in lib/motion, and are handed to CSS as custom
+ *      properties. The JS phases, the stylesheet transitions and the entrances
+ *      that have to wait for this sequence all read the same numbers.
+ *   3. The only per-frame work is one `d` attribute and one `x` on a line —
+ *      no layout properties, no filters, no backdrop-filter, and the loop stops
+ *      dead once the sweep completes rather than looping forever.
+ */
 
-function WebSlinger() {
-  return (
-    <div className="web-slinger" aria-hidden="true">
-      <svg className="web-line" viewBox="0 0 220 320" preserveAspectRatio="none">
-        <path d="M216 2 C 150 30, 110 102, 101 226" />
-      </svg>
-      <svg className="web-hero" viewBox="0 0 120 170" role="img" aria-label="A masked web-slinging hero">
-        <defs>
-          <linearGradient id="heroRed" x1="0" y1="0" x2="1" y2="1">
-            <stop stopColor="#ff4b45" />
-            <stop offset="1" stopColor="#9d101d" />
-          </linearGradient>
-          <linearGradient id="heroBlue" x1="0" y1="0" x2="1" y2="1">
-            <stop stopColor="#246bd2" />
-            <stop offset="1" stopColor="#09275f" />
-          </linearGradient>
-        </defs>
-        <g className="hero-body">
-          <ellipse cx="61" cy="30" rx="19" ry="24" fill="url(#heroRed)" stroke="#16070b" strokeWidth="3" />
-          <path d="M47 21 58 27 48 33M75 21 64 27 74 33" fill="#f4fbff" stroke="#16070b" strokeWidth="2" />
-          <path d="M43 52 Q61 43 79 52 L84 96 Q62 108 38 96Z" fill="url(#heroRed)" stroke="#16070b" strokeWidth="3" />
-          <path d="M49 59 Q61 75 74 59M61 48V99M42 69H80M43 84H80" fill="none" stroke="#42101a" strokeWidth="1.5" opacity=".8" />
-          <path d="M39 58 15 80 4 63M80 58 101 35 111 9" fill="none" stroke="url(#heroRed)" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M42 94 27 128 15 158M78 94 91 126 108 148" fill="none" stroke="url(#heroBlue)" strokeWidth="15" strokeLinecap="round" />
-          <path d="M4 63 1 53M4 63 13 57M111 9 117 2M111 9 104 2" fill="none" stroke="#ff4b45" strokeWidth="4" strokeLinecap="round" />
-          <path d="M42 94 Q60 105 78 94 L74 116 Q59 122 46 114Z" fill="url(#heroBlue)" />
-        </g>
-      </svg>
-    </div>
-  )
-}
+type Phase = 'sweep' | 'hold' | 'handoff' | 'done'
+
+/** Trace coordinate space. Stretched to the viewport, so only the ratio matters. */
+const VIEW = { w: 1000, h: 200 }
 
 export function Opening({ onReveal }: { onReveal?: () => void }) {
   const { markIntroSeen, mode, lofi } = useMode()
   const [active, setActive] = useState(false)
-  const [phase, setPhase] = useState<Phase>('swinging')
+  const [phase, setPhase] = useState<Phase>('sweep')
   const skipRef = useRef<HTMLButtonElement>(null)
+  const pathRef = useRef<SVGPathElement>(null)
+  const beamRef = useRef<SVGGElement>(null)
   const timers = useRef<number[]>([])
   const revealed = useRef(false)
 
@@ -77,17 +75,51 @@ export function Opening({ onReveal }: { onReveal?: () => void }) {
     setActive(true)
     skipRef.current?.focus()
     timers.current = [
-      window.setTimeout(() => setPhase('landed'), 3150),
+      window.setTimeout(() => setPhase('hold'), TIMING.sweep),
       window.setTimeout(() => {
-        setPhase('opening')
+        // Content is revealed as the field starts lifting, not after.
+        setPhase('handoff')
         reveal()
-      }, 3650),
-      window.setTimeout(finish, 4900),
+      }, TIMING.sweep + TIMING.hold),
+      window.setTimeout(finish, TIMING.sweep + TIMING.hold + TIMING.handoff + TIMING.tail),
     ]
     return () => timers.current.forEach(window.clearTimeout)
-    // The intro decision is intentionally made once.
+    // The intro decision is intentionally made once, on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  /**
+   * The sweep.
+   *
+   * One rAF loop for 760ms, writing a single path attribute per frame — about 46
+   * recomputes of the curve on a 60Hz display, then it cancels itself. React is
+   * deliberately not involved: re-rendering per frame to move a line would cost
+   * far more than the geometry it is drawing.
+   */
+  useEffect(() => {
+    if (!active || phase !== 'sweep') return
+    const path = pathRef.current
+    if (!path) return
+
+    let frame = 0
+    const start = performance.now()
+
+    const draw = (now: number) => {
+      const t = Math.min((now - start) / TIMING.sweep, 1)
+      path.setAttribute('d', acquisitionPath(VIEW.w, VIEW.h, t))
+      beamRef.current?.setAttribute('transform', `translate(${(t * VIEW.w).toFixed(2)} 0)`)
+      if (t < 1) frame = requestAnimationFrame(draw)
+    }
+
+    frame = requestAnimationFrame(draw)
+    return () => cancelAnimationFrame(frame)
+  }, [active, phase])
+
+  /** Keep the settled trace on screen through the handoff. */
+  useEffect(() => {
+    if (!active || phase === 'sweep') return
+    pathRef.current?.setAttribute('d', acquisitionPath(VIEW.w, VIEW.h, 1))
+  }, [active, phase])
 
   useEffect(() => {
     if (active && lofi) finish()
@@ -108,29 +140,56 @@ export function Opening({ onReveal }: { onReveal?: () => void }) {
   }, [active, skip])
 
   if (!active || phase === 'done') return null
-  const opening = phase === 'opening'
+
+  const settled = phase !== 'sweep'
+  const style = {
+    '--sweep': `${TIMING.sweep}ms`,
+    '--hold': `${TIMING.hold}ms`,
+    '--handoff': `${TIMING.handoff}ms`,
+  } as CSSProperties
 
   return (
-    <div className={`hero-intro ${opening ? 'is-opening' : ''} ${phase === 'landed' ? 'is-landed' : ''}`} role="dialog" aria-label="Animated site introduction">
-      <div className="intro-sky" aria-hidden="true">
-        <div className="city city-back" />
-        <div className="city city-front" />
-        <div className="speed-lines" />
+    <div
+      className="acquire"
+      data-phase={phase}
+      style={style}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Site introduction"
+    >
+      <div className="acquire-graticule" aria-hidden="true" />
+
+      <div className="acquire-band" aria-hidden="true">
+        <svg
+          className="acquire-scope"
+          viewBox={`0 0 ${VIEW.w} ${VIEW.h}`}
+          preserveAspectRatio="none"
+          fill="none"
+        >
+          {/* Where the reading is heading. Drawn first, so the trace lands on it. */}
+          <line
+            className="acquire-target"
+            x1="0"
+            y1={VIEW.h * 0.5}
+            x2={VIEW.w}
+            y2={VIEW.h * 0.5}
+            vectorEffect="non-scaling-stroke"
+          />
+          <path ref={pathRef} className="acquire-signal" vectorEffect="non-scaling-stroke" />
+          {/* Vertical geometry only: a squashed viewBox cannot distort it. */}
+          <g ref={beamRef} className="acquire-beam">
+            <line x1="0" y1="0" x2="0" y2={VIEW.h} vectorEffect="non-scaling-stroke" />
+          </g>
+        </svg>
+
+        <p className="acquire-readout">
+          <span>Ch 1 · step response</span>
+          <span className="acquire-state">{settled ? 'settled' : 'acquiring'}</span>
+        </p>
       </div>
 
-      <div className="stage-curtain curtain-left" aria-hidden="true"><span /></div>
-      <div className="stage-curtain curtain-right" aria-hidden="true"><span /></div>
-      <div className="curtain-valance" aria-hidden="true" />
-
-      <WebSlinger />
-
-      <div className="intro-title" aria-hidden="true">
-        <span>Hold tight.</span>
-        <strong>The work is about to drop.</strong>
-      </div>
-
-      <button ref={skipRef} type="button" onClick={skip} className="intro-skip">
-        Skip intro <span aria-hidden="true">Esc</span>
+      <button ref={skipRef} type="button" onClick={skip} className="acquire-skip">
+        Skip <span aria-hidden="true">Esc</span>
       </button>
     </div>
   )

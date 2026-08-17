@@ -3,7 +3,7 @@
 import { motion } from 'motion/react'
 import { useId } from 'react'
 import { tracePath, traceRulePath } from '@/lib/trace'
-import { usePrefersReducedMotion } from '@/lib/motion'
+import { usePrefersReducedMotion, useIntroOffset } from '@/lib/motion'
 
 /**
  * The settled trace, drawn as SVG.
@@ -20,6 +20,7 @@ export function SettledTrace({
   animate = true,
   delay = 0,
   strokeWidth = 2,
+  afterIntro = false,
 }: {
   className?: string
   width?: number
@@ -27,10 +28,22 @@ export function SettledTrace({
   animate?: boolean
   delay?: number
   strokeWidth?: number
+  /**
+   * Hold the draw until the opening sequence has handed the page over.
+   *
+   * Set it on the landing-page underline, which sits behind the opening field on
+   * a first visit. Without it the 1.15s draw starts on mount and is finished
+   * before the field has faded, so the line is simply already there — the one
+   * animation on the page nobody ever saw. On a repeat visit, on any other route,
+   * or under reduced motion the offset is zero and `delay` stands alone.
+   */
+  afterIntro?: boolean
 }) {
   const reduced = usePrefersReducedMotion()
+  const introOffset = useIntroOffset(afterIntro)
   const d = tracePath(width, height)
   const shouldAnimate = animate && !reduced
+  const start = delay + introOffset
 
   return (
     <svg
@@ -52,7 +65,10 @@ export function SettledTrace({
         animate={shouldAnimate ? { pathLength: 1, opacity: 1 } : undefined}
         transition={
           shouldAnimate
-            ? { pathLength: { duration: 1.15, ease: [0.4, 0, 0.2, 1], delay }, opacity: { duration: 0.2, delay } }
+            ? {
+                pathLength: { duration: 1.15, ease: [0.4, 0, 0.2, 1], delay: start },
+                opacity: { duration: 0.2, delay: start },
+              }
             : undefined
         }
       />

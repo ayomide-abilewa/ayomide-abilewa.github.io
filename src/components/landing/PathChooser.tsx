@@ -2,10 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { motion } from 'motion/react'
 import { useMode } from '@/lib/mode'
-import { usePrefersReducedMotion } from '@/lib/motion'
 import { track } from '@/lib/analytics'
 import type { VisitorMode } from '@/data/types'
 
@@ -32,28 +29,28 @@ const CHANNELS: Channel[] = [
     href: '/engineering/',
     label: 'Engineering',
     audience: 'Recruiters · engineers · collaborators',
-    promise: 'What I have built, how it is put together, and the decisions I would defend.',
+    promise: 'Architecture, source code, and the failure each decision exists to survive.',
   },
   {
     mode: 'research',
     href: '/research/',
     label: 'Research',
     audience: 'Labs · professors · graduate programmes',
-    promise: 'What I am investigating, the methods behind it, and the coursework underneath.',
+    promise: 'Five questions, the method behind the current one, and the coursework underneath.',
   },
   {
     mode: 'scholarship',
     href: '/scholarship/',
     label: 'Scholarship',
     audience: 'Committees · fellowships · sponsors',
-    promise: 'How I got here, what I teach, and who it is for.',
+    promise: 'Five years in order, the classes I teach, and who each build was for.',
   },
   {
     mode: 'everything',
     href: '/everything/',
     label: 'Everything',
     audience: 'No particular agenda',
-    promise: 'All of it, in the order it actually happened.',
+    promise: 'One pass through all of it, 2021 to now.',
   },
 ]
 
@@ -88,14 +85,20 @@ function ChannelRail({ active }: { active: number | null }) {
 
 export function PathChooser() {
   const { setMode } = useMode()
-  const router = useRouter()
-  const reduced = usePrefersReducedMotion()
   const [hovered, setHovered] = useState<number | null>(null)
 
+  /**
+   * Record the choice, then let <Link> navigate.
+   *
+   * These are anchors rather than buttons with router.push: they are the four
+   * primary destinations on the site, so they need to be openable in a new tab,
+   * middle-clickable, copyable and crawlable. The destination also calls
+   * useDeclareMode, so the mode is correct even when someone arrives by a route
+   * that never went through this handler.
+   */
   function choose(channel: Channel) {
     setMode(channel.mode, 'selection')
     track({ name: 'path_selected', mode: channel.mode, source: 'selection' })
-    router.push(channel.href)
   }
 
   return (
@@ -106,8 +109,8 @@ export function PathChooser() {
           What brings you here?
         </h2>
         <p className="mt-3 text-body text-content-muted text-pretty">
-          The work is the same either way. What changes is the order, the emphasis, and which CV you
-          get handed. You can switch at any point, and nothing is hidden behind the choice.
+          Same six projects behind every door. What changes is what you meet first, and which CV the
+          download button hands you. Switch whenever you like; the header keeps all four.
         </p>
       </div>
 
@@ -117,16 +120,17 @@ export function PathChooser() {
         <ul className="grid flex-1 grid-rows-4 border-t border-hairline">
           {CHANNELS.map((channel, i) => (
             <li key={channel.mode} className="border-b border-hairline">
-              <motion.button
-                type="button"
+              <Link
+                href={channel.href}
                 onClick={() => choose(channel)}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
                 onFocus={() => setHovered(i)}
                 onBlur={() => setHovered(null)}
-                whileHover={reduced ? undefined : { x: 6 }}
-                transition={{ duration: 0.22, ease: [0.2, 0.9, 0.1, 1] }}
-                className="group flex w-full items-baseline gap-x-5 gap-y-1 px-1 py-5 text-left sm:px-4"
+                /* The 6px slide is a CSS transform on the row rather than a
+                   motion value: same feel, no per-frame JS, and it still works
+                   if the animation bundle never loads. */
+                className="group flex w-full items-baseline gap-x-5 gap-y-1 px-1 py-5 text-left transition-transform duration-200 ease-[cubic-bezier(0.2,0.9,0.1,1)] motion-safe:hover:translate-x-1.5 sm:px-4"
               >
                 <span className="w-7 shrink-0 font-mono text-micro text-content-faint">
                   0{i + 1}
@@ -150,7 +154,7 @@ export function PathChooser() {
                 >
                   →
                 </span>
-              </motion.button>
+              </Link>
             </li>
           ))}
         </ul>
