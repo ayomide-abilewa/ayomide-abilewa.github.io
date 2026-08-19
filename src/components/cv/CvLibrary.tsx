@@ -31,7 +31,7 @@ import { CvPreview } from '@/components/cv/CvPreview'
 
 /** Why four files exist rather than one. */
 const WHY =
-  'The facts are identical in all four. What changes is the order, what leads, and what I cut to keep each one inside two pages.'
+  'The facts are the same in all four. What changes is what leads — the engineering, the research, the teaching, or all of it together. You can read any of them in full here before you download anything.'
 
 function VariantTabs({
   active,
@@ -204,7 +204,7 @@ export function CvLibrary() {
           </p>
 
           <h1 className="mt-5 max-w-[38ch] text-h1 font-medium tracking-tight text-balance">
-            I apply for four different things, so I keep four CVs.
+            Four CVs, same person. Take whichever one you need.
           </h1>
 
           <div className="mt-2 h-6 w-full max-w-[22rem]">
