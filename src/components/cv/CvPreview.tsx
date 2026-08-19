@@ -17,34 +17,25 @@ import {
 } from '@/lib/select'
 
 /**
- * On-screen rendering of a generated CV.
+ * On-screen rendering of a CV.
  *
- * The point of this component is fidelity: it walks `CV_SECTION_ORDER` and pulls
- * bullets through `cvBulletsFor`, exactly as `scripts/build-cvs.tsx` does. What you
- * read here is what the PDF and the DOCX contain, in the same order, so the
- * preview cannot quietly disagree with the file you download. That includes the
- * cuts — the documents print the strongest three bullets per entry rather than every
- * bullet tagged for the variant, and so does this. The complete set is on /about
- * and the project pages, which have the room a two-page document does not.
+ * Fidelity is the point: this walks `CV_SECTION_ORDER` and pulls bullets through
+ * `cvBulletsFor`, exactly as `scripts/build-cvs.tsx` does, so the preview cannot
+ * disagree with the file you download. That includes the cuts — the documents
+ * print the strongest three bullets per entry, and so does this. The full set is
+ * on /about and the project pages, which have the room.
  *
- * That extends to the typesetting, and the register changed: the documents are now
- * set in the traditional academic manner — serif throughout, the name centred in
- * caps, Title Case section headings over a rule *beneath* them, the organisation on
- * its own italic indented line under the role, dates in a right-hand column at the
- * same size as the title they sit beside, and no accent colour anywhere. This
- * mirrors all of it. The earlier version of both put a hairline above a small
- * letterspaced accent-coloured label and appended the organisation to the role with
- * a middot; that setting is what every résumé builder ships as its default, and it
- * was the single loudest reason the download read as generated.
+ * The typesetting mirrors the documents too: serif throughout, name centred in
+ * caps, Title Case headings over a rule beneath them, the organisation on its own
+ * italic indented line, dates in a right-hand column at the same size as the
+ * title beside them, no accent colour. The earlier setting — hairline above a
+ * small letterspaced accent-coloured label, organisation appended to the role with
+ * a middot — is what every résumé builder ships as its default, which was the
+ * loudest reason the download looked generic.
  *
- * Two deliberate differences from the documents. Links render as their plain
- * `cvText`, because that is what an ATS parser sees in the generated files and
- * showing markup here would flatter them. And there is no tagline under the name,
- * because the documents no longer print one — a role line between the name and the
- * contact details is a web convention, not a CV one.
- *
- * It is a single column with no graphics for the same reason the documents are:
- * everything an automated parser needs is text in reading order.
+ * Two deliberate differences. Links render as their plain `cvText`, because that
+ * is what an ATS sees in the files. And there is no tagline under the name,
+ * because the documents do not print one.
  */
 
 /** Indent for everything subordinate to an entry head — the PDF's `INDENT`. */
@@ -260,8 +251,7 @@ export function CvPreview({ variant }: { variant: CvVariant }) {
       </div>
 
       <p className="mt-8 border-t border-hairline pt-3 font-sans text-micro leading-relaxed text-content-faint">
-        This is the document, not a summary of it. The PDF and Word downloads carry the same text in
-        the same order.
+        The PDF and the Word file carry this same text, in this same order.
       </p>
     </article>
   )

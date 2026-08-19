@@ -107,18 +107,12 @@ export function bulletsFor(
 }
 
 /**
- * How many bullets a single entry may contribute to a CV.
+ * How many bullets one entry may contribute to a CV.
  *
- * The website carries every bullet: it has the room, and a reader who chose to be
- * on that page. A document does not, and the discipline of cutting is most of what
- * separates a CV somebody set from a CV something assembled — four or five bullets
- * under every single role is the shape of a data dump, and a reader working through
- * forty applications reads the first two of each anyway. Three is the cap
- * everywhere, which is enough to state what the work was, what was built and what
- * came of it, and short enough that the page never reads as filler.
- *
- * Bullets in `profile.ts` are authored strongest-first, so taking the head of the
- * list is a priority cut rather than a truncation.
+ * The website carries every bullet; two pages cannot. Three is enough to say what
+ * the work was, what got built and what came of it, and short enough that the page
+ * never reads as filler. Bullets in `profile.ts` are authored strongest-first, so
+ * taking the head of the list is a priority cut rather than a truncation.
  */
 export const CV_BULLET_LIMIT: Record<CvVariant, number> = {
   technical: 3,
@@ -130,9 +124,8 @@ export const CV_BULLET_LIMIT: Record<CvVariant, number> = {
 /**
  * Bullets for one entry of a CV: tagged for the variant, capped, strongest first.
  *
- * Deliberately separate from `bulletsFor`. The site pages call that one and show
- * everything; only the four documents — and the preview that promises to match
- * them — come through here.
+ * Separate from `bulletsFor`, which the site pages call to show everything. Only
+ * the four documents and the preview that has to match them come through here.
  */
 export function cvBulletsFor(
   source: { bullets: { text: string; emphasis: CvVariant[] }[] },
@@ -242,14 +235,13 @@ export const CV_SECTION_TITLES: Record<CvVariant, Partial<Record<CvSection, stri
 }
 
 /**
- * How many projects each variant carries, and how much of each.
- * Length and detail level are part of tailoring, not an accident.
+ * How many projects each variant carries.
  *
- * The technical CV takes four, because a hiring engineer reading it is looking for
- * range; the other three take three. Fewer projects with evidence beats more
- * projects with a line each, and the shorter list is also what keeps every variant
- * inside two pages once the serif setting has taken its wider margins — the
- * page-count readback in `scripts/build-cvs.tsx` is what settled the numbers.
+ * The technical CV takes four, because a hiring engineer is looking for range;
+ * the rest take three. Fewer projects with evidence beats more projects with a
+ * line each, and three is what keeps each variant inside two pages now that the
+ * serif setting has taken wider margins. The page-count readback in
+ * `scripts/build-cvs.tsx` settled the numbers.
  */
 export const CV_PROJECT_LIMIT: Record<CvVariant, number> = {
   technical: 4,
@@ -269,17 +261,14 @@ export const CV_SHOWS_COURSEWORK: Record<CvVariant, boolean> = {
 /**
  * How many leadership entries each variant carries.
  *
- * Five is the whole set, and only the scholarship CV should print all five: for
- * that reader the community work *is* the case, so the campus ambassador role and
- * the departmental editorial work earn their lines. Everywhere else they are the
- * fourth and fifth most interesting thing in the section, and a reader who has
- * already seen SPAW and the Zero-to-Hero workshop learns nothing new from them. A
- * CV that lists everything is asking the reader to do the editing.
+ * Five is the whole set, and only the scholarship CV prints all five: for that
+ * reader the community work *is* the case. Elsewhere the campus ambassador role
+ * and the departmental editorial work are the fourth and fifth most interesting
+ * things in the section.
  *
  * The full CV takes two rather than three because it is the only variant carrying
- * every section at once, and something has to give: it inherits the technical CV's
- * six skill lines *and* the scholarship CV's entry count, which is exactly 70pt
- * more than two pages hold. Two leadership entries is what that costs.
+ * every section at once — it inherits the technical CV's six skill lines and the
+ * scholarship CV's entry count, which is about 70pt more than two pages hold.
  */
 export const CV_LEADERSHIP_LIMIT: Record<CvVariant, number> = {
   technical: 2,
@@ -306,9 +295,8 @@ export function leadershipForVariant(variant: CvVariant): LeadershipRole[] {
 /**
  * Human-readable purpose of each CV, shown on /cv.
  *
- * Deliberately not parallel in construction. Four descriptions that all opened
- * "Leads with..." was the giveaway that one template had produced all four, so each
- * now says the thing it needs to say in its own shape.
+ * Deliberately not parallel in construction — four descriptions that all opened
+ * "Leads with…" made it obvious one template had produced them all.
  */
 export const CV_DESCRIPTIONS: Record<CvVariant, { title: string; bestFor: string }> = {
   technical: {
@@ -329,15 +317,13 @@ export const CV_DESCRIPTIONS: Record<CvVariant, { title: string; bestFor: string
   general: {
     title: 'Full CV',
     bestFor:
-      'A balanced read across all of it — engineering, research and teaching — rather than depth in one. The safe choice if you are not sure which of the other three fits.',
+      'A balanced read across engineering, research and teaching rather than depth in one. Take this if you are not sure which of the other three fits.',
   },
 }
 
 /**
- * Filename stem per variant, without extension.
- *
- * Exported because the build script needs the same strings: if these lived in two
- * places, a rename would silently break every download link on /cv.
+ * Filename stem per variant, without extension. The build script imports these
+ * too — if they lived in two places a rename would break every download link.
  */
 export const CV_STEM: Record<CvVariant, string> = {
   technical: 'Ayomide-Abilewa-Technical-CV',
@@ -354,10 +340,9 @@ export function cvFile(variant: CvVariant, format: 'pdf' | 'docx'): string {
 /**
  * Measured shape of one CV variant.
  *
- * /cv uses this to show what genuinely differs between the four documents
- * rather than asserting that they differ. Counted from the same
- * selection functions the generator runs, so the numbers cannot drift from the
- * files people download.
+ * /cv uses this to show what genuinely differs between the four documents rather
+ * than asserting that they differ. Counted from the same selection functions the
+ * build script runs, so the numbers cannot drift from the files people download.
  */
 export type CvShape = {
   sections: CvSection[]

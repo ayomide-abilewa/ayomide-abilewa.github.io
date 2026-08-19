@@ -35,13 +35,10 @@ import {
  * experience and the teaching are the same on every reading, because they are
  * the same five years.
  *
- * The lessons section is generated from each project's `learned` field rather
- * than written here, so a claim about how he works can only exist if a project
- * already backs it.
+ * The lessons section reads each project's `learned` field rather than repeating
+ * it here, so a claim about how I work only exists if a project already backs it.
  *
- * Voice: first person throughout. It is his own story on his own site — third
- * person about yourself reads like a press release, and the one thing this page
- * cannot afford to sound like is generated text.
+ * Voice: first person throughout. It is my own story on my own site.
  */
 
 type Block = 'thread' | 'journey' | 'lessons' | 'experience' | 'teaching' | 'education'

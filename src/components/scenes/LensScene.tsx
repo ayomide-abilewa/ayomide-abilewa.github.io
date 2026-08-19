@@ -9,7 +9,7 @@ import { SceneFrame, useSceneTier } from './SceneFrame'
  * A researcher looks down a lens at a length of pipe. Two passes sweep across it:
  * the plain RGB pass, which finds the obvious defect and misses the faint one, and
  * the edge-enhanced pass, which catches what the first pass lost. The two boxes
- * then merge into one — which is literally what the fusion step in his pipe
+ * then merge into one — which is literally what the fusion step in my pipe
  * anomaly work does.
  *
  * Motion grammar is deliberately different from the engineering scene: no snap, no

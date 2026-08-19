@@ -152,7 +152,7 @@ export function ScholarshipPath() {
         id="next"
         eyebrow="Next"
         heading="For scholarship and fellowship committees"
-        lede="The CV below is the version I wrote for review panels: academic background first, then leadership and community work. Every claim in it appears somewhere on this site with the detail behind it, so you can check any line you doubt."
+        lede="The CV below is the version I wrote for review panels: academic background first, then leadership and community work. Anything in it you want to check has a page here with the detail behind it."
       >
         <CtaRow
           label="Scholarship next steps"

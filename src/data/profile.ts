@@ -3,7 +3,7 @@ import type { Profile } from './types'
 /**
  * SINGLE SOURCE OF TRUTH.
  *
- * Every fact here is traceable to Ayomide's CV, his GitHub repositories, or the
+ * Every fact here is traceable to my CV, my GitHub repositories, or the
  * repository READMEs and commit history. Nothing is inferred, rounded up, or
  * invented — where a metric does not exist in the source material, no metric is
  * stated. Update this file and both the website and all four CVs follow.
@@ -45,8 +45,8 @@ export const profile: Profile = {
    * no "passionate", no "leveraging", no "at the intersection of".
    *
    * All four are written in the implied first person — the CV convention. No "I",
-   * because a CV summary does not need it, and no "he", because writing about
-   * yourself in the third person on your own document reads as a press release.
+   * because a CV summary does not need it, and never the third person, because
+   * writing about yourself that way on your own document reads as a press release.
    *
    * None of them opens by naming the degree, and that is the rule worth keeping.
    * `identity.title` prints "Electronic and Electrical Engineering student" two
@@ -200,8 +200,7 @@ export const profile: Profile = {
 
   projects: [
     // ------------------------------------------------------------------
-    // ANIWE — the strongest documented engineering artifact. Engineering path only,
-    // per Ayomide's instruction.
+    // ANIWE — the strongest documented engineering artifact. Engineering path only.
     // ------------------------------------------------------------------
     {
       slug: 'aniwe',
@@ -648,7 +647,7 @@ export const profile: Profile = {
     },
 
     // ------------------------------------------------------------------
-    // FAN — first closed loop. Also the first team he led.
+    // FAN — my first closed loop, and the first team I led.
     // ------------------------------------------------------------------
     {
       slug: 'temperature-controlled-fan',

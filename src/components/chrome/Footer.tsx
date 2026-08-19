@@ -96,7 +96,7 @@ export function Footer() {
 
         <div className="mt-10 flex flex-wrap items-baseline justify-between gap-3 border-t border-hairline/60 pt-5">
           <p className="text-micro text-content-faint">
-            © {identity.name}. Built with Next.js, deployed on GitHub Pages.
+            © {identity.name}. Designed and built by me, in Next.js, deployed on GitHub Pages.
           </p>
           <p className="font-mono text-micro tracking-[0.1em] text-content-faint">
             {PRIVACY_LINE}

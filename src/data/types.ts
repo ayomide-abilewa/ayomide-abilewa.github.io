@@ -251,7 +251,7 @@ export type Certification = {
 export type ResearchInterest = {
   id: string
   label: string
-  /** What he is actually curious about, grounded in work he has done. */
+  /** What I am actually curious about, grounded in work I have done. */
   description: string
   /** Project slugs / experience ids that evidence this interest. */
   evidence: string[]

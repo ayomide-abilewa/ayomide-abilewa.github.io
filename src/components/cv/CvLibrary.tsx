@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { CV_FOR_MODE, CV_VARIANTS, type CvVariant } from '@/data/types'
 import { profile } from '@/data/profile'
-import { useMode, MODE_LABELS } from '@/lib/mode'
+import { useMode } from '@/lib/mode'
 import { track } from '@/lib/analytics'
 import {
   CV_DESCRIPTIONS,
@@ -21,23 +21,17 @@ import { CvPreview } from '@/components/cv/CvPreview'
 /**
  * The CV page.
  *
- * Four documents from one data source. The tab strip picks a variant and the
- * preview below is built by walking that variant's real section order and
- * pulling its tagged bullets — the same two functions the generator uses — so
- * the page cannot claim a structure the file does not have.
+ * The tab strip picks a variant; the preview below walks that variant's real
+ * section order and pulls its tagged bullets through the same two functions the
+ * build script uses, so the page cannot show a structure the file does not have.
  *
- * The comparison table exists because "tailored" is a claim, and a claim about
- * four downloadable files should be checkable in the browser. Every number in it
- * is counted from the selection functions, not typed in.
- *
- * What deliberately does not happen: no variant gets a fact the others are
- * denied. Selection and ordering differ; the underlying statements are the same
- * verified set.
+ * The comparison table is there because "tailored" is a claim, and a claim about
+ * four downloadable files should be checkable in the browser.
  */
 
-/** The one line that explains why four files exist rather than one. */
+/** Why four files exist rather than one. */
 const WHY =
-  'Every line in all four is drawn from the same verified source. What changes is which of them lead, which section comes first, how much detail each carries — and what each one leaves out, because all four stop at two pages.'
+  'The facts are identical in all four. What changes is the order, what leads, and what I cut to keep each one inside two pages.'
 
 function VariantTabs({
   active,
@@ -95,7 +89,7 @@ function VariantTabs({
 
 /**
  * Structural comparison. Section order is the interesting column — it is the
- * part of tailoring that a reader can verify at a glance.
+ * part of tailoring a reader can check at a glance.
  */
 function ComparisonTable({ active }: { active: CvVariant }) {
   const shapes = CV_VARIANTS.map((variant) => ({ variant, shape: cvShape(variant) }))
@@ -104,7 +98,7 @@ function ComparisonTable({ active }: { active: CvVariant }) {
     <div className="overflow-x-auto">
       <table className="w-full min-w-[46rem] border-collapse text-left">
         <caption className="sr-only">
-          How the four CV versions differ in section order, length and content selection
+          How the four CV versions differ in section order, length and content
         </caption>
         <thead>
           <tr className="border-b border-hairline">
@@ -204,13 +198,13 @@ export function CvLibrary() {
           <p className="eyebrow flex items-center gap-2.5">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
             <span>
-              Four versions, one source
-              {unset ? '' : ` — suggesting ${CV_DESCRIPTIONS[recommended].title} for ${MODE_LABELS[mode]}`}
+              Four versions
+              {unset ? '' : ` — I would send you the ${CV_DESCRIPTIONS[recommended].title}`}
             </span>
           </p>
 
           <h1 className="mt-5 max-w-[38ch] text-h1 font-medium tracking-tight text-balance">
-            One CV would have to be four compromises. So there are four CVs.
+            I apply for four different things, so I keep four CVs.
           </h1>
 
           <div className="mt-2 h-6 w-full max-w-[22rem]">
@@ -222,11 +216,9 @@ export function CvLibrary() {
           </p>
 
           <p className="mt-4 max-w-measure text-body text-content-muted text-pretty">
-            Every version is generated from the same typed data file that builds this website, so a
-            correction lands in all eight documents at once. All four are single-column, standard-font
-            and text-only: selectable, searchable and parseable by an applicant tracking system, with
-            no information trapped inside a graphic. The Word files are real editable text, not a
-            picture of a PDF.
+            All four are single-column, standard-font and text-only, so an applicant tracking system
+            can read them and nothing is trapped inside a graphic. The Word files are editable text,
+            not a picture of a PDF.
           </p>
 
           <CtaRow
@@ -257,7 +249,7 @@ export function CvLibrary() {
       <Section
         id="versions"
         eyebrow="Pick a version"
-        heading="Which one you want depends on who you are"
+        heading="Which one to take depends on what you are reading for"
         lede="Choosing here updates the preview and both download buttons."
       >
         <VariantTabs active={active} onSelect={choose} recommended={recommended} />
@@ -310,39 +302,37 @@ export function CvLibrary() {
         id="compare"
         eyebrow="What differs"
         heading="The four versions, side by side"
-        lede="Every number here is counted from the rules that generate the files. The first section of each is highlighted; that is the tailoring a reader notices first."
+        lede="The first section of each is highlighted. That is the difference a reader notices first."
       >
         <ComparisonTable active={active} />
 
         <div className="mt-10 max-w-measure space-y-4 text-body text-content-muted text-pretty">
           <p>
-            <span className="text-content">Where the difference comes from.</span> Every bullet in the
-            data file is tagged with the versions it belongs to. The technical CV takes the bullet
-            about 214 offline tests and the fallback chain; the scholarship CV takes the one about
-            leading a build team for the first time. Both statements are true of the same project —
-            they answer different questions about it.
+            <span className="text-content">Same work, different question.</span> The technical CV
+            takes the bullet about 214 offline tests and the fallback chain; the scholarship CV takes
+            the one about leading a build team for the first time. Both are true of the same project.
+            They answer different things about it.
           </p>
           <p>
-            <span className="text-content">And from what gets cut.</span> Tagging decides what is
-            eligible; a per-version limit decides how much actually prints. Each entry contributes
-            its strongest three bullets rather than everything it has, and the scholarship
-            version is the only one that lists all five leadership roles. Two pages is a hard stop,
-            and choosing what to leave out is most of the work.
+            <span className="text-content">What I leave out.</span> Each entry gives its strongest
+            three bullets rather than everything it has, and only the scholarship version lists all
+            five leadership roles. Two pages is a hard stop, and deciding what goes is most of the
+            work.
           </p>
           <p>
-            <span className="text-content">Where it does not.</span> No version gets a stronger
-            phrasing of a claim than the others, and nothing is added to fill a section out. Where a
-            project has no public repository the CV says so; where work is unfinished it is listed as
-            in progress.
+            <span className="text-content">What does not change.</span> No version phrases a claim
+            more strongly than another, and nothing is added to fill out a section. Where a project
+            has no public repository I say so; where the work is unfinished it is listed as in
+            progress.
           </p>
         </div>
       </Section>
 
       <Section
         id="all"
-        eyebrow="All eight files"
-        heading="Every version, both formats"
-        lede="PDF for sending and printing, Word for anyone who needs to paste sections into their own form."
+        eyebrow="Every file"
+        heading="Four versions, both formats"
+        lede="PDF for sending and printing. Word if you need to paste sections into your own form."
       >
         <ul className="border-t border-hairline">
           {CV_VARIANTS.map((variant) => (
@@ -380,7 +370,7 @@ export function CvLibrary() {
         id="next"
         eyebrow="Next"
         heading="A CV is a summary. The detail is on this site."
-        lede="Every claim in all four appears somewhere on this site with the reasoning behind it. That is the part a two-page document cannot carry."
+        lede="Everything in the four CVs has a page here with the reasoning behind it. That is the part two pages cannot carry."
       >
         <CtaRow
           label="Next steps"

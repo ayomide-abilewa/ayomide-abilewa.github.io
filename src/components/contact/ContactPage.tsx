@@ -13,13 +13,12 @@ import { Reveal } from '@/components/motion/Reveal'
 /**
  * Contact. Calls to action change with visitor intent.
  *
- * First person throughout. A contact page written in the third person about its
- * own owner reads like a press release, and this is the one page where the
- * visitor is about to speak to an actual person.
+ * First person throughout — this is the one page where the visitor is about to
+ * speak to an actual person.
  *
  * What changes per path: the opening line, the list of things worth writing
  * about, the pre-filled first message, and the order of the buttons. What does
- * not change: the three ways to reach him.
+ * not change: the three ways to reach me.
  *
  * No form. A static site has nowhere to POST to, so a form would mean routing
  * someone's message through a third-party service that stores it somewhere
@@ -31,7 +30,7 @@ type Pitch = {
   eyebrow: string
   heading: string
   lede: string
-  /** What he is actually available for, per audience. */
+  /** What I am actually available for, per audience. */
   open: string[]
   /** Pre-filled subject and body, so the first message is not a blank page. */
   subject: string

@@ -5,10 +5,10 @@ import type { CvVariant } from './types'
  *
  * Photography on this site is limited and deliberate. Two constraints shape it:
  *
- * 1. **Confidentiality.** Ayomide's internship photographs include control system
+ * 1. **Confidentiality.** My internship photographs include control system
  *    cabinets, DCS and safety-system racks, switchgear and field equipment. None
  *    of that is published here. Only cohort and personal photographs are used —
- *    no identifiable equipment, racks or panels. If that changes with his
+ *    no identifiable equipment, racks or panels. If that changes with my
  *    supervisor's clearance, assets get added to this file and nowhere else.
  *
  * 2. **Honesty.** There is no stock photography and no generated imagery. Where a

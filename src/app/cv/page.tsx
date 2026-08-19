@@ -10,10 +10,10 @@ import { CvLibrary } from '@/components/cv/CvLibrary'
  */
 
 const DESCRIPTION =
-  'Four tailored CV versions for Ayomide Abilewa: technical, research, scholarship and full. Each is generated from one data source in ATS-friendly PDF and editable Word format, with the same verified facts in a different section order, selection and length.'
+  'Four CV versions for Ayomide Abilewa: technical, research, scholarship and full. Same facts in each, ordered and cut for who is reading. ATS-friendly PDF and editable Word.'
 
 export const metadata: Metadata = {
-  title: 'CV — four versions, one source',
+  title: 'CV — four versions',
   description: DESCRIPTION,
   alternates: { canonical: '/cv/' },
   /* No `images` key — ./opengraph-image.tsx fills og:image and twitter:image.

@@ -9,7 +9,7 @@ import { SceneFrame, useSceneTier } from './SceneFrame'
  * Someone in safety glasses leans over a board, probe in hand. The probe touches
  * a test point, the scope beside them wakes, and the trace on it overshoots and
  * settles: a real second-order step response, the same curve as the site's
- * underline and the same behaviour as the loops he tunes at Chevron.
+ * underline and the same behaviour as the loops I tune at Chevron.
  *
  * The glasses are the point. That is what the work looks like — not a hooded
  * figure at a terminal. The reflection in the lens is the trace, so the person

@@ -9,8 +9,7 @@ import { AboutStory } from '@/components/about/AboutStory'
  * is the URL most likely to be shared without a path attached.
  *
  * The description stays in the third person while the page itself is first
- * person: a search snippet is a label written about the page, not the person
- * talking. Inside the page, "he" would read as a press release.
+ * person: a search snippet is a label written about the page, not me talking.
  */
 
 const DESCRIPTION =
