@@ -325,7 +325,7 @@ export function CvLibrary() {
           <p>
             <span className="text-content">And from what gets cut.</span> Tagging decides what is
             eligible; a per-version limit decides how much actually prints. Each entry contributes
-            its strongest three or four bullets rather than everything it has, and the scholarship
+            its strongest three bullets rather than everything it has, and the scholarship
             version is the only one that lists all five leadership roles. Two pages is a hard stop,
             and choosing what to leave out is most of the work.
           </p>

@@ -111,20 +111,19 @@ export function bulletsFor(
  *
  * The website carries every bullet: it has the room, and a reader who chose to be
  * on that page. A document does not, and the discipline of cutting is most of what
- * separates a CV somebody set from a CV something assembled — five bullets under
- * every single role is the shape of a data dump, and a reader working through forty
- * applications reads the first two of each anyway. Four is the professional
- * convention for a role worth detailing, and nothing here needs more.
+ * separates a CV somebody set from a CV something assembled — four or five bullets
+ * under every single role is the shape of a data dump, and a reader working through
+ * forty applications reads the first two of each anyway. Three is the cap
+ * everywhere, which is enough to state what the work was, what was built and what
+ * came of it, and short enough that the page never reads as filler.
  *
  * Bullets in `profile.ts` are authored strongest-first, so taking the head of the
- * list is a priority cut rather than a truncation. `general` is tightest because it
- * is the version read without a specific question in mind, and because it is the
- * only one carrying every section: breadth gets paid for in depth.
+ * list is a priority cut rather than a truncation.
  */
 export const CV_BULLET_LIMIT: Record<CvVariant, number> = {
-  technical: 4,
-  research: 4,
-  scholarship: 4,
+  technical: 3,
+  research: 3,
+  scholarship: 3,
   general: 3,
 }
 
@@ -246,17 +245,17 @@ export const CV_SECTION_TITLES: Record<CvVariant, Partial<Record<CvSection, stri
  * How many projects each variant carries, and how much of each.
  * Length and detail level are part of tailoring, not an accident.
  *
- * The technical CV is the only one that takes all five, because a hiring engineer
- * reading it is looking for range. The other three take four, which is what fits
- * once each project is given three bullets rather than one — four projects with
- * evidence beats five projects with a line each, and the page-count readback in
- * `scripts/build-cvs.tsx` is what settled the number.
+ * The technical CV takes four, because a hiring engineer reading it is looking for
+ * range; the other three take three. Fewer projects with evidence beats more
+ * projects with a line each, and the shorter list is also what keeps every variant
+ * inside two pages once the serif setting has taken its wider margins — the
+ * page-count readback in `scripts/build-cvs.tsx` is what settled the numbers.
  */
 export const CV_PROJECT_LIMIT: Record<CvVariant, number> = {
-  technical: 5,
-  research: 4,
-  scholarship: 4,
-  general: 4,
+  technical: 4,
+  research: 3,
+  scholarship: 3,
+  general: 3,
 }
 
 /** Research CV lists coursework; a technical CV does not need it. */

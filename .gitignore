@@ -12,6 +12,13 @@ Thumbs.db
 .env*
 !.env.example
 
+# Local CV layout audit. Reads the generated PDFs back with pdfjs and reports
+# text-run overlaps and margin overflow — how the header collision and the
+# date/organisation collision were found. Not committed because it needs
+# pdfjs-dist, which is installed ad hoc rather than being a project dependency:
+#   npm install --no-save pdfjs-dist@4.10.38
+.cvaudit/
+
 # Logs
 *.log
 npm-debug.log*

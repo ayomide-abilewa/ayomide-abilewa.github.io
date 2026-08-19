@@ -104,34 +104,34 @@ export const profile: Profile = {
       role: 'Facilities Engineering Management Intern (SIWES)',
       organisation: 'Chevron Nigeria Limited',
       location: 'Lagos, Nigeria',
-      start: 'Mar 2025',
+      start: 'Mar 2026',
       end: 'Present',
       current: true,
       summary:
         'Rotating across the Electrical and Instrumentation team, working on oil and gas field instrumentation and electrical systems.',
       bullets: [
         {
-          text: 'Rotate across the Electrical and Instrumentation (E&I) team, working on oil and gas field instrumentation and electrical systems.',
+          text: 'Rotating through the Electrical and Instrumentation (E&I) team on field instrumentation and electrical systems.',
           emphasis: ['technical', 'research', 'scholarship', 'general'],
         },
         {
-          text: 'Interpret P&IDs and study control loop configurations, pneumatic signal standards (3–15 PSI), I/P converters and hazardous area classification.',
+          text: 'Read P&IDs before fieldwork; traced control loop configurations, I/P converters and 3–15 PSI pneumatic signalling.',
           emphasis: ['technical', 'research', 'general'],
         },
         {
-          text: 'Study ESP systems, power transmission, single line diagram (SLD) interpretation and circuit breaker specifications.',
+          text: 'On the electrical side: single line diagrams, ESP systems, power transmission, circuit breaker specification.',
           emphasis: ['technical', 'general'],
         },
         {
-          text: 'Apply electrical safety practice including arc flash awareness, bonding and grounding.',
+          text: 'Hazardous area classification, arc flash awareness, bonding and grounding.',
           emphasis: ['technical', 'scholarship', 'general'],
         },
         {
-          text: 'Completed Chevron compliance training in Operational Excellence, Cyber Security, Data Privacy, Business Conduct and Ethics, and Conflict of Interest via Workday.',
+          text: 'Chevron compliance training via Workday: Operational Excellence, Cyber Security, Data Privacy, Business Conduct and Ethics.',
           emphasis: ['scholarship', 'general'],
         },
         {
-          text: 'Maintain a structured SIWES logbook documenting field observations and system walkthroughs.',
+          text: 'A weekly SIWES logbook of field observations and system walkthroughs.',
           emphasis: ['scholarship'],
         },
       ],
@@ -158,15 +158,15 @@ export const profile: Profile = {
         'Operated three Quanser research platforms using MATLAB and Simulink: a quadrotor UAV, an autonomous ground vehicle and a 6-DOF manipulator.',
       bullets: [
         {
-          text: 'Operated the QDrone quadrotor UAV, QCar autonomous ground vehicle and QArm 6-DOF manipulator using MATLAB and Simulink.',
+          text: 'Operated three Quanser platforms in MATLAB and Simulink: the QDrone quadrotor, the QCar ground vehicle, the QArm 6-DOF manipulator.',
           emphasis: ['technical', 'research', 'scholarship', 'general'],
         },
         {
-          text: 'Applied PID control, sensor feedback and real-time system analysis to live hardware rather than simulation alone.',
+          text: 'PID control and sensor feedback tuned on live hardware, not in simulation.',
           emphasis: ['technical', 'research', 'general'],
         },
         {
-          text: 'Delivered a technical orientation presentation on the Quanser Aero 2 covering system architecture, control principles and laboratory safety.',
+          text: 'Gave the lab orientation talk on the Quanser Aero 2: architecture, control principles, safety.',
           emphasis: ['research', 'scholarship', 'general'],
         },
       ],
@@ -185,11 +185,11 @@ export const profile: Profile = {
         'Teaches circuit analysis, digital logic and microcontroller programming, designing the tutorial sessions from scratch.',
       bullets: [
         {
-          text: 'Teach circuit analysis, digital logic and microcontroller programming to engineering students.',
+          text: 'Teach circuit analysis, digital logic and microcontroller programming to engineering undergraduates.',
           emphasis: ['technical', 'scholarship', 'general'],
         },
         {
-          text: 'Design structured tutorial sessions, sequencing theory and hands-on exercises so students build working circuits.',
+          text: 'Sessions are sequenced so the theory arrives just before a student needs it to make a circuit work.',
           emphasis: ['scholarship', 'general'],
         },
       ],
@@ -322,15 +322,15 @@ export const profile: Profile = {
       },
       bullets: [
         {
-          text: 'Shipped an AI costume-rating booth in Python and Streamlit with ten original hosts, per-session mood and quirk variation, and vision-language scoring across seven criteria collapsed into a single ranked score.',
+          text: 'Shipped a convention costume-rating booth in Python and Streamlit: ten hosts, per-session mood and quirk variation, vision-language scoring over seven criteria.',
           emphasis: ['technical', 'general'],
         },
         {
-          text: 'Designed three-tier text-to-speech degradation (ElevenLabs, offline Piper, browser speech) and local faster-whisper speech-to-text so a blocked network reduces quality without stopping the system.',
+          text: 'Text-to-speech falls through three tiers (ElevenLabs, offline Piper, browser speech) and speech-to-text runs locally, so a blocked network costs quality and nothing else.',
           emphasis: ['technical', 'general'],
         },
         {
-          text: 'Wrote 214 offline tests running in about 1.5 seconds with no network, camera or model downloads, covering truncated-JSON repair, persona rotation, rank boundaries and the network fallback chain.',
+          text: '214 offline tests, 1.5 seconds, no network or camera required — truncated-JSON repair, persona rotation, rank boundaries, the whole fallback chain.',
           emphasis: ['technical'],
         },
       ],
@@ -445,23 +445,23 @@ export const profile: Profile = {
       },
       bullets: [
         {
-          text: 'Owned the computer-vision pipeline and Flask REST API backend for an AI-powered attendance system using YuNet face detection and SFace recognition with cosine similarity matching.',
+          text: 'Owned the vision pipeline and the Flask REST API: YuNet detection, SFace recognition, cosine-similarity matching.',
           emphasis: ['technical', 'research', 'general'],
         },
         {
-          text: 'Developed the React, TypeScript and Tailwind frontend and a PostgreSQL schema covering students, courses, enrolment, sessions and attendance records.',
+          text: 'Built the React and TypeScript frontend over a PostgreSQL schema for students, courses, enrolment, sessions and attendance.',
           emphasis: ['technical', 'general'],
         },
         {
-          text: 'Evaluated recognition performance under real classroom lighting and off-axis faces rather than curated frontal images.',
+          text: 'Tested against real lecture-hall lighting and off-axis faces, not curated frontal shots.',
           emphasis: ['research'],
         },
         {
-          text: 'Defended the system at a final-year group project review and was invited to develop an extended production version.',
+          text: 'Defended it at the final-year project review; invited afterwards to build a production version.',
           emphasis: ['technical', 'research', 'scholarship', 'general'],
         },
         {
-          text: 'Designed the system around a lecturer’s workflow, including CSV and PDF export so records integrate with existing institutional processes.',
+          text: 'CSV and PDF export, because the records have to reach the systems a department already runs on.',
           emphasis: ['scholarship'],
         },
       ],
@@ -547,11 +547,11 @@ export const profile: Profile = {
       },
       bullets: [
         {
-          text: 'Developing a two-stage cascaded detection architecture for real-time pipe anomaly identification, targeting industrial inspection.',
+          text: 'Building a two-stage cascaded detector for real-time pipe anomaly identification in industrial inspection.',
           emphasis: ['technical', 'research', 'general'],
         },
         {
-          text: 'Assembled a parallel ensemble of RGB and edge-enhanced YOLO models merged with Weighted Boxes Fusion to improve precision across varied lighting and surface conditions.',
+          text: 'Two YOLO models run in parallel, one on RGB and one on edge-enhanced input, merged with Weighted Boxes Fusion to hold precision across lighting and surface conditions.',
           emphasis: ['technical', 'research', 'general'],
         },
       ],
@@ -633,15 +633,15 @@ export const profile: Profile = {
       },
       bullets: [
         {
-          text: 'Built a multi-sensor ESP32 acquisition node measuring light intensity and colour spectrum with the GY-2561 and GY-31, streaming live to a Blynk IoT Cloud dashboard.',
+          text: 'Built an ESP32 acquisition node measuring light intensity and colour spectrum with the GY-2561 and GY-31, streaming live to a Blynk dashboard.',
           emphasis: ['technical', 'research', 'general'],
         },
         {
-          text: 'Integrated multiple I2C sensors on a single ESP32, handling bus arbitration and sensor calibration.',
+          text: 'Two I2C sensors on one bus, with arbitration and calibration handled so the readings mean something in absolute terms.',
           emphasis: ['technical', 'research', 'general'],
         },
         {
-          text: 'Applied instrumentation to hydroponic growing, where light intensity and spectrum are the controllable inputs.',
+          text: 'Light is the one input a hydroponic grower controls, so it is measured continuously rather than spot-checked.',
           emphasis: ['scholarship'],
         },
       ],
@@ -715,15 +715,15 @@ export const profile: Profile = {
       },
       bullets: [
         {
-          text: 'Led a team building a closed-loop fan speed controller on Arduino, driving PWM output from real-time NTC thermistor feedback.',
+          text: 'Led the team building a closed-loop fan speed controller on Arduino, driving PWM from live NTC thermistor feedback.',
           emphasis: ['technical', 'general'],
         },
         {
-          text: 'Led a project team for the first time, coordinating a group through a hardware build.',
+          text: 'First time leading a team through a hardware build rather than joining one.',
           emphasis: ['scholarship'],
         },
         {
-          text: 'Implemented continuous proportional actuation rather than threshold switching to avoid overshoot.',
+          text: 'Continuous proportional actuation instead of threshold switching, which overshoots.',
           emphasis: ['research'],
         },
       ],
@@ -789,7 +789,7 @@ export const profile: Profile = {
       },
       bullets: [
         {
-          text: 'Wired an Arduino fire alarm with flame and smoke sensing that raises a local alarm and sends an SMS notification through a GSM module.',
+          text: 'An Arduino fire alarm with flame and smoke sensing, a local siren, and SMS alerting over GSM.',
           emphasis: ['technical', 'general'],
         },
       ],
@@ -890,7 +890,7 @@ export const profile: Profile = {
           emphasis: ['scholarship'],
         },
         {
-          text: 'Produce structured PDF session materials including circuit diagrams, code examples and troubleshooting guides.',
+          text: 'Session packs go out as PDFs with circuit diagrams, code and a troubleshooting section.',
           emphasis: ['scholarship', 'general'],
         },
       ],
@@ -908,7 +908,7 @@ export const profile: Profile = {
         'Runs practical circuit design and electronics workshops for students with no prior background.',
       bullets: [
         {
-          text: 'Run practical circuit design and electronics workshops for students with no prior background in the subject.',
+          text: 'Run practical electronics workshops for students who have never built a circuit.',
           emphasis: ['scholarship', 'general'],
         },
       ],
@@ -968,19 +968,19 @@ export const profile: Profile = {
     {
       name: 'Operational Excellence Training',
       issuer: 'Chevron',
-      year: '2025',
+      year: '2026',
       emphasis: ['technical', 'scholarship', 'general'],
     },
     {
       name: 'Cyber Security and Data Privacy Awareness',
       issuer: 'Chevron',
-      year: '2025',
+      year: '2026',
       emphasis: ['technical', 'scholarship', 'general'],
     },
     {
       name: 'Business Conduct, Ethics and Conflict of Interest',
       issuer: 'Chevron',
-      year: '2025',
+      year: '2026',
       emphasis: ['scholarship', 'general'],
     },
     {
@@ -1048,9 +1048,9 @@ export const profile: Profile = {
     { year: '2024', label: 'FPGA and Verilog workshop', detail: 'SWEP workshop, OAU Faculty of Engineering.', kind: 'education' },
     { year: '2024', label: 'Led my first build team', detail: 'Smart temperature-controlled fan — a closed loop driving PWM from thermistor feedback.', kind: 'project' },
     { year: '2024', label: 'SPAW project lead, IEEE OAU', detail: 'Leads a six-session embedded systems and entrepreneurship curriculum for secondary school students.', kind: 'service' },
-    { year: '2025', label: 'Chevron Nigeria, E&I team', detail: 'Facilities engineering management intern across electrical and instrumentation — P&IDs, control loops, pneumatic standards, hazardous area classification.', kind: 'work' },
     { year: '2025', label: 'Multispectral acquisition node', detail: 'ESP32 node measuring light intensity and colour spectrum for hydroponics, streaming live telemetry.', kind: 'project' },
     { year: '2026', label: 'Smart Attendance System', detail: 'Face-recognition attendance for real lecture halls; invited to build a production version.', kind: 'project' },
+    { year: '2026', label: 'Chevron Nigeria, E&I team', detail: 'Facilities engineering management intern across electrical and instrumentation — P&IDs, control loops, pneumatic standards, hazardous area classification.', kind: 'work' },
     { year: '2026', label: 'Pipe anomaly detection', detail: 'Two-stage cascaded detector fusing RGB and edge-enhanced models for industrial inspection. In progress.', kind: 'project' },
     { year: '2027', label: 'Expected graduation', detail: 'B.Sc. Electronic and Electrical Engineering, OAU.', kind: 'education' },
   ],

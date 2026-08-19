@@ -29,7 +29,7 @@ import {
  * strings is exactly what this builds.
  *
  * What this file does *not* do is print everything it knows. Bullets come through
- * `cvBulletsFor`, which caps each entry at the strongest few; leadership and
+ * `cvBulletsFor`, which caps each entry at the strongest three; leadership and
  * projects come through their own per-variant limits. That restraint is the
  * difference between a document somebody edited and a report somebody ran: an
  * uncapped generator produces five bullets under every single role, which is a
@@ -42,7 +42,14 @@ export type Line =
   | { kind: 'section'; text: string }
   | { kind: 'paragraph'; text: string }
   /**
-   * Role/degree/project line. `meta` sits on the right, tab-aligned.
+   * Role/degree/project line. `meta` — the date — sits in a fixed right-hand
+   * column, set at the same size as the title so the two baselines agree.
+   *
+   * There is deliberately no `subtitle` here. The organisation used to be
+   * appended to the title as "Role · Organisation", which is how a single line
+   * grew long enough to collide with its own date column; it now gets its own
+   * `org` line, which is both the conventional academic setting and structurally
+   * incapable of running into anything.
    *
    * `standalone` marks an entry that nothing hangs off — a certification, where the
    * whole fact is on the one line. It changes two things in the renderers: the gap
@@ -52,8 +59,14 @@ export type Line =
    * keep-with-next paragraphs is how Word ends up shunting a whole block onto the
    * following page and leaving a hole behind it.
    */
-  | { kind: 'entry'; title: string; subtitle?: string; meta?: string; standalone?: true }
-  /** Secondary line under an entry — location, repo, coursework. */
+  | { kind: 'entry'; title: string; meta?: string; standalone?: true }
+  /**
+   * The organisation, institution or toolchain under an entry head. Set italic and
+   * indented to the same measure as the bullets, so the eye reads title → where →
+   * what, top to bottom, instead of having to parse one long run-on line.
+   */
+  | { kind: 'org'; text: string }
+  /** Tertiary line under an entry — repo, coursework, a one-line summary. */
   | { kind: 'detail'; text: string }
   | { kind: 'bullet'; text: string }
   /**
@@ -77,6 +90,13 @@ export type CvDocument = {
   /** Document-properties label. Never printed on the page itself. */
   label: string
   name: string
+  /**
+   * Role line. Goes into PDF/Word document properties only — it is deliberately
+   * *not* printed. A tagline under the name is a web-portfolio convention; a
+   * traditional CV header carries the name and the ways to reach the person, and
+   * an editorialising line between them is one of the surer signs that the page
+   * was assembled by something other than a person applying for a job.
+   */
   title: string
   /** Contact line, already assembled: location · email · phone. */
   contact: string
@@ -94,7 +114,7 @@ const LABEL: Record<CvVariant, string> = {
 }
 
 /**
- * A date range, en dash and no spaces: "2021–2027", "2025–Present".
+ * A date range, en dash and no spaces: "2021–2027", "2026–Present".
  *
  * Not an em dash. A pair of em dashes bracketing an aside is the most recognisable
  * fingerprint of generated writing, and once a reader has noticed one they start
@@ -118,10 +138,9 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
         lines.push({
           kind: 'entry',
           title: `${item.degree} ${item.field}`,
-          subtitle: item.institution,
           meta: `${dates(item.start, item.end)}${item.expected ? ' (expected)' : ''}`,
         })
-        lines.push({ kind: 'detail', text: item.location })
+        lines.push({ kind: 'org', text: `${item.institution}, ${item.location}` })
         for (const text of cvBulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
         if (CV_SHOWS_COURSEWORK[variant] && item.coursework.length > 0) {
           lines.push({
@@ -144,22 +163,17 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
         lines.push({
           kind: 'entry',
           title: item.role,
-          subtitle: item.organisation,
           meta: dates(item.start, item.end),
         })
-        lines.push({ kind: 'detail', text: item.location })
+        lines.push({ kind: 'org', text: `${item.organisation}, ${item.location}` })
         for (const text of cvBulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
       }
       break
 
     case 'projects':
       for (const item of projectsForVariant(variant)) {
-        lines.push({
-          kind: 'entry',
-          title: item.name,
-          subtitle: item.technologies.slice(0, 4).join(', '),
-          meta: item.period,
-        })
+        lines.push({ kind: 'entry', title: item.name, meta: item.period })
+        lines.push({ kind: 'org', text: item.technologies.slice(0, 4).join(', ') })
         for (const text of cvBulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
         // The repo is evidence, so it goes in. Absent where none exists — the
         // pipe anomaly work has no public repository and must not imply one.
@@ -183,9 +197,9 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
         lines.push({
           kind: 'entry',
           title: item.role,
-          subtitle: item.organisation,
           meta: dates(item.start, item.end),
         })
+        lines.push({ kind: 'org', text: item.organisation })
         const bullets = cvBulletsFor(item, variant)
         if (bullets.length > 0) {
           for (const text of bullets) lines.push({ kind: 'bullet', text })
@@ -199,12 +213,13 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
       // Entries, not bullets. The year belongs in the same right-hand column the
       // reader has already been scanning for every degree and every role — a
       // certification list that abandons that column for "Name. Issuer, Year."
-      // sentences is a different document glued onto the end of this one.
+      // sentences is a different document glued onto the end of this one. Issuer
+      // rides on the title rather than taking an `org` line of its own: five
+      // three-line stacks at the foot of the page is a section, not a list.
       for (const item of certificationsForVariant(variant)) {
         lines.push({
           kind: 'entry',
-          title: item.name,
-          subtitle: item.issuer,
+          title: `${item.name}, ${item.issuer}`,
           meta: item.year,
           standalone: true,
         })
@@ -242,10 +257,10 @@ export function buildDocument(variant: CvVariant): CvDocument {
     label: LABEL[variant],
     name: identity.name,
     title: identity.title,
-    contact: [identity.location, identity.email, identity.phone].join('  ·  '),
+    contact: [identity.location, identity.email, identity.phone].join(' · '),
     links: [identity.links.linkedin, identity.links.github, identity.links.site]
       .map((link) => link.cvText ?? link.href)
-      .join('  ·  '),
+      .join(' · '),
     lines,
   }
 }

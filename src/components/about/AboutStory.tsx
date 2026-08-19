@@ -72,7 +72,7 @@ const INTRO: Record<VisitorMode, { heading: string; lede: string }> = {
   scholarship: {
     heading:
       'I started teaching electronics in 2023, the same year I built my first working system. Neither one has stopped since.',
-    lede: 'University from 2021. Teaching and a first build in 2023. A robotics lab in 2024. An oil and gas rotation in 2025. A curriculum for secondary school students running underneath all of it.',
+    lede: 'University from 2021. Teaching and a first build in 2023. A robotics lab in 2024. An oil and gas rotation in 2026. A curriculum for secondary school students running underneath all of it.',
   },
   everything: {
     heading:
@@ -180,7 +180,7 @@ export function AboutStory() {
             text-to-speech falls through three tiers so that the last one cannot fail.
           </p>
           <p>
-            In 2025 this stopped being coursework. On Chevron Nigeria’s electrical and instrumentation
+            In 2026 this stopped being coursework. On Chevron Nigeria’s electrical and instrumentation
             team the same loops turned up with consequences attached — 4–20 mA current signalling,
             3–15 PSI pneumatics, I/P converters, hazardous area classification, P&amp;IDs to read
             before touching anything. Industrial instrumentation has been solving the problem I keep

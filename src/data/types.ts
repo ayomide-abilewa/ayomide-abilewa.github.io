@@ -189,7 +189,7 @@ export type Project = {
    * When the work happened. Free text, but it prints beside `dates()` output in
    * the generated CVs, so it follows the same convention: an en dash with no
    * spaces around it, and a capitalised "Present". A projects column reading
-   * "2026 – present" next to an experience column reading "Mar 2025–Present" is
+   * "2026 – present" next to an experience column reading "Mar 2026–Present" is
    * the sort of thing that makes a document look assembled rather than set.
    */
   period: string
