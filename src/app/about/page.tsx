@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { socialMetadata } from '@/lib/meta'
 import { AboutStory } from '@/components/about/AboutStory'
 
 /**
@@ -19,18 +20,7 @@ export const metadata: Metadata = {
   title: 'About — the thread through the work',
   description: DESCRIPTION,
   alternates: { canonical: '/about/' },
-  /* No `images` key — ./opengraph-image.tsx fills og:image and twitter:image.
-     See the note in app/layout.tsx: a hand-written /og/*.png path here overrode
-     the generated card with a file that has never existed. */
-  openGraph: {
-    title: 'About Ayomide Abilewa',
-    description: DESCRIPTION,
-    url: '/about/',
-  },
-  twitter: {
-    title: 'About Ayomide Abilewa',
-    description: DESCRIPTION,
-  },
+  ...socialMetadata({ title: 'About Ayomide Abilewa', description: DESCRIPTION, path: '/about/', card: 'about' }),
 }
 
 export default function AboutRoute() {

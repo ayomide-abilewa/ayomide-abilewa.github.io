@@ -4,6 +4,7 @@ import './globals.css'
 import { ModeProvider } from '@/lib/mode'
 import { SiteChrome } from '@/components/chrome/SiteChrome'
 import { profile } from '@/data/profile'
+import { ogImage } from '@/lib/og'
 
 /**
  * One type superfamily, three voices.
@@ -61,27 +62,22 @@ export const metadata: Metadata = {
     'Chevron Nigeria',
   ],
   alternates: { canonical: '/' },
-  /**
-   * No `images` key on either block, deliberately.
-   *
-   * Every route ships an `opengraph-image.tsx`, and Next's file convention
-   * populates og:image AND twitter:image from it. Declaring images here as well
-   * used to win the twitter tag and point it at /og/default.png, which has never
-   * existed — so every X share rendered a broken card while og:image was fine.
-   */
   openGraph: {
     type: 'profile',
     siteName: 'Ayomide Abilewa',
+    locale: 'en_GB',
     title: 'Ayomide Abilewa — Embedded Systems & Instrumentation',
     description: DESCRIPTION,
     url: SITE_URL,
     firstName: 'Ayomide',
     lastName: 'Abilewa',
+    images: [ogImage('home')],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ayomide Abilewa — Embedded Systems & Instrumentation',
     description: DESCRIPTION,
+    images: [{ url: ogImage('home').url, alt: ogImage('home').alt }],
   },
   robots: {
     index: true,

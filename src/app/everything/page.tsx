@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { socialMetadata } from '@/lib/meta'
 import { EverythingPath } from '@/components/paths/EverythingPath'
 
 /**
@@ -16,15 +17,7 @@ export const metadata: Metadata = {
   title: 'Everything — one person, read three different ways',
   description: DESCRIPTION,
   alternates: { canonical: '/everything/' },
-  openGraph: {
-    title: 'Ayomide Abilewa — Everything',
-    description: DESCRIPTION,
-    url: '/everything/',
-  },
-  twitter: {
-    title: 'Ayomide Abilewa — Everything',
-    description: DESCRIPTION,
-  },
+  ...socialMetadata({ title: 'Ayomide Abilewa — Everything', description: DESCRIPTION, path: '/everything/', card: 'everything' }),
 }
 
 export default function EverythingRoute() {

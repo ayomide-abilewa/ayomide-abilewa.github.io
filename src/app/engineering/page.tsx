@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { socialMetadata } from '@/lib/meta'
 import { EngineeringPath } from '@/components/paths/EngineeringPath'
 
 /**
@@ -8,10 +9,6 @@ import { EngineeringPath } from '@/components/paths/EngineeringPath'
  * scroll reveals), so the route file stays a server component and owns metadata.
  * Description and OG copy are written for this audience specifically — a shared
  * link to /engineering should preview as an engineering page, not as the site index.
- *
- * No `openGraph.images` here on purpose: `opengraph-image.tsx` in this folder
- * supplies it, and an explicit array would override the generated card and point at
- * a file that does not exist.
  */
 
 const DESCRIPTION =
@@ -21,15 +18,7 @@ export const metadata: Metadata = {
   title: 'Engineering — systems built for the conditions that break them',
   description: DESCRIPTION,
   alternates: { canonical: '/engineering/' },
-  openGraph: {
-    title: 'Ayomide Abilewa — Engineering',
-    description: DESCRIPTION,
-    url: '/engineering/',
-  },
-  twitter: {
-    title: 'Ayomide Abilewa — Engineering',
-    description: DESCRIPTION,
-  },
+  ...socialMetadata({ title: 'Ayomide Abilewa — Engineering', description: DESCRIPTION, path: '/engineering/', card: 'engineering' }),
 }
 
 export default function EngineeringRoute() {

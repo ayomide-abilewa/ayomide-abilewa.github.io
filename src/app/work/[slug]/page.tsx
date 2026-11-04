@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { profile } from '@/data/profile'
+import { socialMetadata } from '@/lib/meta'
 import { allProjectSlugs, projectBySlug } from '@/lib/select'
 import { CaseStudy } from '@/components/work/CaseStudy'
 
@@ -30,21 +31,13 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
     description: project.tagline,
     keywords: [...project.technologies, ...project.domains],
     alternates: { canonical: url },
-    /* No `images` key — ./opengraph-image.tsx renders a per-project card and
-       fills og:image and twitter:image from it. See the note in app/layout.tsx:
-       the hand-written /og/work-<slug>.png paths that used to be here overrode
-       those generated cards with files that have never existed, so every one of
-       the seven case studies shared as a broken preview. */
-    openGraph: {
+    ...socialMetadata({
+      title: `${project.name} — Ayomide Abilewa`,
+      description: project.tagline,
+      path: url,
+      card: `work-${project.slug}`,
       type: 'article',
-      title: `${project.name} — Ayomide Abilewa`,
-      description: project.tagline,
-      url,
-    },
-    twitter: {
-      title: `${project.name} — Ayomide Abilewa`,
-      description: project.tagline,
-    },
+    }),
   }
 }
 

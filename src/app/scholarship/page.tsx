@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { socialMetadata } from '@/lib/meta'
 import { ScholarshipPath } from '@/components/paths/ScholarshipPath'
 
 /**
@@ -16,15 +17,7 @@ export const metadata: Metadata = {
   title: 'Scholarship — journey, teaching and what the work is for',
   description: DESCRIPTION,
   alternates: { canonical: '/scholarship/' },
-  openGraph: {
-    title: 'Ayomide Abilewa — Scholarship & Fellowship',
-    description: DESCRIPTION,
-    url: '/scholarship/',
-  },
-  twitter: {
-    title: 'Ayomide Abilewa — Scholarship & Fellowship',
-    description: DESCRIPTION,
-  },
+  ...socialMetadata({ title: 'Ayomide Abilewa — Scholarship & Fellowship', description: DESCRIPTION, path: '/scholarship/', card: 'scholarship' }),
 }
 
 export default function ScholarshipRoute() {

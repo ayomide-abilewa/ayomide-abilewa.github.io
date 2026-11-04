@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { socialMetadata } from '@/lib/meta'
 import { CvLibrary } from '@/components/cv/CvLibrary'
 
 /**
@@ -16,18 +17,7 @@ export const metadata: Metadata = {
   title: 'CV — four versions',
   description: DESCRIPTION,
   alternates: { canonical: '/cv/' },
-  /* No `images` key — ./opengraph-image.tsx fills og:image and twitter:image.
-     See the note in app/layout.tsx: a hand-written /og/*.png path here overrode
-     the generated card with a file that has never existed. */
-  openGraph: {
-    title: 'Ayomide Abilewa — CV',
-    description: DESCRIPTION,
-    url: '/cv/',
-  },
-  twitter: {
-    title: 'Ayomide Abilewa — CV',
-    description: DESCRIPTION,
-  },
+  ...socialMetadata({ title: 'Ayomide Abilewa — CV', description: DESCRIPTION, path: '/cv/', card: 'cv' }),
 }
 
 export default function CvRoute() {

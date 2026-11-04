@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { socialMetadata } from '@/lib/meta'
 import { ContactPage } from '@/components/contact/ContactPage'
 
 /**
@@ -16,18 +17,7 @@ export const metadata: Metadata = {
   title: 'Contact — email, GitHub, LinkedIn',
   description: DESCRIPTION,
   alternates: { canonical: '/contact/' },
-  /* No `images` key — ./opengraph-image.tsx fills og:image and twitter:image.
-     See the note in app/layout.tsx: a hand-written /og/*.png path here overrode
-     the generated card with a file that has never existed. */
-  openGraph: {
-    title: 'Contact Ayomide Abilewa',
-    description: DESCRIPTION,
-    url: '/contact/',
-  },
-  twitter: {
-    title: 'Contact Ayomide Abilewa',
-    description: DESCRIPTION,
-  },
+  ...socialMetadata({ title: 'Contact Ayomide Abilewa', description: DESCRIPTION, path: '/contact/', card: 'contact' }),
 }
 
 export default function ContactRoute() {

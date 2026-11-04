@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { socialMetadata } from '@/lib/meta'
 import { WorkIndex } from '@/components/work/WorkIndex'
 
 /**
@@ -15,15 +16,7 @@ export const metadata: Metadata = {
   title: 'Projects',
   description: DESCRIPTION,
   alternates: { canonical: '/work/' },
-  openGraph: {
-    title: 'Projects — Ayomide Abilewa',
-    description: DESCRIPTION,
-    url: '/work/',
-  },
-  twitter: {
-    title: 'Projects — Ayomide Abilewa',
-    description: DESCRIPTION,
-  },
+  ...socialMetadata({ title: 'Projects — Ayomide Abilewa', description: DESCRIPTION, path: '/work/', card: 'work' }),
 }
 
 export default function WorkRoute() {

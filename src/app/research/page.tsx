@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { socialMetadata } from '@/lib/meta'
 import { ResearchPath } from '@/components/paths/ResearchPath'
 
 /**
@@ -16,15 +17,7 @@ export const metadata: Metadata = {
   title: 'Research — measurement and detection under non-ideal conditions',
   description: DESCRIPTION,
   alternates: { canonical: '/research/' },
-  openGraph: {
-    title: 'Ayomide Abilewa — Research',
-    description: DESCRIPTION,
-    url: '/research/',
-  },
-  twitter: {
-    title: 'Ayomide Abilewa — Research',
-    description: DESCRIPTION,
-  },
+  ...socialMetadata({ title: 'Ayomide Abilewa — Research', description: DESCRIPTION, path: '/research/', card: 'research' }),
 }
 
 export default function ResearchRoute() {
