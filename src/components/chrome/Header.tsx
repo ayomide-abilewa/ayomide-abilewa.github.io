@@ -61,10 +61,10 @@ export function Header() {
       {/* Reading position. Scroll-driven in CSS, so it costs no scroll listener. */}
       <div className="read-progress" aria-hidden="true" />
 
-      <div className="shell flex h-14 items-center gap-4">
+      <div className="shell flex h-14 items-center gap-2 sm:gap-4">
         <Link
           href="/"
-          className="group flex shrink-0 items-center gap-2.5 text-content"
+          className="group flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2.5 text-content sm:justify-start"
           aria-label="Ayomide Abilewa — home"
         >
           <ProbeMark className="h-5 w-8 text-content-muted transition-colors group-hover:text-content" />
@@ -81,7 +81,7 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 aria-current={active ? 'page' : undefined}
-                className={`relative rounded-control px-2.5 py-1.5 text-caption transition-colors ${
+                className={`relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-control px-2 text-caption transition-colors sm:px-2.5 ${
                   active ? 'text-accent' : 'text-content-muted hover:text-content'
                 }`}
               >
@@ -93,7 +93,9 @@ export function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        {/* Below sm there is no room for these at 44px; the lens switcher moves
+            into the path hero and GitHub stays in the hero actions and footer. */}
+        <div className="hidden items-center gap-2 sm:flex">
           {/* Direct CV download, always one click away, matched to the active path. */}
           <a
             href={cvFile(CV_FOR_MODE[mode], 'pdf')}
@@ -106,7 +108,7 @@ export function Header() {
                 mode,
               })
             }
-            className="hidden rounded-control border border-hairline px-2.5 py-1.5 font-mono text-micro uppercase tracking-[0.12em] text-content-muted transition-colors hover:border-accent hover:text-accent md:inline-block"
+            className="hidden min-h-11 items-center rounded-control border border-hairline px-2.5 font-mono text-micro uppercase tracking-[0.12em] text-content-muted transition-colors hover:border-accent hover:text-accent md:inline-flex"
           >
             CV ↓
           </a>
@@ -115,7 +117,7 @@ export function Header() {
             target="_blank"
             rel="noreferrer noopener"
             onClick={() => track({ name: 'external_link', target: 'github', mode })}
-            className="rounded-control p-1.5 text-content-muted transition-colors hover:text-content"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-control text-content-muted transition-colors hover:text-content"
             aria-label="GitHub profile (opens in a new tab)"
           >
             <svg viewBox="0 0 16 16" className="h-4 w-4" fill="currentColor" aria-hidden="true">

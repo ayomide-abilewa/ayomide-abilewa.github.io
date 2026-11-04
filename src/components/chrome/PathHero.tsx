@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import type { VisitorMode } from '@/data/types'
 import { MODE_LABELS } from '@/lib/mode'
 import { CtaRow, type Action } from '@/components/section/Cta'
+import { ModeSwitcher } from '@/components/chrome/ModeSwitcher'
 import { SettledTrace } from '@/components/brand/SettledTrace'
 import { Reveal } from '@/components/motion/Reveal'
 
@@ -44,12 +45,16 @@ export function PathHero({
         }
       >
         <Reveal>
-          <p className="eyebrow flex items-center gap-2.5">
+          <p className="eyebrow hidden items-center gap-2.5 sm:flex">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
             <span>
               Viewing as {MODE_LABELS[mode]} — {eyebrow}
             </span>
           </p>
+          <div className="sm:hidden">
+            <ModeSwitcher inHero />
+            <p className="eyebrow">{eyebrow}</p>
+          </div>
 
           <h1 className="mt-5 max-w-[38ch] text-h1 font-medium tracking-tight text-balance">
             {heading}

@@ -28,7 +28,14 @@ const ROUTES: Record<VisitorMode, string> = {
   everything: '/everything/',
 }
 
-export function ModeSwitcher({ compact = false }: { compact?: boolean }) {
+export function ModeSwitcher({
+  compact = false,
+  inHero = false,
+}: {
+  compact?: boolean
+  /** Eyebrow-styled trigger for the path hero, where it lives on phones. */
+  inHero?: boolean
+}) {
   const { mode, unset, setMode } = useMode()
   const router = useRouter()
   const [open, setOpen] = useState(false)
@@ -73,12 +80,23 @@ export function ModeSwitcher({ compact = false }: { compact?: boolean }) {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="true"
-        className="flex items-center gap-1.5 rounded-control border border-hairline px-2.5 py-1.5 text-caption text-content-muted transition-colors hover:border-accent hover:text-content"
+        className={
+          inHero
+            ? 'eyebrow flex min-h-11 items-center gap-2.5 text-left'
+            : 'flex min-h-11 items-center gap-1.5 rounded-control border border-hairline px-2.5 text-caption text-content-muted transition-colors hover:border-accent hover:text-content'
+        }
       >
-        <span className="hidden font-mono text-micro uppercase tracking-[0.12em] text-content-faint sm:inline">
-          Viewing as
+        {inHero && <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />}
+        <span
+          className={
+            inHero
+              ? ''
+              : 'hidden font-mono text-micro uppercase tracking-[0.12em] text-content-faint sm:inline'
+          }
+        >
+          Viewing as{' '}
         </span>
-        <span className="font-medium text-content">{MODE_LABELS[mode]}</span>
+        <span className={inHero ? 'text-accent' : 'font-medium text-content'}>{MODE_LABELS[mode]}</span>
         <svg
           viewBox="0 0 10 6"
           className={`h-1.5 w-2.5 transition-transform ${open ? 'rotate-180' : ''}`}
@@ -90,7 +108,7 @@ export function ModeSwitcher({ compact = false }: { compact?: boolean }) {
 
       {open && (
         <div
-          className="absolute right-0 top-[calc(100%+6px)] z-50 w-[19rem] rounded-panel border border-hairline bg-surface-raised p-1.5 shadow-2xl shadow-black/25"
+          className={`absolute ${inHero ? 'left-0' : 'right-0'} top-[calc(100%+6px)] z-50 w-[19rem] max-w-[calc(100vw-2rem)] rounded-panel border border-hairline bg-surface-raised p-1.5 shadow-2xl shadow-black/25`}
           role="group"
           aria-label="Change visitor mode"
         >
@@ -105,7 +123,7 @@ export function ModeSwitcher({ compact = false }: { compact?: boolean }) {
                 type="button"
                 onClick={() => choose(option)}
                 aria-current={current ? 'true' : undefined}
-                className={`block w-full rounded-control px-2.5 py-2 text-left transition-colors ${
+                className={`block min-h-11 w-full rounded-control px-2.5 py-2 text-left transition-colors ${
                   current ? 'bg-accent/10' : 'hover:bg-content/5'
                 }`}
               >
