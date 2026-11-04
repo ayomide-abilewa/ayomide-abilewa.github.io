@@ -41,7 +41,7 @@ const WEIGHT: Record<NonNullable<Action['weight']>, string> = {
  * colours. See globals.css.
  */
 const BASE =
-  'btn-live inline-flex items-center gap-2 rounded-control px-4 py-2.5 text-caption font-medium'
+  'btn-live inline-flex min-h-11 items-center gap-2 rounded-control px-4 py-2.5 text-caption font-medium'
 
 function ExternalMark() {
   return (

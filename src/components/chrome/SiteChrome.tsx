@@ -16,7 +16,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       <RouteSweep />
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-control focus:border focus:border-accent focus:bg-surface-raised focus:px-3 focus:py-2 focus:text-caption focus:text-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-control focus:border focus:border-accent focus:bg-surface-raised focus:inline-flex focus:min-h-11 focus:items-center focus:px-3 focus:text-caption focus:text-content"
       >
         Skip to content
       </a>

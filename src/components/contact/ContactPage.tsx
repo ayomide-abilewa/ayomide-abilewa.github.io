@@ -172,7 +172,7 @@ export function ContactPage() {
               <a
                 href={mailto}
                 onClick={onEmail}
-                className="inline-block break-all font-mono text-h4 text-accent underline decoration-hairline underline-offset-[6px] transition-colors hover:decoration-accent"
+                className="inline-flex min-h-11 items-center break-all font-mono text-h4 text-accent underline decoration-hairline underline-offset-[6px] transition-colors hover:decoration-accent"
               >
                 {identity.email}
               </a>
@@ -181,7 +181,7 @@ export function ContactPage() {
               <a
                 href={telHref(identity.phone)}
                 onClick={() => track({ name: 'external_link', target: 'phone', mode })}
-                className="inline-block font-mono text-body text-content transition-colors hover:text-accent"
+                className="inline-flex min-h-11 items-center font-mono text-body text-content transition-colors hover:text-accent"
               >
                 {identity.phone}
               </a>

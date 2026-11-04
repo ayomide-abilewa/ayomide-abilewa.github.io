@@ -50,7 +50,7 @@ export function CaseStudy({ project }: { project: Project }) {
         <Reveal>
           <Link
             href="/work/"
-            className="group inline-flex items-center gap-2 font-mono text-micro uppercase tracking-[0.12em] text-content-faint transition-colors hover:text-accent"
+            className="group inline-flex min-h-11 items-center gap-2 font-mono text-micro uppercase tracking-[0.12em] text-content-faint transition-colors hover:text-accent"
           >
             <span
               aria-hidden="true"
@@ -103,7 +103,7 @@ export function CaseStudy({ project }: { project: Project }) {
                   onClick={() =>
                     track({ name: 'external_link', target: 'repo', slug: project.slug, mode })
                   }
-                  className="underline decoration-hairline underline-offset-4 hover:text-accent hover:decoration-accent"
+                  className="inline-flex min-h-11 items-center underline decoration-hairline underline-offset-4 hover:text-accent hover:decoration-accent"
                 >
                   {project.repo.replace('https://github.com/', '')}
                   <span className="sr-only"> (opens in a new tab)</span>

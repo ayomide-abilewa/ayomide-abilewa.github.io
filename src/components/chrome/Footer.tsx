@@ -26,11 +26,11 @@ export function Footer() {
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="eyebrow mb-2.5">Contact</p>
+            <p className="eyebrow mb-1">Contact</p>
             <a
               href={`mailto:${identity.email}`}
               onClick={() => track({ name: 'external_link', target: 'email', mode })}
-              className="block text-caption text-content transition-colors hover:text-accent"
+              className="flex min-h-11 items-center text-caption text-content transition-colors hover:text-accent"
             >
               {identity.email}
             </a>
@@ -38,13 +38,13 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="eyebrow mb-2.5">Elsewhere</p>
+            <p className="eyebrow mb-1">Elsewhere</p>
             <a
               href={identity.links.github.href}
               target="_blank"
               rel="noreferrer noopener"
               onClick={() => track({ name: 'external_link', target: 'github', mode })}
-              className="block text-caption text-content-muted transition-colors hover:text-accent"
+              className="flex min-h-11 items-center text-caption text-content-muted transition-colors hover:text-accent"
             >
               GitHub
             </a>
@@ -53,14 +53,14 @@ export function Footer() {
               target="_blank"
               rel="noreferrer noopener"
               onClick={() => track({ name: 'external_link', target: 'linkedin', mode })}
-              className="mt-1 block text-caption text-content-muted transition-colors hover:text-accent"
+              className="flex min-h-11 items-center text-caption text-content-muted transition-colors hover:text-accent"
             >
               LinkedIn
             </a>
           </div>
 
           <div>
-            <p className="eyebrow mb-2.5">Paths</p>
+            <p className="eyebrow mb-1">Paths</p>
             {([
               ['/engineering/', 'Engineering'],
               ['/research/', 'Research'],
@@ -70,7 +70,7 @@ export function Footer() {
               <Link
                 key={href}
                 href={href}
-                className="mt-1 block text-caption text-content-muted transition-colors first:mt-0 hover:text-accent"
+                className="flex min-h-11 items-center text-caption text-content-muted transition-colors hover:text-accent"
               >
                 {label}
               </Link>
@@ -78,12 +78,12 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="eyebrow mb-2.5">Display</p>
+            <p className="eyebrow mb-1">Display</p>
             <button
               type="button"
               onClick={toggleLofi}
               aria-pressed={lofi}
-              className="text-left text-caption text-content-muted transition-colors hover:text-accent"
+              className="min-h-11 text-left text-caption text-content-muted transition-colors hover:text-accent"
             >
               {lofi ? 'Restore full fidelity' : 'Low fidelity mode'}
             </button>

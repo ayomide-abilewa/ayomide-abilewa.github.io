@@ -86,7 +86,7 @@ export function LeadProject({
           <Link
             href={`/work/${project.slug}/`}
             onClick={open}
-            className="group inline-flex items-center gap-2 text-caption font-medium text-accent"
+            className="group inline-flex min-h-11 items-center gap-2 text-caption font-medium text-accent"
           >
             Read the full case study
             <span
@@ -104,7 +104,7 @@ export function LeadProject({
               onClick={() =>
                 track({ name: 'external_link', target: 'repo', slug: project.slug, mode })
               }
-              className="text-caption text-content-muted underline decoration-hairline underline-offset-4 hover:text-accent hover:decoration-accent"
+              className="inline-flex min-h-11 items-center text-caption text-content-muted underline decoration-hairline underline-offset-4 hover:text-accent hover:decoration-accent"
             >
               Source on GitHub
               <span className="sr-only"> (opens in a new tab)</span>

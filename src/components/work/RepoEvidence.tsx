@@ -67,7 +67,7 @@ export function RepoEvidence() {
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => track({ name: 'external_link', target: 'github', mode })}
-        className="mt-6 inline-flex items-center gap-2 text-caption font-medium text-accent"
+        className="mt-6 inline-flex min-h-11 items-center gap-2 text-caption font-medium text-accent"
       >
         {profile.identity.links.github.cvText}
         <span aria-hidden="true">→</span>

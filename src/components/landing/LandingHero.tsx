@@ -104,7 +104,7 @@ export function LandingHero() {
           setting exists for. It also now works with no JavaScript at all. */}
       <a
         href="#choose"
-        className="group mt-14 flex items-center gap-3 self-start text-left"
+        className="group mt-14 flex min-h-11 items-center gap-3 self-start text-left"
         data-drop
         style={{ '--drop-delay': '700ms' } as CSSProperties}
       >

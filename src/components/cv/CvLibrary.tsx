@@ -95,7 +95,13 @@ function ComparisonTable({ active }: { active: CvVariant }) {
   const shapes = CV_VARIANTS.map((variant) => ({ variant, shape: cvShape(variant) }))
 
   return (
-    <div className="overflow-x-auto">
+    // Focusable so keyboard users can scroll the table sideways on narrow screens.
+    <div
+      className="overflow-x-auto"
+      tabIndex={0}
+      role="region"
+      aria-label="CV comparison table, scrolls sideways"
+    >
       <table className="w-full min-w-[46rem] border-collapse text-left">
         <caption className="sr-only">
           How the four CV versions differ in section order, length and content
@@ -355,7 +361,7 @@ export function CvLibrary() {
                     href={cvFile(variant, format)}
                     download
                     onClick={() => track({ name: 'cv_downloaded', variant, format, mode })}
-                    className="font-mono text-micro uppercase tracking-[0.12em] text-content-muted transition-colors hover:text-accent"
+                    className="inline-flex min-h-11 min-w-11 items-center font-mono text-micro uppercase tracking-[0.12em] text-content-muted transition-colors hover:text-accent"
                   >
                     {format === 'pdf' ? 'PDF ↓' : 'DOCX ↓'}
                   </a>

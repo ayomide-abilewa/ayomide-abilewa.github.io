@@ -229,12 +229,12 @@ export function InterestGraph({ interests }: { interests: ResearchInterest[] }) 
                     {endpoint.href ? (
                       <Link
                         href={endpoint.href}
-                        className="inline-block rounded-control border border-hairline px-2.5 py-1.5 font-mono text-micro text-content-muted"
+                        className="inline-flex min-h-11 items-center rounded-control border border-hairline px-2.5 font-mono text-micro text-content-muted"
                       >
                         {endpoint.label}
                       </Link>
                     ) : (
-                      <span className="inline-block rounded-control border border-hairline px-2.5 py-1.5 font-mono text-micro text-content-muted">
+                      <span className="inline-flex min-h-11 items-center rounded-control border border-hairline px-2.5 font-mono text-micro text-content-muted">
                         {endpoint.label}
                       </span>
                     )}
