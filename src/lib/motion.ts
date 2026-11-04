@@ -57,73 +57,52 @@ export const INTRO_REVEAL_SECONDS = (INTRO_TIMING.sweep + INTRO_TIMING.hold) / 1
 
 /**
  * Delay to add to an entrance that must not start until the opening has handed
- * the page over.
+ * the page over. `data-intro` is only ever set on `/`, so every other page gets 0.
  *
- * Without this, an animation that begins on mount runs its whole course behind
- * the opening field and is simply finished by the time anyone can see it — which
- * is exactly what happened to the name underline: a 1.15s draw starting at 0.34s
- * was over before the field had finished lifting at 1.42s.
- *
- * Read once, synchronously, on the first client render. `data-intro` is set by
- * the pre-paint script in <head> long before React exists, so it is already
- * correct here; and it is only ever set on `/`, so every other page gets 0 and
- * keeps its original timing. Same for a repeat visit or reduced motion, where
- * there is no opening to wait for and waiting would just look slow.
+ * Read after mount: reading `document` during render gave the build and the
+ * browser different first renders, and React threw away the exported HTML.
  */
 export function useIntroOffset(enabled: boolean): number {
-  const [offset] = useState(() => {
-    if (!enabled || typeof document === 'undefined') return 0
-    return document.documentElement.dataset.intro === 'on' ? INTRO_REVEAL_SECONDS : 0
-  })
+  const [offset, setOffset] = useState(0)
+  useEffect(() => {
+    if (enabled && document.documentElement.dataset.intro === 'on') setOffset(INTRO_REVEAL_SECONDS)
+  }, [enabled])
   return offset
 }
 
 /**
- * Resolved synchronously on the first client render, not in an effect.
+ * A media query, false until mounted.
  *
- * The effect version had a real bug. It returned `true` until mounted, which made
- * `riseVariants` hand back `hidden: { opacity: 1 }`; the effect then flipped it to
- * `false`, redefining `hidden` as `{ opacity: 0 }`. Anything still sitting in the
- * hidden state — including rows partly visible at the fold, which have not yet met
- * the viewport margin — animated *out* to invisible and only came back on scroll.
- * Content flickering off after load is worse than any animation it was protecting.
- *
- * Reading matchMedia in the initialiser means the value is already correct on the
- * render React hydrates with, so the variant definitions never change underneath a
- * component. The build-time value stays `true`, so the exported HTML is fully
- * visible for anyone whose JavaScript never arrives.
+ * The build has no window, so the first browser render has to agree with it;
+ * the real value arrives in an effect. Callers must treat false as "render the
+ * finished, static state", never as "hide and animate".
  */
-export function usePrefersReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(() =>
-    typeof window === 'undefined' ? true : window.matchMedia(REDUCED_QUERY).matches,
-  )
-
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false)
   useEffect(() => {
-    const query = window.matchMedia(REDUCED_QUERY)
-    setReduced(query.matches)
-    const onChange = (event: MediaQueryListEvent) => setReduced(event.matches)
-    query.addEventListener('change', onChange)
-    return () => query.removeEventListener('change', onChange)
-  }, [])
+    const list = window.matchMedia(query)
+    setMatches(list.matches)
+    const onChange = (event: MediaQueryListEvent) => setMatches(event.matches)
+    list.addEventListener('change', onChange)
+    return () => list.removeEventListener('change', onChange)
+  }, [query])
+  return matches
+}
 
-  return reduced
+export function usePrefersReducedMotion(): boolean {
+  return useMediaQuery(REDUCED_QUERY)
 }
 
 /** True on touch-primary devices, where the desktop motion set is replaced. */
 export function useIsTouch(): boolean {
-  const [touch, setTouch] = useState(() =>
-    typeof window === 'undefined'
-      ? false
-      : window.matchMedia('(hover: none) and (pointer: coarse)').matches,
-  )
-  useEffect(() => {
-    const query = window.matchMedia('(hover: none) and (pointer: coarse)')
-    setTouch(query.matches)
-    const onChange = (event: MediaQueryListEvent) => setTouch(event.matches)
-    query.addEventListener('change', onChange)
-    return () => query.removeEventListener('change', onChange)
-  }, [])
-  return touch
+  return useMediaQuery('(hover: none) and (pointer: coarse)')
+}
+
+/** False on the build and the first browser render, true after. */
+export function useMounted(): boolean {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  return mounted
 }
 
 /**

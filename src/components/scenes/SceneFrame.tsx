@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { useMode } from '@/lib/mode'
-import { usePrefersReducedMotion, useIsTouch } from '@/lib/motion'
+import { usePrefersReducedMotion, useIsTouch, useMounted } from '@/lib/motion'
 
 /**
  * Shared shell for the three path scenes.
@@ -30,7 +30,9 @@ export function useSceneTier(): SceneTier {
   const reduced = usePrefersReducedMotion()
   const touch = useIsTouch()
   const { lofi } = useMode()
-  if (reduced || lofi) return 'still'
+  const mounted = useMounted()
+  // Still until mounted, so the exported HTML is the finished frame.
+  if (!mounted || reduced || lofi) return 'still'
   if (touch) return 'simple'
   return 'full'
 }

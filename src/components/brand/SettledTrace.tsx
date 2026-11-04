@@ -3,7 +3,7 @@
 import { motion } from 'motion/react'
 import { useId } from 'react'
 import { tracePath, traceRulePath } from '@/lib/trace'
-import { usePrefersReducedMotion, useIntroOffset } from '@/lib/motion'
+import { usePrefersReducedMotion, useIntroOffset, useMounted } from '@/lib/motion'
 
 /**
  * The settled trace, drawn as SVG.
@@ -42,7 +42,8 @@ export function SettledTrace({
   const reduced = usePrefersReducedMotion()
   const introOffset = useIntroOffset(afterIntro)
   const d = tracePath(width, height)
-  const shouldAnimate = animate && !reduced
+  // Not on the first render: the exported HTML must show the finished line.
+  const shouldAnimate = useMounted() && animate && !reduced
   const start = delay + introOffset
 
   return (

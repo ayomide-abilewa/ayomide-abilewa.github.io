@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
 
 /**
  * The page arrives.
@@ -25,9 +25,11 @@ import type { ReactNode } from 'react'
  */
 export function PageEnter({ children }: { children: ReactNode }) {
   const pathname = usePathname()
+  // The page a visitor lands on is already there; only navigations rise in.
+  const landing = useRef(pathname)
 
   return (
-    <div key={pathname} className="page-enter">
+    <div key={pathname} className={pathname === landing.current ? undefined : 'page-enter'}>
       {children}
     </div>
   )
