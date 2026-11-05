@@ -1,5 +1,6 @@
 import { profile } from '../src/data/profile'
 import type { CvVariant } from '../src/data/types'
+import { formatRange, isAhead } from '../src/lib/dates'
 import {
   CV_SECTION_ORDER,
   CV_SECTION_TITLES,
@@ -11,6 +12,7 @@ import {
   leadershipForVariant,
   projectsForVariant,
   skillsForVariant,
+  projectPeriod,
   type CvSection,
 } from '../src/lib/select'
 
@@ -113,18 +115,6 @@ const LABEL: Record<CvVariant, string> = {
   general: 'Curriculum Vitae',
 }
 
-/**
- * A date range, en dash and no spaces: "2021–2027", "2026–Present".
- *
- * Not an em dash. A pair of em dashes bracketing an aside is the most recognisable
- * fingerprint of generated writing, and once a reader has noticed one they start
- * finding them everywhere — including in a date column, where the correct mark has
- * always been an en dash anyway.
- */
-function dates(start: string, end: string): string {
-  return start === end ? start : `${start}–${end}`
-}
-
 function sectionLines(variant: CvVariant, section: CvSection): Line[] {
   const lines: Line[] = []
 
@@ -138,7 +128,7 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
         lines.push({
           kind: 'entry',
           title: `${item.degree} ${item.field}`,
-          meta: `${dates(item.start, item.end)}${item.expected ? ' (expected)' : ''}`,
+          meta: `${formatRange(item.start, item.end)}${isAhead(item.end) ? ' (expected)' : ''}`,
         })
         lines.push({ kind: 'org', text: `${item.institution}, ${item.location}` })
         for (const text of cvBulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
@@ -163,7 +153,7 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
         lines.push({
           kind: 'entry',
           title: item.role,
-          meta: dates(item.start, item.end),
+          meta: formatRange(item.start, item.end),
         })
         lines.push({ kind: 'org', text: `${item.organisation}, ${item.location}` })
         for (const text of cvBulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
@@ -172,7 +162,7 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
 
     case 'projects':
       for (const item of projectsForVariant(variant)) {
-        lines.push({ kind: 'entry', title: item.name, meta: item.period })
+        lines.push({ kind: 'entry', title: item.name, meta: projectPeriod(item) })
         lines.push({ kind: 'org', text: item.technologies.slice(0, 4).join(', ') })
         for (const text of cvBulletsFor(item, variant)) lines.push({ kind: 'bullet', text })
         // The repo is evidence, so it goes in. Absent where none exists — the
@@ -197,7 +187,7 @@ function sectionLines(variant: CvVariant, section: CvSection): Line[] {
         lines.push({
           kind: 'entry',
           title: item.role,
-          meta: dates(item.start, item.end),
+          meta: formatRange(item.start, item.end),
         })
         lines.push({ kind: 'org', text: item.organisation })
         const bullets = cvBulletsFor(item, variant)

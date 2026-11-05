@@ -12,6 +12,7 @@ import {
   experienceForMode,
   indexOrderForMode,
   leadershipForMode,
+  projectPeriod,
 } from '@/lib/select'
 import { Section } from '@/components/section/Section'
 import { CtaRow } from '@/components/section/Cta'
@@ -234,7 +235,7 @@ export function AboutStory() {
                   </span>
                 </Link>
                 <span className="mt-0.5 block font-mono text-micro text-content-faint">
-                  {project.period}
+                  {projectPeriod(project)}
                 </span>
               </p>
               <p className="max-w-measure text-body text-content-muted text-pretty">{lesson}</p>

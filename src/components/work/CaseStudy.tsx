@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 import type { Project, VisitorMode } from '@/data/types'
 import { useMode } from '@/lib/mode'
 import { track } from '@/lib/analytics'
-import { framingFor, projectNeighbours } from '@/lib/select'
+import { framingFor, projectNeighbours, projectPeriod } from '@/lib/select'
 import { Reveal } from '@/components/motion/Reveal'
 import { Section, Field, TickList } from '@/components/section/Section'
 import { CtaRow } from '@/components/section/Cta'
@@ -82,7 +82,7 @@ export function CaseStudy({ project }: { project: Project }) {
 
         <Reveal delay={0.08}>
           <dl className="mt-10 max-w-[34rem] border-t border-hairline">
-            <MetaRow label="Period">{project.period}</MetaRow>
+            <MetaRow label="Period">{projectPeriod(project)}</MetaRow>
             <MetaRow label="Status">
               <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <StatusPill status={project.status} />

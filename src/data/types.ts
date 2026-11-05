@@ -96,8 +96,8 @@ export type Education = {
   field: string
   location: string
   start: string
+  /** Graduation. Shown as expected while it is still ahead of the build date. */
   end: string
-  expected: boolean
   coursework: string[]
   /**
    * Named `bullets` like every other tagged source, so `bulletsFor` accepts an
@@ -112,9 +112,10 @@ export type Experience = {
   role: string
   organisation: string
   location: string
+  /** "2024" or "Apr 2026". See lib/dates.ts. */
   start: string
-  end: string
-  current: boolean
+  /** Omit while ongoing; "current" is derived from this at build time. */
+  end?: string
   /** One-line summary for cards and timelines. */
   summary: string
   bullets: Bullet[]
@@ -185,14 +186,9 @@ export type Project = {
   name: string
   /** One honest line. No superlatives that the source material cannot support. */
   tagline: string
-  /**
-   * When the work happened. Free text, but it prints beside `dates()` output in
-   * the generated CVs, so it follows the same convention: an en dash with no
-   * spaces around it, and a capitalised "Present". A projects column reading
-   * "2026 – present" next to an experience column reading "Mar 2026–Present" is
-   * the sort of thing that makes a document look assembled rather than set.
-   */
-  period: string
+  /** When the work happened: "2024" or "Apr 2026"; omit `end` while ongoing. */
+  start: string
+  end?: string
   status: ProjectStatus
   statusNote?: string
   repo?: string
@@ -234,8 +230,8 @@ export type LeadershipRole = {
   organisation: string
   location?: string
   start: string
-  end: string
-  current: boolean
+  /** Omit while ongoing. */
+  end?: string
   summary: string
   bullets: Bullet[]
   rank: Partial<Record<VisitorMode, number>>

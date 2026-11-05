@@ -3,6 +3,9 @@ name: Deploy portfolio
 on:
   push:
     branches: [main]
+  # Rebuild monthly so anything whose end date has passed stops reading as current.
+  schedule:
+    - cron: '0 5 1 * *'
   workflow_dispatch:
 
 permissions:

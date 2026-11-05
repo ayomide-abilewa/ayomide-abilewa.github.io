@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import type { Project, ProjectStatus, VisitorMode } from '@/data/types'
-import { framingFor } from '@/lib/select'
+import { framingFor, projectPeriod } from '@/lib/select'
 import { track } from '@/lib/analytics'
 import { RevealGroup, RevealItem } from '@/components/motion/Reveal'
 
@@ -65,7 +65,7 @@ export function ProjectRow({
             <span className="text-h3 font-medium tracking-tight text-content transition-colors group-hover:text-accent">
               {project.name}
             </span>
-            <span className="font-mono text-micro text-content-faint">{project.period}</span>
+            <span className="font-mono text-micro text-content-faint">{projectPeriod(project)}</span>
           </span>
 
           <span className="mt-2 block max-w-measure text-body text-content-muted text-pretty">

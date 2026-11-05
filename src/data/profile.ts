@@ -84,7 +84,6 @@ export const profile: Profile = {
       location: 'Ile-Ife, Osun State, Nigeria',
       start: '2021',
       end: '2027',
-      expected: true,
       coursework: [
         'Control Systems',
         'Measurement and Instrumentation',
@@ -104,9 +103,8 @@ export const profile: Profile = {
       role: 'Facilities Engineering Management Intern (SIWES)',
       organisation: 'Chevron Nigeria Limited',
       location: 'Lagos, Nigeria',
-      start: 'Mar 2026',
-      end: 'Present',
-      current: true,
+      start: 'Apr 2026',
+      end: 'Sep 2026',
       summary:
         'Rotating across the Electrical and Instrumentation team, working on oil and gas field instrumentation and electrical systems.',
       bullets: [
@@ -153,7 +151,6 @@ export const profile: Profile = {
       location: 'Ile-Ife, Nigeria',
       start: '2024',
       end: '2024',
-      current: false,
       summary:
         'Operated three Quanser research platforms using MATLAB and Simulink: a quadrotor UAV, an autonomous ground vehicle and a 6-DOF manipulator.',
       bullets: [
@@ -179,8 +176,6 @@ export const profile: Profile = {
       organisation: 'Astar Tutorials',
       location: 'Ile-Ife, Nigeria',
       start: '2023',
-      end: 'Present',
-      current: true,
       summary:
         'Teaches circuit analysis, digital logic and microcontroller programming, designing the tutorial sessions from scratch.',
       bullets: [
@@ -207,7 +202,8 @@ export const profile: Profile = {
       name: 'aniwe',
       tagline:
         'A convention costume-rating booth with AI hosts that stay in character, keep their scoring honest, and degrade in three tiers so the demo never dies on venue wifi.',
-      period: 'Aug 2026',
+      start: 'Aug 2026',
+      end: 'Aug 2026',
       status: 'shipped',
       repo: 'https://github.com/ayomide-abilewa/aniwe',
       technologies: [
@@ -343,7 +339,8 @@ export const profile: Profile = {
       name: 'AI-Powered Smart Attendance System',
       tagline:
         'Face-recognition attendance for real lecture halls — detection, embedding and cosine matching behind a full-stack application built for lecturers, not for a benchmark.',
-      period: 'Feb–Mar 2026',
+      start: 'Feb 2026',
+      end: 'Mar 2026',
       status: 'complete',
       statusNote: 'Defended at a final-year group project review; invited to develop an extended production version.',
       repo: 'https://github.com/ayomide-abilewa/Smart-Attendance-System',
@@ -474,7 +471,7 @@ export const profile: Profile = {
       name: 'Live Video Pipe Anomaly Detection',
       tagline:
         'A two-stage cascaded detector that runs RGB and edge-enhanced models in parallel and fuses their boxes, so precision holds up across lighting and surface conditions.',
-      period: '2026–Present',
+      start: '2026',
       status: 'in-progress',
       statusNote: 'In progress. No public repository yet.',
       technologies: ['Python', 'YOLOv8', 'YOLOv11', 'Weighted Boxes Fusion', 'OpenCV'],
@@ -564,7 +561,8 @@ export const profile: Profile = {
       name: 'Multispectral Acquisition Device for Hydroponics',
       tagline:
         'A multi-sensor ESP32 node measuring light intensity and colour spectrum for hydroponic growing, streaming live to a cloud dashboard.',
-      period: '2025',
+      start: '2025',
+      end: '2025',
       status: 'complete',
       technologies: ['ESP32', 'GY-2561', 'GY-31', 'I2C', 'Blynk IoT Cloud', 'C++'],
       domains: ['Embedded systems', 'Instrumentation', 'Sensing', 'IoT'],
@@ -654,7 +652,8 @@ export const profile: Profile = {
       name: 'Smart Temperature-Controlled Fan',
       tagline:
         'A closed-loop fan controller driving PWM from live thermistor feedback — and the first project I led rather than joined.',
-      period: '2024',
+      start: '2024',
+      end: '2024',
       status: 'complete',
       technologies: ['Arduino', 'C++', 'PWM', 'NTC thermistor'],
       domains: ['Embedded systems', 'Control systems'],
@@ -736,7 +735,8 @@ export const profile: Profile = {
       name: 'Smart Fire Alarm System',
       tagline:
         'Flame and smoke detection that raises a local alarm and sends an SMS, so the alert reaches someone who is not in the building.',
-      period: '2023',
+      start: '2023',
+      end: '2023',
       status: 'complete',
       technologies: ['Arduino', 'C++', 'GSM module', 'Flame sensor', 'Smoke sensor'],
       domains: ['Embedded systems', 'Sensing', 'Safety systems'],
@@ -871,8 +871,6 @@ export const profile: Profile = {
       organisation: 'IEEE OAU Student Branch',
       location: 'Ile-Ife, Nigeria',
       start: '2024',
-      end: 'Present',
-      current: true,
       summary:
         'Leads SPAW 3.0, a six-session embedded systems and entrepreneurship curriculum for secondary school students.',
       bullets: [
@@ -901,8 +899,6 @@ export const profile: Profile = {
       organisation: 'Circuit Zero to Hero (ZTH)',
       location: 'Ile-Ife, Nigeria',
       start: '2023',
-      end: 'Present',
-      current: true,
       summary:
         'Runs practical circuit design and electronics workshops for students with no prior background.',
       bullets: [
@@ -918,8 +914,6 @@ export const profile: Profile = {
       role: 'Editorial Team Member',
       organisation: 'EEE Students Society (EEESS), OAU',
       start: '2023',
-      end: 'Present',
-      current: true,
       summary: 'Contributes to departmental editorial output.',
       bullets: [
         {
@@ -934,8 +928,6 @@ export const profile: Profile = {
       role: 'Content Strategist',
       organisation: 'EEE Department Social Media Committee (TikTok / Instagram), OAU',
       start: '2024',
-      end: 'Present',
-      current: true,
       summary: 'Plans content for the department’s social channels.',
       bullets: [
         {
@@ -950,8 +942,6 @@ export const profile: Profile = {
       role: 'Campus Ambassador',
       organisation: 'Cowrywise',
       start: '2023',
-      end: 'Present',
-      current: true,
       summary: 'Advocates financial literacy on campus.',
       bullets: [
         {

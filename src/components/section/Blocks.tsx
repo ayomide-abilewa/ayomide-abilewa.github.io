@@ -11,6 +11,7 @@ import type {
   TimelineEntry,
 } from '@/data/types'
 import { bulletsFor } from '@/lib/select'
+import { formatRange, isAhead, isCurrent } from '@/lib/dates'
 import { RevealGroup, RevealItem } from '@/components/motion/Reveal'
 import { TickList } from '@/components/section/Section'
 
@@ -66,10 +67,8 @@ export function ExperienceList({
             className="grid gap-x-10 gap-y-3 border-b border-hairline py-8 lg:grid-cols-[13rem_1fr]"
           >
             <div className="lg:pt-0.5">
-              <Meta>
-                {item.start} — {item.end}
-              </Meta>
-              {item.current && (
+              <Meta>{formatRange(item.start, item.end, 'spaced')}</Meta>
+              {isCurrent(item) && (
                 <p className="mt-1.5 inline-flex items-center gap-1.5 font-mono text-micro uppercase tracking-[0.12em] text-accent">
                   <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
                   Current
@@ -116,9 +115,7 @@ export function LeadershipList({
             key={item.id}
             className="grid gap-x-10 gap-y-3 border-b border-hairline py-7 lg:grid-cols-[13rem_1fr]"
           >
-            <Meta>
-              {item.start} — {item.end}
-            </Meta>
+            <Meta>{formatRange(item.start, item.end, 'spaced')}</Meta>
             <div className="min-w-0">
               <h3 className="text-h4 font-medium tracking-tight text-content">{item.role}</h3>
               <p className="mt-1 text-body text-content-muted">{item.organisation}</p>
@@ -196,8 +193,8 @@ export function EducationList({
             className="grid gap-x-10 gap-y-4 border-b border-hairline py-7 lg:grid-cols-[13rem_1fr]"
           >
             <Meta>
-              {education.start} — {education.end}
-              {education.expected ? ' (expected)' : ''}
+              {formatRange(education.start, education.end, 'spaced')}
+              {isAhead(education.end) ? ' (expected)' : ''}
             </Meta>
             <div className="min-w-0">
               <h3 className="text-h4 font-medium tracking-tight text-content">

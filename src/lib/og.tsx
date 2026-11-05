@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { tracePath } from '@/lib/trace'
-import { allProjectSlugs, projectBySlug } from '@/lib/select'
+import { allProjectSlugs, projectBySlug, projectPeriod } from '@/lib/select'
 
 /**
  * Social cards.
@@ -293,7 +293,7 @@ function projectCard(slug: string): CardDef | undefined {
   if (!project) return undefined
   return {
     tone: 'engineering',
-    eyebrow: `Case study · ${project.period}`,
+    eyebrow: `Case study · ${projectPeriod(project)}`,
     title: project.name,
     subtitle: project.tagline,
     alt: `${project.name}: case study by Ayomide Abilewa`,

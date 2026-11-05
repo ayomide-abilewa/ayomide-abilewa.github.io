@@ -14,7 +14,9 @@ import {
   projectsForVariant,
   skillsForVariant,
   type CvSection,
+  projectPeriod,
 } from '@/lib/select'
+import { formatRange, isAhead } from '@/lib/dates'
 
 /**
  * On-screen rendering of a CV.
@@ -109,7 +111,7 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
             <div key={`${education.institution}-${education.start}`}>
               <EntryHead
                 title={`${education.degree} ${education.field}`}
-                meta={`${education.start}–${education.end}${education.expected ? ' (expected)' : ''}`}
+                meta={`${formatRange(education.start, education.end)}${isAhead(education.end) ? ' (expected)' : ''}`}
               />
               <Org>{`${education.institution}, ${education.location}`}</Org>
               <Bullets items={cvBulletsFor(education, variant)} />
@@ -141,7 +143,7 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
         <div className="space-y-3.5">
           {experienceForVariant(variant).map((item) => (
             <div key={item.id}>
-              <EntryHead title={item.role} meta={`${item.start}–${item.end}`} />
+              <EntryHead title={item.role} meta={formatRange(item.start, item.end)} />
               <Org>{`${item.organisation}, ${item.location}`}</Org>
               <Bullets items={cvBulletsFor(item, variant)} />
             </div>
@@ -154,7 +156,7 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
         <div className="space-y-3.5">
           {projectsForVariant(variant).map((project) => (
             <div key={project.slug}>
-              <EntryHead title={project.name} meta={project.period} />
+              <EntryHead title={project.name} meta={projectPeriod(project)} />
               <Org>{project.technologies.slice(0, 4).join(', ')}</Org>
               <Bullets items={cvBulletsFor(project, variant)} />
               {project.repo && <Detail>{project.repo.replace('https://', '')}</Detail>}
@@ -189,7 +191,7 @@ function Body({ variant, section }: { variant: CvVariant; section: CvSection }) 
             const bullets = cvBulletsFor(item, variant)
             return (
               <div key={item.id}>
-                <EntryHead title={item.role} meta={`${item.start}–${item.end}`} />
+                <EntryHead title={item.role} meta={formatRange(item.start, item.end)} />
                 <Org>{item.organisation}</Org>
                 {bullets.length > 0 ? (
                   <Bullets items={bullets} />

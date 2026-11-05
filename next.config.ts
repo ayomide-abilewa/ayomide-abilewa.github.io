@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
   },
   productionBrowserSourceMaps: false,
   reactStrictMode: true,
+  // Fixed once per build so the exported HTML and the browser agree on what is
+  // current. See lib/dates.ts.
+  env: {
+    NEXT_PUBLIC_BUILD_DATE: new Date().toISOString().slice(0, 10),
+  },
 }
 
 export default nextConfig

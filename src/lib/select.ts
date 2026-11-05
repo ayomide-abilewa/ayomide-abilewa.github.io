@@ -7,6 +7,7 @@ import type {
   VisitorMode,
 } from '@/data/types'
 import { profile } from '@/data/profile'
+import { formatRange } from '@/lib/dates'
 
 /**
  * Audience selection.
@@ -75,6 +76,11 @@ export function projectNeighbours(
   const at = order.findIndex((p) => p.slug === slug)
   if (at === -1) return {}
   return { previous: order[at - 1], next: order[at + 1] }
+}
+
+/** A project's dates as shown everywhere: "Feb–Mar 2026", "2026–Present". */
+export function projectPeriod(project: Project): string {
+  return formatRange(project.start, project.end)
 }
 
 /** Every slug, for generateStaticParams and the sitemap. */

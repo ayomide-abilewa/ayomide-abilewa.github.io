@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import type { Project, VisitorMode } from '@/data/types'
 import { track } from '@/lib/analytics'
+import { projectPeriod } from '@/lib/select'
 import { Reveal } from '@/components/motion/Reveal'
 import { Field, TickList } from '@/components/section/Section'
 import { StatusPill } from '@/components/work/ProjectRow'
@@ -44,7 +45,7 @@ export function LeadProject({
       <Reveal className="min-w-0">
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5">
           <h3 className="text-h2 font-medium tracking-tight text-content">{project.name}</h3>
-          <span className="font-mono text-micro text-content-faint">{project.period}</span>
+          <span className="font-mono text-micro text-content-faint">{projectPeriod(project)}</span>
           <StatusPill status={project.status} note={project.statusNote} />
         </div>
 
