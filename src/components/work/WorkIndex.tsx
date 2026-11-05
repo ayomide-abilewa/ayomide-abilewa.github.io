@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { profile } from '@/data/profile'
 import { CV_FOR_MODE } from '@/data/types'
 import { useMode, MODE_LABELS } from '@/lib/mode'
+import { cap, facts } from '@/lib/facts'
 import { track } from '@/lib/analytics'
 import { cvFile, indexOrderForMode } from '@/lib/select'
 import { Section } from '@/components/section/Section'
@@ -52,7 +53,7 @@ export function WorkIndex() {
           </p>
 
           <h1 className="mt-5 max-w-[38ch] text-h1 font-medium tracking-tight text-balance">
-            Six systems, and the thing that nearly broke each one.
+            {cap(facts.projects)} systems, and the thing that nearly broke each one.
           </h1>
 
           <div className="mt-2 h-6 w-full max-w-[22rem]">
@@ -60,7 +61,7 @@ export function WorkIndex() {
           </div>
 
           <p className="mt-6 max-w-measure text-lead leading-snug text-content text-pretty">
-            Six projects from 2023 to now: a fire alarm that sends an SMS, a closed-loop fan, a
+            {cap(facts.projects)} projects from {facts.firstBuild} to now: a fire alarm that sends an SMS, a closed-loop fan, a
             multispectral acquisition node, a face-recognition attendance system, a cascaded anomaly
             detector, and a convention booth built to survive bad venue wifi.
           </p>
@@ -93,7 +94,7 @@ export function WorkIndex() {
       <Section
         id="index"
         eyebrow="Index"
-        heading={unset ? 'All six projects' : `Ordered for ${MODE_LABELS[mode]}`}
+        heading={unset ? `All ${facts.projects} projects` : `Ordered for ${MODE_LABELS[mode]}`}
         lede="The one at the top is the one I would show you first."
       >
         <ProjectList projects={ranked} mode={mode} />

@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { OpeningMount } from '@/components/opening/OpeningMount'
 import { LandingHero } from '@/components/landing/LandingHero'
 import { PathChooser } from '@/components/landing/PathChooser'
+import { CHANNELS } from '@/components/landing/channels'
+import { facts } from '@/lib/facts'
 
 /**
  * Landing page.
@@ -20,7 +22,7 @@ export default function LandingPage() {
     <>
       <OpeningMount />
       <LandingHero />
-      <PathChooser />
+      <PathChooser channels={CHANNELS} projects={facts.projects} />
     </>
   )
 }

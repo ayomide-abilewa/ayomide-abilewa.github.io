@@ -3,6 +3,7 @@
 import { CV_FOR_MODE, type VisitorMode } from '@/data/types'
 import { profile } from '@/data/profile'
 import { useMode, MODE_LABELS } from '@/lib/mode'
+import { facts } from '@/lib/facts'
 import { track } from '@/lib/analytics'
 import { CV_DESCRIPTIONS, cvFile } from '@/lib/select'
 import { Section, TickList } from '@/components/section/Section'
@@ -46,7 +47,7 @@ const PITCH: Record<VisitorMode, Pitch> = {
     lede: 'Embedded work, computer vision, instrumentation. The part I enjoy is the failure modes, not the demo.',
     open: [
       'Engineering internships and placements — embedded systems, instrumentation, computer vision.',
-      'Graduate roles from 2027, when I finish at OAU.',
+      `Graduate roles from ${facts.graduationYear}, when I finish at OAU.`,
       'Build collaborations, especially hardware that has to survive somewhere hot, dusty or offline.',
       'Technical questions about anything here. The code is public where it exists and the reasoning is in the case studies.',
     ],
@@ -60,7 +61,7 @@ const PITCH: Record<VisitorMode, Pitch> = {
     lede: 'Undergraduate work on measurement and detection when the imaging conditions will not cooperate, on calibration, and on closed-loop control running on real hardware rather than in simulation.',
     open: [
       'Research internships and summer placements in computer vision, instrumentation or control.',
-      'Graduate programmes and supervision from 2027 onward.',
+      `Graduate programmes and supervision from ${facts.graduationYear} onward.`,
       'Collaboration on detection across varied imaging conditions. The pipe anomaly work is unfinished and I have not pretended otherwise anywhere on this site.',
       'Questions about method. The two-stage cascade and the RGB plus edge-enhanced fusion are both written up here in full.',
     ],
@@ -71,7 +72,7 @@ const PITCH: Record<VisitorMode, Pitch> = {
   scholarship: {
     eyebrow: 'Scholarships, fellowships and programmes',
     heading: 'Ask me anything a committee needs — including the things a CV has no room for.',
-    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027, with an internship on Chevron Nigeria’s electrical and instrumentation team behind me and a six-session course I teach to secondary school students.',
+    lede: `Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}, with an internship on Chevron Nigeria’s electrical and instrumentation team behind me and a six-session course I teach to secondary school students.`,
     open: [
       'Scholarship and fellowship applications, including anything that needs references, transcripts or verification.',
       'Programmes with a teaching or community component. SPAW is in its third cohort and I rewrite the lesson plans each time based on what went wrong in the last one.',
@@ -122,7 +123,7 @@ function actionsFor(mode: VisitorMode, mailto: string, onEmail: () => void): Act
     case 'scholarship':
       return [email, cv, { label: 'The journey', href: '/about/#journey' }]
     default:
-      return [email, cv, { label: 'All six projects', href: '/work/' }]
+      return [email, cv, { label: `All ${facts.projects} projects`, href: '/work/' }]
   }
 }
 
@@ -284,7 +285,7 @@ export function ContactPage() {
         <CtaRow
           label="Next steps"
           actions={[
-            { label: 'All six projects', href: '/work/', weight: 'primary' },
+            { label: `All ${facts.projects} projects`, href: '/work/', weight: 'primary' },
             { label: 'All four CV versions', href: '/cv/' },
             { label: 'The story behind it', href: '/about/' },
           ]}

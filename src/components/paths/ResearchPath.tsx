@@ -12,6 +12,7 @@ import {
   projectsForMode,
   skillsForVariant,
 } from '@/lib/select'
+import { cap, facts } from '@/lib/facts'
 import { Section } from '@/components/section/Section'
 import { PathHero } from '@/components/chrome/PathHero'
 import { CtaRow } from '@/components/section/Cta'
@@ -55,11 +56,11 @@ export function ResearchPath() {
         eyebrow="Measurement and detection under non-ideal conditions"
         heading="Most measurements are easy in the ideal case. I am interested in what happens after that."
         lede="Undergraduate work on detection when lighting, surface condition and viewing angle change mid-run; on turning raw sensor output into a calibrated measurement; and on closed-loop control where the actuator changes the quantity being measured."
-        detail="B.Sc. Electronic and Electrical Engineering at Obafemi Awolowo University, expected 2027. Current work spans a two-stage cascaded detector that fuses RGB and edge-enhanced models, a multi-sensor multispectral acquisition node, and control-systems practice on Quanser robotics hardware in MATLAB and Simulink."
+        detail={`B.Sc. Electronic and Electrical Engineering at Obafemi Awolowo University, ${facts.graduation}. Recent work spans a two-stage cascaded detector that fuses RGB and edge-enhanced models, a multi-sensor multispectral acquisition node, and control-systems practice on Quanser robotics hardware in MATLAB and Simulink.`}
         actions={[
           { label: 'Research interests', href: '#interests', weight: 'primary' },
           {
-            label: 'Academic CV',
+            label: 'Research CV',
             href: cvFile(VARIANT, 'pdf'),
             download: true,
             onSelect: () =>
@@ -75,7 +76,7 @@ export function ResearchPath() {
         id="interests"
         number="01"
         eyebrow="Research interests"
-        heading="Five questions, each with work behind it"
+        heading={`${cap(facts.interests)} questions, each with work behind it`}
         lede="An interest with nothing behind it is just an assertion. Select one and you will see what I mean by it and which projects it came out of."
       >
         <InterestGraph interests={profile.researchInterests} />

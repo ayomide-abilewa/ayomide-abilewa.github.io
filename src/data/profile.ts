@@ -475,7 +475,7 @@ export const profile: Profile = {
         'A two-stage cascaded detector that runs RGB and edge-enhanced models in parallel and fuses their boxes, so precision holds up across lighting and surface conditions.',
       start: '2026',
       status: 'in-progress',
-      statusNote: 'In progress. No public repository yet.',
+      statusNote: 'No public repository yet.',
       technologies: ['Python', 'YOLOv8', 'YOLOv11', 'Weighted Boxes Fusion', 'OpenCV'],
       domains: ['Computer vision', 'Industrial inspection', 'Applied AI'],
       problem:
@@ -784,7 +784,7 @@ export const profile: Profile = {
       learned: [
         'A detector without a notification path that suits the situation is not yet a safety system.',
       ],
-      rank: { engineering: 6, everything: 6 },
+      rank: { engineering: 6, scholarship: 5, everything: 6 },
       framing: {
         engineering: 'Two sensing modalities, two notification paths, one event.',
       },

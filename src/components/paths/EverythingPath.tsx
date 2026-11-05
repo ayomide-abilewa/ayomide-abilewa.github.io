@@ -9,9 +9,10 @@ import {
   cvFile,
   experienceForMode,
   leadershipForMode,
-  projectsForMode,
+  projectsByCompletion,
   skillsForVariant,
 } from '@/lib/select'
+import { cap, facts } from '@/lib/facts'
 import { Section } from '@/components/section/Section'
 import { PathHero } from '@/components/chrome/PathHero'
 import { CtaRow } from '@/components/section/Cta'
@@ -53,8 +54,8 @@ export function EverythingPath() {
         mode={MODE}
         eyebrow="All of it, in one pass"
         heading="One person, read three different ways — engineering, research and the teaching that came out of both."
-        lede="Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. Embedded systems, computer vision and instrumentation, and an internship on Chevron Nigeria's electrical and instrumentation team."
-        detail="Six builds, three years, five questions I keep coming back to, and a curriculum that came out of all of it."
+        lede={`Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}. Embedded systems, computer vision and instrumentation, and an internship on Chevron Nigeria's electrical and instrumentation team.`}
+        detail={`${cap(facts.projects)} builds, ${facts.yearsBuilding} years, ${facts.interests} questions I keep coming back to, and a curriculum that came out of all of it.`}
         actions={[
           { label: 'Start the pass', href: '#build', weight: 'primary' },
           {
@@ -76,7 +77,7 @@ export function EverythingPath() {
         heading="Systems that measure the physical world"
         lede="In order, from a 2023 fire alarm that rang a buzzer to a 2026 detector that gives two models different views of the same frame."
       >
-        <ProjectList projects={projectsForMode(MODE)} mode={MODE} />
+        <ProjectList projects={projectsByCompletion()} mode={MODE} />
         <div className="mt-16">
           <h3 className="eyebrow mb-4">What it is built with</h3>
           <SkillGrid groups={skillsForVariant(VARIANT)} />
@@ -107,7 +108,7 @@ export function EverythingPath() {
         id="story"
         register="scholarship"
         eyebrow="Three — how I got here"
-        heading="Five years, in the order they happened"
+        heading={`${cap(facts.yearsAtUniversity)} years, in the order they happened`}
         lede="From a first-year student to a plant rotation, with a classroom running the whole way through."
       >
         <div className="grid gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
@@ -145,7 +146,7 @@ export function EverythingPath() {
         id="next"
         eyebrow="Next"
         heading="Pick a direction"
-        lede="Six case studies, four CV versions, one email address."
+        lede={`${cap(facts.projects)} case studies, ${facts.cvs} CV versions, one email address.`}
       >
         <CtaRow
           label="Next steps"

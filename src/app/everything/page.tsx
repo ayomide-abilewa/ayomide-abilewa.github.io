@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { socialMetadata } from '@/lib/meta'
+import { facts } from '@/lib/facts'
 import { EverythingPath } from '@/components/paths/EverythingPath'
 
 /**
@@ -11,7 +12,7 @@ import { EverythingPath } from '@/components/paths/EverythingPath'
  */
 
 const DESCRIPTION =
-  'Everything in one pass: the engineering, the research questions underneath it, and the teaching that came out of both. Ayomide Abilewa — electrical and electronics engineering at Obafemi Awolowo University, expected 2027.'
+  `Everything in one pass: the engineering, the research questions underneath it, and the teaching that came out of both. Ayomide Abilewa — electrical and electronics engineering at Obafemi Awolowo University, ${facts.graduation}.`
 
 export const metadata: Metadata = {
   title: 'Everything — one person, read three different ways',

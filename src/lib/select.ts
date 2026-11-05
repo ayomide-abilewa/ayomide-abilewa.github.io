@@ -95,6 +95,11 @@ export function latestRole(): { label: 'Currently' | 'Most recently'; role: Expe
   return latest && { label: 'Most recently', role: latest }
 }
 
+/** Every project in the order it finished, ongoing work last. */
+export function projectsByCompletion(): Project[] {
+  return [...profile.projects].sort((a, b) => endKey(a.end).localeCompare(endKey(b.end)))
+}
+
 /** Every slug, for generateStaticParams and the sitemap. */
 export function allProjectSlugs(): string[] {
   return profile.projects.map((p) => p.slug)

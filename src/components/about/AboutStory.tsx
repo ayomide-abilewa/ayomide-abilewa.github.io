@@ -15,6 +15,7 @@ import {
   leadershipForMode,
   projectPeriod,
 } from '@/lib/select'
+import { cap, facts, startYear } from '@/lib/facts'
 import { Section } from '@/components/section/Section'
 import { CtaRow } from '@/components/section/Cta'
 import { SettledTrace, TraceDivider } from '@/components/brand/SettledTrace'
@@ -61,22 +62,22 @@ const INTRO: Record<VisitorMode, { heading: string; lede: string }> = {
   engineering: {
     heading:
       'Every project I have built starts with the same question: what is going to go wrong with this in the field?',
-    lede: 'Six builds between 2023 and now, every one of them measuring something physical. This is the order they happened in, and what each one handed to the next.',
+    lede: `${cap(facts.projects)} builds between ${facts.firstBuild} and now, every one of them measuring something physical. This is the order they happened in, and what each one handed to the next.`,
   },
   research: {
     heading:
       'My interest is narrow and it has not really changed: what happens to a measurement once conditions stop cooperating.',
-    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. The question got specific with the pipe work: a wet surface reflects nothing like a dry one, and colour alone cannot recover what is lost.',
+    lede: `Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}. The question got specific with the pipe work: a wet surface reflects nothing like a dry one, and colour alone cannot recover what is lost.`,
   },
   scholarship: {
     heading:
-      'I started teaching electronics in 2023, the same year I built my first working system. Neither one has stopped since.',
-    lede: 'University from 2021. Teaching and a first build in 2023. A robotics lab in 2024. An oil and gas rotation in 2026. A curriculum for secondary school students running underneath all of it.',
+      `I started teaching electronics in ${facts.teachingSince}, the same year I built my first working system. Neither one has stopped since.`,
+    lede: `University from ${facts.universityStart}. Teaching and a first build in ${facts.teachingSince}. A robotics lab in ${startYear('quanser')}. An oil and gas rotation in ${startYear('chevron')}. A curriculum for secondary school students running underneath all of it.`,
   },
   everything: {
     heading:
-      'One person, five years, and a habit of turning whatever I have just learned into something someone else can use.',
-    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. Embedded systems, instrumentation and computer vision, and an internship on Chevron Nigeria’s electrical and instrumentation team. Teaching the same material to students who have never seen a circuit before.',
+      `One person, ${facts.yearsAtUniversity} years, and a habit of turning whatever I have just learned into something someone else can use.`,
+    lede: `Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}. Embedded systems, instrumentation and computer vision, and an internship on Chevron Nigeria’s electrical and instrumentation team. Teaching the same material to students who have never seen a circuit before.`,
   },
 }
 
@@ -159,11 +160,11 @@ export function AboutStory() {
         id="thread"
         eyebrow="The thread"
         heading="It started with an alarm nobody could hear"
-        lede="Six builds, three years, and one lesson that keeps arriving in a new disguise: a measurement is not finished until it reaches somebody who can act on it."
+        lede={`${cap(facts.projects)} builds, ${facts.yearsBuilding} years, and one lesson that keeps arriving in a new disguise: a measurement is not finished until it reaches somebody who can act on it.`}
       >
         <div className="max-w-measure space-y-5 text-body-lg text-content-muted text-pretty">
           <p>
-            The first thing I built, in 2023, was a fire alarm that detected flame and smoke and rang
+            The first thing I built, in {startYear('fire-alarm-system')}, was a fire alarm that detected flame and smoke and rang
             a buzzer. The lesson it taught me had nothing to do with sensors: a local alarm only helps
             somebody who is already in earshot, so the build was not finished until a GSM module could
             get the alert out of the building. Detection and notification turned out to be two
@@ -179,7 +180,7 @@ export function AboutStory() {
             text-to-speech falls through three tiers so that the last one cannot fail.
           </p>
           <p>
-            In 2026 this stopped being coursework. On Chevron Nigeria’s electrical and instrumentation
+            In {startYear('chevron')} this stopped being coursework. On Chevron Nigeria’s electrical and instrumentation
             team the same loops turned up with consequences attached — 4–20 mA current signalling,
             3–15 PSI pneumatics, I/P converters, hazardous area classification, P&amp;IDs to read
             before touching anything. Industrial instrumentation has been solving the problem I keep
@@ -197,7 +198,7 @@ export function AboutStory() {
         key="journey"
         id="journey"
         eyebrow="Journey"
-        heading="Five years, in the order they happened"
+        heading={`${cap(facts.yearsAtUniversity)} years, in the order they happened`}
         lede="The gap between learning something and teaching it is usually about a term."
       >
         <div className="grid gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
@@ -215,7 +216,7 @@ export function AboutStory() {
         key="lessons"
         id="lessons"
         eyebrow="How I work"
-        heading="Six builds, six things I did not know before"
+        heading={`${cap(facts.projects)} builds, ${facts.projects} things I did not know before`}
         lede="One line per project. Each links to the build that taught it."
       >
         <ol className="border-t border-hairline">
@@ -349,8 +350,8 @@ export function AboutStory() {
         <CtaRow
           label="Next steps"
           actions={[
-            { label: 'All six projects', href: '/work/', weight: 'primary' },
-            { label: 'All four CV versions', href: '/cv/' },
+            { label: `All ${facts.projects} projects`, href: '/work/', weight: 'primary' },
+            { label: `All ${facts.cvs} CV versions`, href: '/cv/' },
             { label: 'Get in touch', href: '/contact/' },
             {
               label: 'LinkedIn',

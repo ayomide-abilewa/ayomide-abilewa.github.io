@@ -110,7 +110,7 @@ export type CvDocument = {
 /** For PDF/Word document properties, so a downloaded file identifies itself. */
 const LABEL: Record<CvVariant, string> = {
   technical: 'Technical CV',
-  research: 'Academic CV',
+  research: 'Research CV',
   scholarship: 'Scholarship CV',
   general: 'Curriculum Vitae',
 }

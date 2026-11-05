@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useMode } from '@/lib/mode'
 import { track } from '@/lib/analytics'
-import type { VisitorMode } from '@/data/types'
+import type { Channel } from '@/components/landing/channels'
 
 /**
  * Path selection.
@@ -14,45 +14,6 @@ import type { VisitorMode } from '@/data/types'
  * is visible without being written down anywhere. Labels stay plain: a
  * scholarship reviewer should not have to decode a metaphor to find their door.
  */
-
-type Channel = {
-  mode: VisitorMode
-  href: string
-  label: string
-  audience: string
-  promise: string
-}
-
-const CHANNELS: Channel[] = [
-  {
-    mode: 'engineering',
-    href: '/engineering/',
-    label: 'Engineering',
-    audience: 'Recruiters · engineers · collaborators',
-    promise: 'Architecture, source code, and the failure each decision exists to survive.',
-  },
-  {
-    mode: 'research',
-    href: '/research/',
-    label: 'Research',
-    audience: 'Labs · professors · graduate programmes',
-    promise: 'Five questions, the method behind the current one, and the coursework underneath.',
-  },
-  {
-    mode: 'scholarship',
-    href: '/scholarship/',
-    label: 'Scholarship',
-    audience: 'Committees · fellowships · sponsors',
-    promise: 'Five years in order, the classes I teach, and who each build was for.',
-  },
-  {
-    mode: 'everything',
-    href: '/everything/',
-    label: 'Everything',
-    audience: 'No particular agenda',
-    promise: 'One pass through all of it, 2021 to now.',
-  },
-]
 
 /** One line in, four out. Stretched vertically to match the card grid. */
 function ChannelRail({ active }: { active: number | null }) {
@@ -83,7 +44,14 @@ function ChannelRail({ active }: { active: number | null }) {
   )
 }
 
-export function PathChooser() {
+export function PathChooser({
+  channels,
+  projects,
+}: {
+  channels: Channel[]
+  /** The project count, as a word. */
+  projects: string
+}) {
   const { setMode } = useMode()
   const [hovered, setHovered] = useState<number | null>(null)
 
@@ -109,7 +77,7 @@ export function PathChooser() {
           What brings you here?
         </h2>
         <p className="mt-3 text-body text-content-muted text-pretty">
-          Same six projects behind every door. What changes is what you meet first, and which CV the
+          Same {projects} projects behind every door. What changes is what you meet first, and which CV the
           download button hands you. Switch whenever you like; the header keeps all four.
         </p>
       </div>
@@ -118,7 +86,7 @@ export function PathChooser() {
         <ChannelRail active={hovered} />
 
         <ul className="grid flex-1 grid-rows-4 border-t border-hairline">
-          {CHANNELS.map((channel, i) => (
+          {channels.map((channel, i) => (
             <li key={channel.mode} className="border-b border-hairline">
               <Link
                 href={channel.href}

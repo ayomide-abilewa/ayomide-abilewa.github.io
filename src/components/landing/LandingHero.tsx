@@ -1,6 +1,7 @@
 import { profile } from '@/data/profile'
 import { formatRange } from '@/lib/dates'
 import { latestRole } from '@/lib/select'
+import { degree, facts } from '@/lib/facts'
 import { SettledTrace } from '@/components/brand/SettledTrace'
 
 /**
@@ -24,7 +25,7 @@ import { SettledTrace } from '@/components/brand/SettledTrace'
 const latest = latestRole()
 
 const FACTS = [
-  'B.Sc. Electronic and Electrical Engineering · Obafemi Awolowo University · expected 2027',
+  `${degree.degree} ${degree.field} · ${degree.institution} · ${facts.graduation}`,
   ...(latest
     ? [
         `${latest.role.shortRole} · ${latest.role.shortOrganisation} · ${formatRange(latest.role.start, latest.role.end)}`,

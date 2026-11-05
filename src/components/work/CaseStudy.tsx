@@ -14,6 +14,7 @@ import { DecisionList } from '@/components/work/DecisionList'
 import { ArchitectureDiagram } from '@/components/work/ArchitectureDiagram'
 import { SettledTrace } from '@/components/brand/SettledTrace'
 import { Photo } from '@/components/media/Photo'
+import { facts } from '@/lib/facts'
 
 /**
  * Case study.
@@ -212,7 +213,7 @@ export function CaseStudy({ project }: { project: Project }) {
         id="next"
         eyebrow="Keep going"
         heading="Next in this order"
-        lede="Whichever of the six is closest to what you just read."
+        lede={`Whichever of the ${facts.projects} is closest to what you just read.`}
       >
         <nav aria-label="Other projects" className="border-t border-hairline">
           {previous && <NeighbourLink project={previous} direction="previous" mode={mode} />}

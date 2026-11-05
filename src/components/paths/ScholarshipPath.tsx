@@ -4,6 +4,7 @@ import { profile } from '@/data/profile'
 import { CV_FOR_MODE } from '@/data/types'
 import { useDeclareMode } from '@/lib/mode'
 import { track } from '@/lib/analytics'
+import { cap, facts } from '@/lib/facts'
 import {
   certificationsForVariant,
   cvFile,
@@ -46,6 +47,8 @@ export function ScholarshipPath() {
 
   const leadership = leadershipForMode(MODE)
   const experience = experienceForMode(MODE)
+  const internship = experience.filter((e) => e.id === 'chevron')
+  const otherExperience = experience.filter((e) => e.id !== 'chevron')
   const projects = projectsForMode(MODE)
 
   return (
@@ -54,8 +57,8 @@ export function ScholarshipPath() {
         mode={MODE}
         eyebrow="Journey, teaching and what the work is for"
         heading="I learn something, then I go and teach it to someone who has never seen it before."
-        lede="Electrical and electronics engineering at Obafemi Awolowo University, expected 2027. I lead a six-session embedded systems curriculum for secondary school students, instruct a practical electronics workshop for people with no prior background, and interned on Chevron Nigeria's electrical and instrumentation team."
-        detail="The pattern has held for three years. Whatever I get access to, whether a robotics lab, a plant rotation or a circuit bench, becomes a set of lesson plans within a term."
+        lede={`Electrical and electronics engineering at Obafemi Awolowo University, ${facts.graduation}. I lead a six-session embedded systems curriculum for secondary school students, instruct a practical electronics workshop for people with no prior background, and interned on Chevron Nigeria's electrical and instrumentation team.`}
+        detail={`The pattern has held for ${facts.yearsTeaching} years. Whatever I get access to, whether a robotics lab, a plant rotation or a circuit bench, becomes a set of lesson plans within a term.`}
         actions={[
           { label: 'The journey', href: '#journey', weight: 'primary' },
           {
@@ -77,8 +80,8 @@ export function ScholarshipPath() {
       <Section
         id="journey"
         eyebrow="Journey"
-        heading="Five years, in the order they happened"
-        lede="The teaching starts in 2023 and has not stopped since. That is the line I would look at first."
+        heading={`${cap(facts.yearsAtUniversity)} years, in the order they happened`}
+        lede={`The teaching starts in ${facts.teachingSince} and has not stopped since. That is the line I would look at first.`}
       >
         <Timeline entries={profile.timeline} />
       </Section>
@@ -105,8 +108,15 @@ export function ScholarshipPath() {
 
         <div className="mt-14">
           <h3 className="eyebrow mb-4">What the rotation covered</h3>
-          <ExperienceList items={experience} variant={VARIANT} showSkills={false} />
+          <ExperienceList items={internship} variant={VARIANT} showSkills={false} />
         </div>
+
+        {otherExperience.length > 0 && (
+          <div className="mt-14">
+            <h3 className="eyebrow mb-4">Other experience</h3>
+            <ExperienceList items={otherExperience} variant={VARIANT} showSkills={false} />
+          </div>
+        )}
       </Section>
 
       <Section
@@ -139,7 +149,7 @@ export function ScholarshipPath() {
         <TickList
           className="max-w-measure"
           items={[
-            'Finish the B.Sc. in Electronic and Electrical Engineering at OAU — expected 2027.',
+            `Finish the B.Sc. in Electronic and Electrical Engineering at OAU — ${facts.graduation}.`,
             'Finish the pipe anomaly detection work: the two-stage cascaded detector is built and in progress, and the fused RGB and edge-enhanced stage still needs evaluating properly.',
             'Build the extended production version of the Smart Attendance System, which was invited after the prototype was defended at a final-year project review.',
             'Keep running SPAW: the third cohort of the six-session embedded systems curriculum, with the lesson plans and tutor guides rewritten each time from what went wrong in the last one.',

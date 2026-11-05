@@ -1,5 +1,7 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { socialMetadata } from '@/lib/meta'
+import { THEME_COLOR } from '@/lib/theme'
+import { facts } from '@/lib/facts'
 import { ScholarshipPath } from '@/components/paths/ScholarshipPath'
 
 /**
@@ -11,7 +13,9 @@ import { ScholarshipPath } from '@/components/paths/ScholarshipPath'
  */
 
 const DESCRIPTION =
-  'Ayomide Abilewa — electrical and electronics engineering at Obafemi Awolowo University, expected 2027. Interned on Chevron Nigeria’s electrical and instrumentation team. Leads a six-session embedded systems curriculum for secondary school students and instructs a practical electronics workshop for absolute beginners.'
+  `Ayomide Abilewa — electrical and electronics engineering at Obafemi Awolowo University, ${facts.graduation}. Interned on Chevron Nigeria’s electrical and instrumentation team. Leads a six-session embedded systems curriculum for secondary school students and instructs a practical electronics workshop for absolute beginners.`
+
+export const viewport: Viewport = { themeColor: THEME_COLOR.scholarship }
 
 export const metadata: Metadata = {
   title: 'Scholarship — journey, teaching and what the work is for',

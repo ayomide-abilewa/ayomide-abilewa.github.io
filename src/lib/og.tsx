@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { tracePath } from '@/lib/trace'
 import { allProjectSlugs, projectBySlug, projectPeriod } from '@/lib/select'
+import { cap, facts } from '@/lib/facts'
 
 /**
  * Social cards.
@@ -241,7 +242,7 @@ const PAGE_CARDS = {
     eyebrow: 'Scholarship',
     title: 'Whatever I get access to becomes a lesson plan',
     subtitle:
-      'Teaching electronics since 2023 alongside the degree. A robotics lab, a plant rotation, a circuit bench: each one turned into a course.',
+      `Teaching electronics since ${facts.teachingSince} alongside the degree. A robotics lab, a plant rotation, a circuit bench: each one turned into a course.`,
     alt: 'Ayomide Abilewa: teaching, leadership and the people the work reaches',
   },
   everything: {
@@ -255,18 +256,18 @@ const PAGE_CARDS = {
   work: {
     tone: 'engineering',
     eyebrow: 'Projects',
-    title: 'Six builds, documented properly',
+    title: `${cap(facts.projects)} builds, documented properly`,
     subtitle:
       'Problem, approach, architecture, the decisions and what forced them, results, and what each one changed about how I build.',
-    alt: 'Ayomide Abilewa: six projects, documented as case studies',
+    alt: `Ayomide Abilewa: ${facts.projects} projects, documented as case studies`,
   },
   about: {
     tone: 'scholarship',
     eyebrow: 'About',
     title: 'A fire alarm, and everything after it',
     subtitle:
-      'Six builds, in order, and what each one taught. The first one taught me that an alarm nobody hears is not finished.',
-    alt: 'Ayomide Abilewa: the story behind the six builds',
+      `${cap(facts.projects)} builds, in order, and what each one taught. The first one taught me that an alarm nobody hears is not finished.`,
+    alt: `Ayomide Abilewa: the story behind the ${facts.projects} builds`,
   },
   contact: {
     tone: 'engineering',
@@ -279,10 +280,10 @@ const PAGE_CARDS = {
   cv: {
     tone: 'research',
     eyebrow: 'CV',
-    title: 'Four versions of the same facts',
+    title: `${cap(facts.cvs)} versions of the same facts`,
     subtitle:
       'Technical, research, scholarship and full. Ordered and cut for who is reading. PDF and editable Word.',
-    alt: 'Ayomide Abilewa: four CV versions in PDF and editable Word',
+    alt: `Ayomide Abilewa: ${facts.cvs} CV versions in PDF and editable Word`,
   },
 } satisfies Record<string, CardDef>
 

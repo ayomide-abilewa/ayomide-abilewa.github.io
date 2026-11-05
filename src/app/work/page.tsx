@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { socialMetadata } from '@/lib/meta'
+import { cap, facts } from '@/lib/facts'
 import { WorkIndex } from '@/components/work/WorkIndex'
 
 /**
@@ -10,7 +11,7 @@ import { WorkIndex } from '@/components/work/WorkIndex'
  */
 
 const DESCRIPTION =
-  'Six engineering projects by Ayomide Abilewa, each written up as a case study: problem, approach, architecture, engineering decisions and results. Embedded systems, computer vision, instrumentation and control.'
+  `${cap(facts.projects)} engineering projects by Ayomide Abilewa, each written up as a case study: problem, approach, architecture, engineering decisions and results. Embedded systems, computer vision, instrumentation and control.`
 
 export const metadata: Metadata = {
   title: 'Projects',

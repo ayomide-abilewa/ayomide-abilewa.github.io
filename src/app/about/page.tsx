@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { socialMetadata } from '@/lib/meta'
+import { facts, startYear } from '@/lib/facts'
 import { AboutStory } from '@/components/about/AboutStory'
 
 /**
@@ -14,7 +15,7 @@ import { AboutStory } from '@/components/about/AboutStory'
  */
 
 const DESCRIPTION =
-  'The five years behind the work: Obafemi Awolowo University from 2021, teaching electronics from 2023, the ACE Quanser robotics lab in 2024, and Chevron Nigeria’s electrical and instrumentation team from 2026 — and what each of the six builds taught along the way.'
+  `The ${facts.yearsAtUniversity} years behind the work: Obafemi Awolowo University from ${facts.universityStart}, teaching electronics from ${facts.teachingSince}, the ACE Quanser robotics lab in ${startYear('quanser')}, and Chevron Nigeria’s electrical and instrumentation team in ${startYear('chevron')} — and what each of the ${facts.projects} builds taught along the way.`
 
 export const metadata: Metadata = {
   title: 'About — the thread through the work',
