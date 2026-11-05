@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'motion/react'
 import { SceneFrame, useSceneTier } from './SceneFrame'
 
 /**
@@ -51,19 +50,6 @@ export function BenchScene() {
   const still = tier === 'still'
   const simple = tier === 'simple'
 
-  // Simple tier: everything arrives together on one short fade.
-  const t = (full: number, delay = 0) =>
-    still
-      ? { duration: 0 }
-      : simple
-        ? { duration: 0.4, ease: [0.2, 0.9, 0.1, 1] as const }
-        : { duration: full, delay, ease: [0.2, 0.9, 0.1, 1] as const }
-
-  const fade = (delay: number) => ({
-    initial: still ? false : ({ opacity: 0 } as const),
-    animate: still ? undefined : ({ opacity: 1 } as const),
-    transition: t(0.5, delay),
-  })
 
   return (
     <SceneFrame
@@ -88,7 +74,7 @@ export function BenchScene() {
       </g>
 
       {/* --- Scope on the bench, right side --- */}
-      <motion.g {...fade(0)}>
+      <g>
         <rect
           x="204"
           y="52"
@@ -111,31 +97,19 @@ export function BenchScene() {
         {/* Bezel controls — two knobs, because that is what a scope has. */}
         <circle cx="216" cy="150" r="6" stroke="rgb(var(--hairline))" strokeWidth="1.5" />
         <circle cx="236" cy="150" r="4" stroke="rgb(var(--hairline))" strokeWidth="1.5" />
-      </motion.g>
+      </g>
 
       {/* The trace itself. Drawn only after contact, because that is what triggers it. */}
-      <motion.path
+      <path
         d={TRACE}
         stroke="rgb(var(--accent))"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        initial={still ? false : { pathLength: 0, opacity: 0 }}
-        animate={still ? undefined : { pathLength: 1, opacity: 1 }}
-        transition={
-          still
-            ? { duration: 0 }
-            : simple
-              ? { pathLength: { duration: 0.7, ease: 'easeOut' }, opacity: { duration: 0.2 } }
-              : {
-                  pathLength: { duration: 0.9, delay: 1.15, ease: [0.4, 0, 0.2, 1] },
-                  opacity: { duration: 0.15, delay: 1.15 },
-                }
-        }
       />
 
       {/* --- Board on the bench, left of the scope --- */}
-      <motion.g {...fade(0.08)}>
+      <g>
         <rect
           x="44"
           y="176"
@@ -164,10 +138,10 @@ export function BenchScene() {
         />
         {/* The test point the probe is going for. */}
         <circle cx="112" cy="216" r="3" fill="rgb(var(--accent))" fillOpacity="0.9" />
-      </motion.g>
+      </g>
 
       {/* --- The engineer. Head, glasses, shoulder, arm, probe. --- */}
-      <motion.g {...fade(0.16)}>
+      <g>
         {/* Shoulder and torso, leaning in over the board. */}
         <path
           d="M18 268 C 22 226, 44 206, 76 200 L 96 236 L 24 268 Z"
@@ -213,34 +187,22 @@ export function BenchScene() {
             strokeLinecap="round"
           />
           {/* The trace, reflected in the lens. Appears when the scope does. */}
-          <motion.path
+          <path
             d="M67 174 L 71 174 L 73 170 L 75 176 L 77 173 L 82 173"
             stroke="rgb(var(--accent))"
             strokeWidth="1.2"
             strokeLinecap="round"
-            initial={still ? false : { opacity: 0 }}
-            animate={still ? undefined : { opacity: 0.95 }}
-            transition={t(0.4, 1.3)}
+            opacity="0.95"
           />
         </g>
-      </motion.g>
+      </g>
 
       {/*
         Arm and probe. On the full tier the wrist rotates down until the tip meets
         the test point — the contact is what starts the trace, so the timing of the
         two is not decorative.
       */}
-      <motion.g
-        style={{ originX: '150px', originY: '150px' }}
-        initial={still ? false : { rotate: simple ? 0 : -14, opacity: 0 }}
-        animate={still ? undefined : { rotate: 0, opacity: 1 }}
-        transition={
-          still
-            ? { duration: 0 }
-            : simple
-              ? { duration: 0.4 }
-              : { duration: 0.75, delay: 0.42, ease: [0.16, 1.08, 0.3, 1] }
-        }
+      <g
       >
         {/* Upper arm from the shoulder to the hand. */}
         <path
@@ -283,24 +245,18 @@ export function BenchScene() {
           strokeWidth="1.6"
           strokeLinecap="round"
         />
-      </motion.g>
+      </g>
 
       {/* Contact flash at the test point, timed to the start of the trace. */}
       {!still && (
-        <motion.circle
+        <circle
           cx="112"
           cy="216"
           r="4"
           stroke="rgb(var(--accent-strong))"
           strokeWidth="1.6"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: [0, 0.9, 0], scale: [0.5, 3.4, 4.2] }}
-          transition={{
-            duration: simple ? 0.5 : 0.6,
-            delay: simple ? 0.25 : 1.1,
-            ease: 'easeOut',
-          }}
-          style={{ originX: '112px', originY: '216px' }}
+          className="scene-flash"
+          style={simple ? { animationDuration: '0.5s', animationDelay: '0.25s' } : undefined}
         />
       )}
     </SceneFrame>

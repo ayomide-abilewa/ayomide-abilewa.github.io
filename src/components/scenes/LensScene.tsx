@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'motion/react'
+import type { CSSProperties } from 'react'
 import { SceneFrame, useSceneTier } from './SceneFrame'
 
 /**
@@ -25,37 +25,7 @@ export function LensScene() {
   const still = tier === 'still'
   const simple = tier === 'simple'
 
-  const ease = [0.4, 0, 0.2, 1] as const
 
-  const fade = (delay: number) => ({
-    initial: still ? false : ({ opacity: 0 } as const),
-    animate: still ? undefined : ({ opacity: 1 } as const),
-    transition: still
-      ? { duration: 0 }
-      : simple
-        ? { duration: 0.45, ease }
-        : { duration: 0.7, delay, ease },
-  })
-
-  /**
-   * On the simple tier both detections are simply present. On the full tier the
-   * second box arrives after the first, because the point of the scene is that one
-   * pass was not enough.
-   */
-  const box = (delay: number) =>
-    still
-      ? { initial: false as const, animate: undefined, transition: { duration: 0 } }
-      : simple
-        ? {
-            initial: { opacity: 0 } as const,
-            animate: { opacity: 1 } as const,
-            transition: { duration: 0.45, ease },
-          }
-        : {
-            initial: { opacity: 0, scale: 0.94 } as const,
-            animate: { opacity: 1, scale: 1 } as const,
-            transition: { duration: 0.55, delay, ease },
-          }
 
   return (
     <SceneFrame
@@ -86,7 +56,7 @@ export function LensScene() {
       </text>
 
       {/* --- The specimen: a length of pipe, seen from the side --- */}
-      <motion.g {...fade(0)}>
+      <g>
         <rect
           x="150"
           y="118"
@@ -117,7 +87,7 @@ export function LensScene() {
           strokeWidth="3"
           strokeLinecap="round"
         />
-      </motion.g>
+      </g>
 
       {/*
         Pass 1 — the plain image. A sweep line crosses the specimen; on the full
@@ -125,21 +95,20 @@ export function LensScene() {
         3-second sweep on a phone is just something in the way.
       */}
       {!still && !simple && (
-        <motion.line
+        <line
           x1="150"
           y1="112"
           x2="150"
           y2="188"
           stroke="rgb(var(--accent))"
           strokeWidth="1.6"
-          initial={{ x1: 150, x2: 150, opacity: 0 }}
-          animate={{ x1: [150, 400], x2: [150, 400], opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 1.1, delay: 0.35, ease: 'linear' }}
+          className="scene-sweep"
+          style={{ '--sweep-delay': '0.35s' } as CSSProperties}
         />
       )}
 
       {/* Detection from pass 1: catches the obvious defect. */}
-      <motion.g {...box(1.2)} style={{ originX: '272px', originY: '148px' }}>
+      <g>
         <rect
           x="250"
           y="132"
@@ -158,14 +127,14 @@ export function LensScene() {
         >
           rgb
         </text>
-      </motion.g>
+      </g>
 
       {/*
         Pass 2 — edge-enhanced. Dashed, in the annotation colour, so the two passes
         are distinguishable without relying on colour alone.
       */}
       {!still && !simple && (
-        <motion.line
+        <line
           x1="150"
           y1="112"
           x2="150"
@@ -173,14 +142,13 @@ export function LensScene() {
           stroke="rgb(var(--accent-alt))"
           strokeWidth="1.6"
           strokeDasharray="4 4"
-          initial={{ x1: 150, x2: 150, opacity: 0 }}
-          animate={{ x1: [150, 400], x2: [150, 400], opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 1.1, delay: 1.5, ease: 'linear' }}
+          className="scene-sweep"
+          style={{ '--sweep-delay': '1.5s' } as CSSProperties}
         />
       )}
 
       {/* Detection from pass 2: catches the faint one the first pass lost. */}
-      <motion.g {...box(2.4)} style={{ originX: '360px', originY: '158px' }}>
+      <g>
         <rect
           x="340"
           y="146"
@@ -200,10 +168,10 @@ export function LensScene() {
         >
           edge
         </text>
-      </motion.g>
+      </g>
 
       {/* Fusion: one box around both findings. The conclusion of the figure. */}
-      <motion.rect
+      <rect
         x="242"
         y="124"
         width="148"
@@ -212,19 +180,10 @@ export function LensScene() {
         stroke="rgb(var(--accent))"
         strokeWidth="1.4"
         strokeOpacity="0.55"
-        initial={still ? false : { opacity: 0 }}
-        animate={still ? undefined : { opacity: 1 }}
-        transition={
-          still
-            ? { duration: 0 }
-            : simple
-              ? { duration: 0.45, delay: 0.3, ease }
-              : { duration: 0.6, delay: 3, ease }
-        }
       />
 
       {/* --- The researcher, left: head bent to a lens on a stand --- */}
-      <motion.g {...fade(0.1)}>
+      <g>
         {/* Stand column and base. */}
         <path
           d="M118 250 H 62 M 90 250 V 172"
@@ -290,25 +249,16 @@ export function LensScene() {
           strokeWidth="2.6"
           strokeLinecap="round"
         />
-      </motion.g>
+      </g>
 
       {/* The written note. Appears once the fused box exists — the finding recorded. */}
-      <motion.g
-        initial={still ? false : { opacity: 0 }}
-        animate={still ? undefined : { opacity: 1 }}
-        transition={
-          still
-            ? { duration: 0 }
-            : simple
-              ? { duration: 0.45, delay: 0.45, ease }
-              : { duration: 0.7, delay: 3.35, ease }
-        }
+      <g
       >
         <g stroke="rgb(var(--content-faint))" strokeWidth="1.4" strokeLinecap="round">
           <line x1="132" y1="234" x2="182" y2="234" />
           <line x1="132" y1="242" x2="168" y2="242" />
         </g>
-      </motion.g>
+      </g>
     </SceneFrame>
   )
 }

@@ -1,16 +1,13 @@
-'use client'
-
-import { motion } from 'motion/react'
-import { useId } from 'react'
+import { useId, type CSSProperties } from 'react'
 import { tracePath, traceRulePath } from '@/lib/trace'
-import { usePrefersReducedMotion, useIntroOffset, useMounted } from '@/lib/motion'
 
 /**
  * The settled trace, drawn as SVG.
  *
  * Used as the name underline on the landing page and as a section divider
- * elsewhere. When motion is allowed it draws itself left to right via
- * stroke-dashoffset — GPU-cheap, no layout, no JS per frame.
+ * elsewhere. It draws itself left to right with a CSS stroke-dashoffset
+ * animation (`.trace-draw` in globals.css), so it needs no JavaScript and the
+ * exported HTML already holds the finished line for reduced motion and lofi.
  */
 
 export function SettledTrace({
@@ -28,24 +25,9 @@ export function SettledTrace({
   animate?: boolean
   delay?: number
   strokeWidth?: number
-  /**
-   * Hold the draw until the opening sequence has handed the page over.
-   *
-   * Set it on the landing-page underline, which sits behind the opening field on
-   * a first visit. Without it the 1.15s draw starts on mount and is finished
-   * before the field has faded, so the line is simply already there — the one
-   * animation on the page nobody ever saw. On a repeat visit, on any other route,
-   * or under reduced motion the offset is zero and `delay` stands alone.
-   */
+  /** Wait for the landing-page opening sequence before drawing. */
   afterIntro?: boolean
 }) {
-  const reduced = usePrefersReducedMotion()
-  const introOffset = useIntroOffset(afterIntro)
-  const d = tracePath(width, height)
-  // Not on the first render: the exported HTML must show the finished line.
-  const shouldAnimate = useMounted() && animate && !reduced
-  const start = delay + introOffset
-
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
@@ -56,22 +38,15 @@ export function SettledTrace({
       focusable="false"
       data-decorative="true"
     >
-      <motion.path
-        d={d}
+      <path
+        d={tracePath(width, height)}
+        pathLength={1}
+        className={animate ? `trace-draw${afterIntro ? ' trace-after-intro' : ''}` : undefined}
+        style={delay ? ({ '--trace-delay': `${delay}s` } as CSSProperties) : undefined}
         stroke="rgb(var(--accent))"
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"
-        initial={shouldAnimate ? { pathLength: 0, opacity: 0 } : false}
-        animate={shouldAnimate ? { pathLength: 1, opacity: 1 } : undefined}
-        transition={
-          shouldAnimate
-            ? {
-                pathLength: { duration: 1.15, ease: [0.4, 0, 0.2, 1], delay: start },
-                opacity: { duration: 0.2, delay: start },
-              }
-            : undefined
-        }
       />
     </svg>
   )
@@ -80,11 +55,9 @@ export function SettledTrace({
 /**
  * Thin divider version — a rule that happens to be a step response.
  *
- * No `motion` here on purpose. It is used several times per page, often below the
- * fold, and it should draw itself when you reach it rather than while you are
- * somewhere else. `draw-in` gives it a scroll-driven clip reveal that costs no
- * JavaScript and no listener; where the timeline is unsupported it is simply a
- * finished rule. See globals.css.
+ * `draw-in` gives it a scroll-driven clip reveal that costs no JavaScript and no
+ * listener; where the timeline is unsupported it is simply a finished rule. See
+ * globals.css.
  */
 export function TraceDivider({ className = '' }: { className?: string }) {
   const id = useId()

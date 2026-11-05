@@ -1,17 +1,15 @@
 'use client'
 
-import { motion, useInView } from 'motion/react'
-import { useEffect, useRef, useState, type ReactNode, type ElementType } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type ElementType, type ReactNode } from 'react'
 import { useMode } from '@/lib/mode'
-import { usePrefersReducedMotion, riseVariants, staggerVariants } from '@/lib/motion'
 
 /**
- * Scroll-reveal primitives. Animation supports the story of each page.
+ * Scroll-reveal primitives.
  *
- * Every reveal on the site goes through these two components, so the motion
- * language changes with the visitor mode automatically and reduced-motion is
- * handled in exactly one place. `once: true` means content never re-animates
- * when scrolling back up, which is what makes long pages readable.
+ * The exported HTML and the first paint are always the finished page. After
+ * mount, an element that starts wholly below the fold is marked hidden and
+ * rises in when it is reached; everything else is left alone. The transition
+ * itself, its per-mode timing and the stagger live in globals.css.
  */
 
 type RevealProps = {
@@ -22,79 +20,75 @@ type RevealProps = {
   delay?: number
 }
 
-/**
- * Whether this element should wait offscreen and animate in when reached.
- *
- * Decided after mount and only for elements wholly below the fold, so the
- * exported HTML and the first paint are always the finished page.
- */
-function useDeferredEntrance<T extends Element>(margin: string) {
-  const ref = useRef<T>(null)
+type RevealState = 'hidden' | 'shown' | undefined
+
+function useDeferredEntrance(rootMargin: string) {
+  const ref = useRef<HTMLElement>(null)
   const { lofi } = useMode()
-  const reduced = usePrefersReducedMotion()
-  const [deferred, setDeferred] = useState(false)
-  const inView = useInView(ref, { once: true, margin: margin as `${number}px` })
+  const [state, setState] = useState<RevealState>(undefined)
 
   useEffect(() => {
-    // Read the query here too: on the first pass `reduced` is still its pre-mount false.
-    const still = reduced || lofi || window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (still) return setDeferred(false)
-    if (ref.current && ref.current.getBoundingClientRect().top > window.innerHeight) setDeferred(true)
-  }, [reduced, lofi])
+    const el = ref.current
+    if (!el) return
+    if (lofi || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setState(undefined)
+      return
+    }
+    if (el.getBoundingClientRect().top <= window.innerHeight) return
 
-  return { ref, reduced: reduced || lofi, state: deferred && !inView ? 'hidden' : 'visible' }
+    setState('hidden')
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setState('shown')
+          observer.disconnect()
+        }
+      },
+      { rootMargin },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [lofi, rootMargin])
+
+  return { ref, state }
 }
 
-export function Reveal({ children, as = 'div', className, delay = 0 }: RevealProps) {
-  const { mode } = useMode()
-  const { ref, reduced, state } = useDeferredEntrance<HTMLDivElement>('-10% 0px -10% 0px')
-  const MotionTag = motion[as as keyof typeof motion] as typeof motion.div
-
+export function Reveal({ children, as: Tag = 'div', className, delay = 0 }: RevealProps) {
+  const { ref, state } = useDeferredEntrance('-10% 0px -10% 0px')
   return (
-    <MotionTag
+    <Tag
       ref={ref}
       className={className}
-      initial={false}
-      animate={state}
-      variants={riseVariants(mode, reduced)}
-      transition={delay ? { delay } : undefined}
+      data-reveal={state}
+      style={delay ? ({ '--reveal-delay': `${delay}s` } as CSSProperties) : undefined}
     >
       {children}
-    </MotionTag>
+    </Tag>
   )
 }
 
-/** Container that staggers its Reveal children. */
-export function RevealGroup({
-  children,
-  as = 'div',
-  className,
-}: Omit<RevealProps, 'delay'>) {
-  const { mode } = useMode()
-  const { ref, reduced, state } = useDeferredEntrance<HTMLDivElement>('-8% 0px -8% 0px')
-  const MotionTag = motion[as as keyof typeof motion] as typeof motion.div
+/** Container that staggers its RevealItem children. */
+export function RevealGroup({ children, as: Tag = 'div', className }: Omit<RevealProps, 'delay'>) {
+  const { ref, state } = useDeferredEntrance('-8% 0px -8% 0px')
+
+  useEffect(() => {
+    ref.current?.querySelectorAll<HTMLElement>(':scope > [data-reveal-item]').forEach((item, i) => {
+      item.style.setProperty('--reveal-index', String(i))
+    })
+  }, [ref, children])
 
   return (
-    <MotionTag
-      ref={ref}
-      className={className}
-      initial={false}
-      animate={state}
-      variants={staggerVariants(mode, reduced)}
-    >
+    <Tag ref={ref} className={className} data-reveal-group={state}>
       {children}
-    </MotionTag>
+    </Tag>
   )
 }
 
 /** A child of RevealGroup. Inherits the parent's stagger. */
-export function RevealItem({ children, as = 'div', className }: Omit<RevealProps, 'delay'>) {
-  const { mode } = useMode()
-  const MotionTag = motion[as as keyof typeof motion] as typeof motion.div
-
+export function RevealItem({ children, as: Tag = 'div', className }: Omit<RevealProps, 'delay'>) {
   return (
-    <MotionTag className={className} variants={riseVariants(mode, false)}>
+    <Tag className={className} data-reveal-item="">
       {children}
-    </MotionTag>
+    </Tag>
   )
 }

@@ -858,6 +858,134 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+ * ENTRANCES.
+ *
+ * Reveal.tsx marks an element `data-reveal="hidden"` only if it starts wholly
+ * below the fold after mount, then "shown" when it is reached. Nothing is ever
+ * hidden in the exported HTML. Timing is per visitor mode; the stagger index on
+ * group items is set by RevealGroup.
+ * --------------------------------------------------------------------------- */
+:root,
+.mode-everything {
+  --reveal-duration: 480ms;
+  --reveal-ease: cubic-bezier(0.16, 1.08, 0.3, 1);
+  --reveal-rise: 16px;
+  --reveal-stagger: 60ms;
+}
+
+.mode-engineering {
+  --reveal-duration: 340ms;
+  --reveal-ease: cubic-bezier(0.2, 0.9, 0.1, 1);
+  --reveal-rise: 14px;
+  --reveal-stagger: 45ms;
+}
+
+.mode-research {
+  --reveal-duration: 680ms;
+  --reveal-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --reveal-rise: 8px;
+  --reveal-stagger: 90ms;
+}
+
+.mode-scholarship {
+  --reveal-duration: 580ms;
+  --reveal-ease: cubic-bezier(0.16, 1.08, 0.3, 1);
+  --reveal-rise: 24px;
+  --reveal-stagger: 75ms;
+}
+
+[data-reveal='hidden'],
+[data-reveal-group='hidden'] > [data-reveal-item] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-rise), 0);
+}
+
+[data-reveal='shown'],
+[data-reveal-group='shown'] > [data-reveal-item] {
+  transition: opacity var(--reveal-duration) var(--reveal-ease),
+    transform var(--reveal-duration) var(--reveal-ease);
+}
+
+[data-reveal='shown'] {
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+[data-reveal-group='shown'] > [data-reveal-item] {
+  transition-delay: calc(var(--reveal-index, 0) * var(--reveal-stagger));
+}
+
+/*
+ * The underline draw. `pathLength="1"` on the path makes the dash maths unitless.
+ * On the landing page's first visit it waits for the opening sweep to settle.
+ */
+.trace-draw {
+  stroke-dasharray: 1;
+  animation: trace-stroke 1150ms cubic-bezier(0.4, 0, 0.2, 1) var(--trace-delay, 0s) both;
+}
+
+html[data-intro='on'] .trace-after-intro {
+  animation-delay: calc(var(--trace-delay, 0s) + 1s);
+}
+
+@keyframes trace-stroke {
+  from {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Bench scene: the flash where the probe meets the test point. */
+.scene-flash {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: scene-flash 600ms ease-out 1.1s both;
+}
+
+@keyframes scene-flash {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(3.4);
+  }
+  to {
+    opacity: 0;
+    transform: scale(4.2);
+  }
+}
+
+/* Lens scene: one pass of the inspection line across the specimen. */
+.scene-sweep {
+  animation: scene-sweep 1.1s linear var(--sweep-delay, 0s) both;
+}
+
+@keyframes scene-sweep {
+  from {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  33% {
+    opacity: 1;
+  }
+  67% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(250px);
+  }
+}
+
 /*
  * LOW-FIDELITY TIER (easter egg, and a genuine accessibility fallback).
  *
@@ -919,6 +1047,19 @@
 
 .lofi [data-lofi-hide='true'] {
   display: none !important;
+}
+
+.lofi [data-reveal],
+.lofi [data-reveal-item],
+.lofi .trace-draw {
+  opacity: 1 !important;
+  transform: none !important;
+  stroke-dashoffset: 0 !important;
+}
+
+.lofi .scene-flash,
+.lofi .scene-sweep {
+  display: none;
 }
 
 /*
