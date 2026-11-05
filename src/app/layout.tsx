@@ -183,11 +183,8 @@ const PLAUSIBLE_STUB =
  *      shared link gets a frame of the dark engineering theme before the light
  *      paper theme takes over. Route wins over the stored session choice, since
  *      the route is an explicit request.
- *   2. Whether the opening sequence will run — otherwise the page paints once,
- *      revealed, and is then covered by the opening field, which looks like a bug.
- *      Deciding here also means reduced-motion visitors, and anyone who has
- *      already watched it this session, never see a black shade flash on their way
- *      to content they were always going to get.
+ *   2. Whether the opening sequence will run behind the landing hero. Reduced
+ *      motion and a repeat visit this session skip it.
  *
  * Kept to a few hundred bytes, wrapped in try/catch (private browsing throws on
  * sessionStorage), and a no-op when scripting is off — nothing is hidden by
@@ -227,8 +224,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       </head>
       <body className="min-h-dvh bg-surface font-sans text-body text-content antialiased">
-        {/* Holds the dark until <Opening> mounts its own field over it. */}
-        <div className="intro-shade" aria-hidden="true" />
         <script
           type="application/ld+json"
           // Static, build-time JSON from typed data — no user input involved.

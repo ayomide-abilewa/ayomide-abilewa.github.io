@@ -18,9 +18,8 @@ import { INTRO_TIMING as TIMING } from '@/lib/motion'
  *
  * Three deliberate constraints, all learned from the version this replaces:
  *
- *   1. It is short. 1.5s end to end, and the page is revealed at 1.0s — before the
- *      field has finished lifting, so the content is already dropping in behind
- *      it. Nobody is held at the door. The version this replaces ran 4.9s.
+ *   1. It never gates the page. It plays behind the landing hero, which is
+ *      readable from the first paint, and can be skipped or ignored.
  *   2. Timings live in one object, in lib/motion, and are handed to CSS as custom
  *      properties. The JS phases, the stylesheet transitions and the entrances
  *      that have to wait for this sequence all read the same numbers.
@@ -38,7 +37,6 @@ export function Opening({ onReveal }: { onReveal?: () => void }) {
   const { markIntroSeen, mode, lofi } = useMode()
   const [active, setActive] = useState(false)
   const [phase, setPhase] = useState<Phase>('sweep')
-  const skipRef = useRef<HTMLButtonElement>(null)
   const pathRef = useRef<SVGPathElement>(null)
   const beamRef = useRef<SVGGElement>(null)
   const timers = useRef<number[]>([])
@@ -73,7 +71,6 @@ export function Opening({ onReveal }: { onReveal?: () => void }) {
       return
     }
     setActive(true)
-    skipRef.current?.focus()
     timers.current = [
       window.setTimeout(() => setPhase('hold'), TIMING.sweep),
       window.setTimeout(() => {
@@ -127,16 +124,11 @@ export function Opening({ onReveal }: { onReveal?: () => void }) {
 
   useEffect(() => {
     if (!active) return
-    const prior = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
     const key = (event: KeyboardEvent) => {
       if (event.key === 'Escape') skip()
     }
     window.addEventListener('keydown', key)
-    return () => {
-      document.body.style.overflow = prior
-      window.removeEventListener('keydown', key)
-    }
+    return () => window.removeEventListener('keydown', key)
   }, [active, skip])
 
   if (!active || phase === 'done') return null
@@ -149,17 +141,11 @@ export function Opening({ onReveal }: { onReveal?: () => void }) {
   } as CSSProperties
 
   return (
-    <div
-      className="acquire"
-      data-phase={phase}
-      style={style}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Site introduction"
-    >
-      <div className="acquire-graticule" aria-hidden="true" />
+    <>
+    <div className="acquire" data-phase={phase} style={style} aria-hidden="true">
+      <div className="acquire-graticule" />
 
-      <div className="acquire-band" aria-hidden="true">
+      <div className="acquire-band">
         <svg
           className="acquire-scope"
           viewBox={`0 0 ${VIEW.w} ${VIEW.h}`}
@@ -188,9 +174,10 @@ export function Opening({ onReveal }: { onReveal?: () => void }) {
         </p>
       </div>
 
-      <button ref={skipRef} type="button" onClick={skip} className="acquire-skip">
-        Skip <span aria-hidden="true">Esc</span>
-      </button>
     </div>
+    <button type="button" onClick={skip} className="acquire-skip">
+      Skip intro <span aria-hidden="true">Esc</span>
+    </button>
+    </>
   )
 }

@@ -148,9 +148,6 @@
   }
 
   :root {
-    /* The colour the pre-paint gate holds, and the opening field's background. */
-    --intro-shade: 12 30 41;
-
     /*
      * Depth, and the only depth there is.
      *
@@ -395,49 +392,6 @@
   }
 }
 
-/*
- * PRE-PAINT INTRO GATE.
- *
- * A synchronous script in <head> decides — before the first paint — whether the
- * opening sequence will run, and sets data-intro="on" on <html>. Deciding in an
- * effect instead would paint one frame of revealed page before the opening field
- * covered it, and would flash a black shade at reduced-motion visitors who are
- * never going to see the sequence at all.
- *
- * With JavaScript disabled the attribute is never set, so nothing is ever
- * hidden and the page renders as plain content.
- */
-.intro-shade {
-  display: none;
-}
-
-html[data-intro='on'] .intro-shade {
-  display: block;
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  background-color: rgb(var(--intro-shade));
-}
-
-/*
- * Content that drops in once the opening lifts — the "details drop down" beat.
- * Driven by an attribute flip and a CSS transition rather than JS per frame, so
- * it costs nothing and still runs if the animation bundle fails to load.
- * Stagger with style={{ '--drop-delay': '120ms' }}.
- */
-[data-drop] {
-  transition: opacity 640ms cubic-bezier(0.16, 0.84, 0.24, 1),
-    transform 640ms cubic-bezier(0.16, 0.84, 0.24, 1);
-  transition-delay: var(--drop-delay, 0ms);
-}
-
-html[data-intro='on'] [data-drop] {
-  opacity: 0;
-  transform: translate3d(0, -28px, 0);
-  /* No transition on the way in: it is behind the opening field, not animating. */
-  transition: none;
-}
-
 /* ---------------------------------------------------------------------------
  * OPENING — signal acquisition.
  *
@@ -466,14 +420,15 @@ html[data-intro='on'] [data-drop] {
   --accent-alt: 74 190 214;
   --hairline: 30 54 64;
 
+  /* Behind the page, not over it: the hero copy is readable from the first paint. */
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: -1;
   display: grid;
   place-items: center;
   overflow: hidden;
-  /* Same colour as .intro-shade, so the pre-paint gate hands over invisibly. */
-  background: rgb(var(--intro-shade));
+  pointer-events: none;
+  opacity: 0.55;
 }
 
 .acquire[data-phase='handoff'] {
@@ -556,13 +511,19 @@ html[data-intro='on'] [data-drop] {
 }
 
 .acquire-skip {
-  position: absolute;
-  z-index: 2;
+  --surface-raised: 17 33 41;
+  --hairline: 30 54 64;
+  --content-muted: 142 171 181;
+  --content: 246 243 236;
+  --accent: 240 163 38;
+  position: fixed;
+  z-index: 60;
   right: 1.5rem;
   bottom: 1.5rem;
   border: 1px solid rgb(var(--hairline));
   background: rgb(var(--surface-raised));
-  padding: 0.6rem 0.75rem;
+  min-height: 2.75rem;
+  padding: 0 0.85rem;
   color: rgb(var(--content-muted));
   font: 500 0.64rem/1 var(--font-plex-mono), monospace;
   letter-spacing: 0.14em;
@@ -653,14 +614,6 @@ html[data-intro='on'] [data-drop] {
     opacity: 1;
     transform: none;
   }
-}
-
-/*
- * On a first visit to the landing page the opening sequence owns the entrance and
- * [data-drop] owns the content. Two entrances at once is one too many.
- */
-html[data-intro='on'] .page-enter {
-  animation: none;
 }
 
 /* ---------------------------------------------------------------------------
