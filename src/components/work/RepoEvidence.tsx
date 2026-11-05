@@ -71,7 +71,7 @@ export function RepoEvidence() {
       >
         {profile.identity.links.github.cvText}
         <span aria-hidden="true">→</span>
-        <span className="sr-only">(opens in a new tab)</span>
+        <span className="sr-only"> (opens in a new tab)</span>
       </a>
     </div>
   )

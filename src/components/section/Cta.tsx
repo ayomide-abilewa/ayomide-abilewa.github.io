@@ -78,7 +78,7 @@ export function ActionButton({ action }: { action: Action }) {
         {...(action.download ? { download: '' } : {})}
       >
         {body}
-        {action.external && <span className="sr-only">(opens in a new tab)</span>}
+        {action.external && <span className="sr-only"> (opens in a new tab)</span>}
       </a>
     )
   }
