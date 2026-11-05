@@ -66,13 +66,13 @@ export const profile: Profile = {
    */
   summaries: {
     technical:
-      'Builds embedded and computer-vision systems, with a habit of designing for the conditions that break them: poor lighting, no network, unreliable input. Currently rotating through the electrical and instrumentation team at Chevron Nigeria, working with the control loops and signal standards behind the same measurement problems at industrial scale.',
+      'Builds embedded and computer-vision systems, with a habit of designing for the conditions that break them: poor lighting, no network, unreliable input. Interned on the electrical and instrumentation team at Chevron Nigeria and worked with the control loops and signal standards behind the same measurement problems at industrial scale.',
     research:
       'Most of the work so far has gone into measurement and detection under non-ideal conditions. Recent projects: a two-stage cascaded detector that fuses RGB and edge-enhanced models for pipe anomaly identification, a multi-sensor multispectral acquisition node, and control-systems practice on Quanser robotics hardware using MATLAB and Simulink.',
     scholarship:
-      'Has taught electronics since 2023, alongside the degree rather than after it. Leads SPAW 3.0, a six-session embedded systems and entrepreneurship curriculum for secondary school students, and instructs a practical electronics workshop for students with no prior background. Currently interning on Chevron Nigeria’s electrical and instrumentation team.',
+      'Has taught electronics since 2023, alongside the degree rather than after it. Leads SPAW 3.0, a six-session embedded systems and entrepreneurship curriculum for secondary school students, and instructs a practical electronics workshop for students with no prior background. Completed an internship on Chevron Nigeria’s electrical and instrumentation team.',
     general:
-      'Works across embedded systems, instrumentation and computer vision. Has built sensing and detection systems from microcontroller nodes up to full-stack applications, and has taught electronics to secondary school students since 2023. Currently interning on Chevron Nigeria’s electrical and instrumentation team.',
+      'Works across embedded systems, instrumentation and computer vision. Has built sensing and detection systems from microcontroller nodes up to full-stack applications, and has taught electronics to secondary school students since 2023. Completed an internship on Chevron Nigeria’s electrical and instrumentation team.',
   },
 
   education: [
@@ -105,11 +105,13 @@ export const profile: Profile = {
       location: 'Lagos, Nigeria',
       start: 'Apr 2026',
       end: 'Sep 2026',
+      shortRole: 'Electrical and Instrumentation intern',
+      shortOrganisation: 'Chevron Nigeria',
       summary:
-        'Rotating across the Electrical and Instrumentation team, working on oil and gas field instrumentation and electrical systems.',
+        'Rotated across the Electrical and Instrumentation team, working on oil and gas field instrumentation and electrical systems.',
       bullets: [
         {
-          text: 'Rotating through the Electrical and Instrumentation (E&I) team on field instrumentation and electrical systems.',
+          text: 'Rotated through the Electrical and Instrumentation (E&I) team on field instrumentation and electrical systems.',
           emphasis: ['technical', 'research', 'scholarship', 'general'],
         },
         {

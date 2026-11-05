@@ -8,6 +8,7 @@ import {
   certificationsForVariant,
   cvFile,
   experienceForMode,
+  latestRole,
   projectsForMode,
   skillsForVariant,
 } from '@/lib/select'
@@ -42,6 +43,7 @@ export function EngineeringPath() {
   const projects = projectsForMode(MODE)
   const [lead, ...rest] = projects
   const experience = experienceForMode(MODE)
+  const latest = latestRole()
 
   return (
     <>
@@ -50,7 +52,7 @@ export function EngineeringPath() {
         eyebrow="Systems, hardware and the failure modes behind them"
         heading="I build systems that measure the physical world, then design them for the moment conditions stop cooperating."
         lede="Embedded nodes, computer-vision pipelines and control loops — mostly built for rooms and sites where the lighting is uneven, the network is unreliable and the sensor reading means nothing until it has been calibrated."
-        detail="Currently rotating through the electrical and instrumentation team at Chevron Nigeria, working with the 4–20 mA loops and pneumatic standards that solve the same measurement problems at industrial scale."
+        detail="Interned on the electrical and instrumentation team at Chevron Nigeria, where I worked with the 4–20 mA loops and pneumatic standards that solve the same measurement problems at industrial scale."
         actions={[
           { label: 'See the systems', href: '#systems', weight: 'primary' },
           {
@@ -74,7 +76,9 @@ export function EngineeringPath() {
           <dl className="grid-field-fine rounded-panel border border-hairline bg-surface-sunken/40 p-6">
             {[
               { k: 'Discipline', v: 'Electronic and Electrical Engineering, OAU' },
-              { k: 'Currently', v: 'E&I intern, Chevron Nigeria' },
+              ...(latest
+                ? [{ k: latest.label, v: `${latest.role.shortRole}, ${latest.role.shortOrganisation}` }]
+                : []),
               { k: 'Works in', v: 'Python · C/C++ · MATLAB · Verilog' },
               { k: 'Builds on', v: 'ESP32 · Arduino · STM32 · Raspberry Pi · FPGA' },
               { k: 'Buses', v: 'I2C · SPI · UART' },

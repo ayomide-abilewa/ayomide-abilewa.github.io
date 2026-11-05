@@ -35,6 +35,11 @@ export function isCurrent(item: { start: string; end?: string }, asOf = AS_OF): 
   return bounds(item.start).first <= asOf && (!item.end || bounds(item.end).last >= asOf)
 }
 
+/** Sortable form of an end date; ongoing sorts after any date. */
+export function endKey(end: string | undefined): string {
+  return end === undefined ? '9999-12-31' : bounds(end).last
+}
+
 /** True for a date still ahead, such as an expected graduation. */
 export function isAhead(value: string, asOf = AS_OF): boolean {
   return bounds(value).first > asOf

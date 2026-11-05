@@ -11,6 +11,7 @@ import {
   cvFile,
   experienceForMode,
   indexOrderForMode,
+  latestRole,
   leadershipForMode,
   projectPeriod,
 } from '@/lib/select'
@@ -75,7 +76,7 @@ const INTRO: Record<VisitorMode, { heading: string; lede: string }> = {
   everything: {
     heading:
       'One person, five years, and a habit of turning whatever I have just learned into something someone else can use.',
-    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. Embedded systems, instrumentation and computer vision, currently interning on Chevron Nigeria’s electrical and instrumentation team. Teaching the same material to students who have never seen a circuit before.',
+    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027. Embedded systems, instrumentation and computer vision, and an internship on Chevron Nigeria’s electrical and instrumentation team. Teaching the same material to students who have never seen a circuit before.',
   },
 }
 
@@ -96,16 +97,16 @@ const THREAD_CLOSE: Record<VisitorMode, string> = {
 }
 
 function AtAGlance() {
-  const chevron = profile.experience.find((e) => e.id === 'chevron')
+  const latest = latestRole()
   const degree = profile.education.find((e) => e.shortName === 'OAU')
 
   const rows: { label: string; value: ReactNode }[] = [
     { label: 'Based in', value: profile.identity.location },
-    ...(chevron
+    ...(latest
       ? [
           {
-            label: 'Currently',
-            value: `${chevron.role.replace(' (SIWES)', '')}, ${chevron.organisation}`,
+            label: latest.label,
+            value: `${latest.role.role.replace(' (SIWES)', '')}, ${latest.role.organisation}`,
           },
         ]
       : []),

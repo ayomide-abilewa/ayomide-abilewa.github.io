@@ -116,6 +116,9 @@ export type Experience = {
   start: string
   /** Omit while ongoing; "current" is derived from this at build time. */
   end?: string
+  /** Short forms for one-line facts, e.g. "Electrical and Instrumentation intern". */
+  shortRole?: string
+  shortOrganisation?: string
   /** One-line summary for cards and timelines. */
   summary: string
   bullets: Bullet[]

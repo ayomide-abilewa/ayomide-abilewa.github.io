@@ -7,7 +7,7 @@ import type {
   VisitorMode,
 } from '@/data/types'
 import { profile } from '@/data/profile'
-import { formatRange } from '@/lib/dates'
+import { endKey, formatRange, isCurrent } from '@/lib/dates'
 
 /**
  * Audience selection.
@@ -81,6 +81,18 @@ export function projectNeighbours(
 /** A project's dates as shown everywhere: "Feb–Mar 2026", "2026–Present". */
 export function projectPeriod(project: Project): string {
   return formatRange(project.start, project.end)
+}
+
+/**
+ * The role a one-line fact should name: the ongoing one with a short form if
+ * there is one, otherwise the most recently finished. Labelled to match.
+ */
+export function latestRole(): { label: 'Currently' | 'Most recently'; role: Experience } | undefined {
+  const withShort = profile.experience.filter((e) => e.shortRole)
+  const current = withShort.find((e) => isCurrent(e))
+  if (current) return { label: 'Currently', role: current }
+  const latest = [...withShort].sort((a, b) => endKey(b.end).localeCompare(endKey(a.end)))[0]
+  return latest && { label: 'Most recently', role: latest }
 }
 
 /** Every slug, for generateStaticParams and the sitemap. */

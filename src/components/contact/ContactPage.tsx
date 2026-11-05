@@ -52,7 +52,7 @@ const PITCH: Record<VisitorMode, Pitch> = {
     ],
     subject: 'Engineering — from your portfolio',
     body: 'Hi Ayomide,\n\nI came across your portfolio. I work on\n\nWhat I have in mind:\n\n',
-    note: 'Email is fastest. I am a full-time student on an internship rotation, so a reply usually takes a day or two — if something is time-sensitive, say so in the subject line and call.',
+    note: 'Email is fastest. I am a full-time student, so a reply usually takes a day or two — if something is time-sensitive, say so in the subject line and call.',
   },
   research: {
     eyebrow: 'Research internships, labs and graduate supervision',
@@ -71,7 +71,7 @@ const PITCH: Record<VisitorMode, Pitch> = {
   scholarship: {
     eyebrow: 'Scholarships, fellowships and programmes',
     heading: 'Ask me anything a committee needs — including the things a CV has no room for.',
-    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027, alongside an internship with Chevron Nigeria’s electrical and instrumentation team and a six-session course I teach to secondary school students.',
+    lede: 'Electronic and electrical engineering at Obafemi Awolowo University, expected 2027, with an internship on Chevron Nigeria’s electrical and instrumentation team behind me and a six-session course I teach to secondary school students.',
     open: [
       'Scholarship and fellowship applications, including anything that needs references, transcripts or verification.',
       'Programmes with a teaching or community component. SPAW is in its third cohort and I rewrite the lesson plans each time based on what went wrong in the last one.',
@@ -94,7 +94,7 @@ const PITCH: Record<VisitorMode, Pitch> = {
     ],
     subject: 'Hello — from your portfolio',
     body: 'Hi Ayomide,\n\nI found your portfolio while\n\nWhat I am writing about:\n\n',
-    note: 'One address, read by one person. I am a full-time student on an internship rotation, so give it a day or two.',
+    note: 'One address, read by one person. I am a full-time student, so give it a day or two.',
   },
 }
 

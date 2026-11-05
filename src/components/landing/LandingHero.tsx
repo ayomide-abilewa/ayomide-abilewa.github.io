@@ -1,4 +1,6 @@
 import { profile } from '@/data/profile'
+import { formatRange } from '@/lib/dates'
+import { latestRole } from '@/lib/select'
 import { SettledTrace } from '@/components/brand/SettledTrace'
 
 /**
@@ -19,9 +21,15 @@ import { SettledTrace } from '@/components/brand/SettledTrace'
  * adjectives standing in for evidence.
  */
 
+const latest = latestRole()
+
 const FACTS = [
   'B.Sc. Electronic and Electrical Engineering · Obafemi Awolowo University · expected 2027',
-  'Electrical and Instrumentation intern · Chevron Nigeria',
+  ...(latest
+    ? [
+        `${latest.role.shortRole} · ${latest.role.shortOrganisation} · ${formatRange(latest.role.start, latest.role.end)}`,
+      ]
+    : []),
   'Lagos, Nigeria',
 ]
 

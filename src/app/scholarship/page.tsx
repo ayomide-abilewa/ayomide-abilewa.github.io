@@ -11,7 +11,7 @@ import { ScholarshipPath } from '@/components/paths/ScholarshipPath'
  */
 
 const DESCRIPTION =
-  'Ayomide Abilewa — electrical and electronics engineering at Obafemi Awolowo University, expected 2027. Interning on Chevron Nigeria’s electrical and instrumentation team, leading a six-session embedded systems curriculum for secondary school students, and instructing a practical electronics workshop for absolute beginners.'
+  'Ayomide Abilewa — electrical and electronics engineering at Obafemi Awolowo University, expected 2027. Interned on Chevron Nigeria’s electrical and instrumentation team. Leads a six-session embedded systems curriculum for secondary school students and instructs a practical electronics workshop for absolute beginners.'
 
 export const metadata: Metadata = {
   title: 'Scholarship — journey, teaching and what the work is for',

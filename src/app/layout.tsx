@@ -38,7 +38,7 @@ const plexMono = IBM_Plex_Mono({
 const SITE_URL = 'https://ayomide-abilewa.github.io'
 
 const DESCRIPTION =
-  'Ayomide Abilewa builds embedded and computer-vision systems designed for the conditions that break them. Electrical and electronics engineering student at Obafemi Awolowo University, currently on Chevron Nigeria’s electrical and instrumentation team.'
+  'Ayomide Abilewa builds embedded and computer-vision systems designed for the conditions that break them. Electrical and electronics engineering student at Obafemi Awolowo University who interned on Chevron Nigeria’s electrical and instrumentation team.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

@@ -54,7 +54,7 @@ export function ScholarshipPath() {
         mode={MODE}
         eyebrow="Journey, teaching and what the work is for"
         heading="I learn something, then I go and teach it to someone who has never seen it before."
-        lede="Electrical and electronics engineering at Obafemi Awolowo University, expected 2027. Alongside an internship on Chevron Nigeria's electrical and instrumentation team, I lead a six-session embedded systems curriculum for secondary school students and instruct a practical electronics workshop for people with no prior background."
+        lede="Electrical and electronics engineering at Obafemi Awolowo University, expected 2027. I lead a six-session embedded systems curriculum for secondary school students, instruct a practical electronics workshop for people with no prior background, and interned on Chevron Nigeria's electrical and instrumentation team."
         detail="The pattern has held for three years. Whatever I get access to, whether a robotics lab, a plant rotation or a circuit bench, becomes a set of lesson plans within a term."
         actions={[
           { label: 'The journey', href: '#journey', weight: 'primary' },
@@ -94,7 +94,7 @@ export function ScholarshipPath() {
 
       <Section
         id="cohort"
-        eyebrow="This year"
+        eyebrow="The internship"
         heading="Inside the internship"
         lede="I am not publishing the engineering photographs from this rotation. The control systems, switchgear and instrumentation in them belong to the client, not to me. What I can show you is the cohort I went through it with."
       >
@@ -143,7 +143,7 @@ export function ScholarshipPath() {
             'Finish the pipe anomaly detection work: the two-stage cascaded detector is built and in progress, and the fused RGB and edge-enhanced stage still needs evaluating properly.',
             'Build the extended production version of the Smart Attendance System, which was invited after the prototype was defended at a final-year project review.',
             'Keep running SPAW: the third cohort of the six-session embedded systems curriculum, with the lesson plans and tutor guides rewritten each time from what went wrong in the last one.',
-            'Go deeper into instrumentation and control — the Chevron rotation is the first time the loops from coursework have had consequences attached, and that is the direction the rest follows.',
+            'Go deeper into instrumentation and control — the Chevron rotation was the first time the loops from coursework had consequences attached, and that is the direction the rest follows.',
           ]}
         />
       </Section>
