@@ -12,7 +12,7 @@ import { EngineeringPath } from '@/components/paths/EngineeringPath'
  */
 
 const DESCRIPTION =
-  'Embedded systems, computer vision and instrumentation work by Ayomide Abilewa: ESP32 and STM32 builds, a 214-test offline voice assistant, a cascaded anomaly detector, and 4–20 mA control-loop practice on Chevron Nigeria’s electrical and instrumentation team.'
+  'Embedded systems, computer vision and instrumentation work by Ayomide Abilewa: ESP32 and Arduino builds, a convention booth built to survive venue wifi, face-recognition attendance, a cascaded anomaly detector, and 4–20 mA control-loop practice on Chevron Nigeria’s electrical and instrumentation team.'
 
 export const metadata: Metadata = {
   title: 'Engineering — systems built for the conditions that break them',
