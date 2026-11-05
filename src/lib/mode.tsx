@@ -12,6 +12,7 @@ import {
 } from 'react'
 import type { VisitorMode } from '@/data/types'
 import { track } from './analytics'
+import { LOFI_THEME_COLOR, THEME_COLOR } from './theme'
 
 /**
  * Visitor mode state.
@@ -96,6 +97,14 @@ export function ModeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     document.documentElement.classList.toggle('lofi', lofi)
   }, [lofi])
+
+  // The exported HTML carries the route's colour; shared pages follow the session.
+  useEffect(() => {
+    const color = lofi ? LOFI_THEME_COLOR : THEME_COLOR[mode]
+    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+      meta.setAttribute('content', color)
+    })
+  }, [mode, lofi])
 
   const setMode = useCallback(
     (next: VisitorMode, source: 'selection' | 'switcher' | 'route' = 'switcher') => {

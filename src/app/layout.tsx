@@ -5,6 +5,7 @@ import { ModeProvider } from '@/lib/mode'
 import { SiteChrome } from '@/components/chrome/SiteChrome'
 import { profile } from '@/data/profile'
 import { ogImage } from '@/lib/og'
+import { THEME_COLOR } from '@/lib/theme'
 
 /**
  * One type superfamily, three voices.
@@ -95,16 +96,9 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  /*
-   * The browser chrome on a phone, so the address bar is part of the page rather
-   * than a strip of someone else's colour above it. These must track `--surface` in
-   * globals.css — dark is the engineering ground, light is the research page — and
-   * they had not: both were still on the palette from two passes back.
-   */
-  themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#0C1E29' },
-    { media: '(prefers-color-scheme: light)', color: '#F6F9FB' },
-  ],
+  // The house theme. /research and /scholarship set their own, and ModeProvider
+  // follows the session mode on the shared pages. See lib/theme.ts.
+  themeColor: THEME_COLOR.everything,
   width: 'device-width',
   initialScale: 1,
   colorScheme: 'dark light',
