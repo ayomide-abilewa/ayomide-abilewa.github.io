@@ -122,6 +122,8 @@ export function PathChooser() {
             <li key={channel.mode} className="border-b border-hairline">
               <Link
                 href={channel.href}
+                // Prefetching all four path pages cost the landing page their JS up front.
+                prefetch={false}
                 onClick={() => choose(channel)}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
@@ -164,6 +166,7 @@ export function PathChooser() {
         Rather not choose?{' '}
         <Link
           href="/everything/"
+          prefetch={false}
           onClick={() => setMode('everything', 'selection')}
           className="text-content-muted underline decoration-hairline underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
         >

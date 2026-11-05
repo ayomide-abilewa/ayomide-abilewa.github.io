@@ -70,6 +70,7 @@ export function Footer() {
               <Link
                 key={href}
                 href={href}
+                prefetch={false}
                 className="flex min-h-11 items-center text-caption text-content-muted transition-colors hover:text-accent"
               >
                 {label}
