@@ -100,7 +100,7 @@ export function EngineeringPath() {
           id="lead"
           eyebrow="How I work"
           heading="Every feature in this repository exists because of a specific way the evening could have gone wrong."
-          lede="Find the failure first, then build the thing that survives it. The venue ISP blocked files.pythonhosted.org, so every sound effect is synthesised in the browser and the last text-to-speech tier is the browser too. Nothing this booth needs arrives over the network."
+          lede="Find the failure first, then build the thing that survives it. Every sound effect is synthesised in the browser, so there is nothing to license or download, and the last text-to-speech tier is the browser too. Nothing this booth needs arrives over the network."
         >
           <LeadProject project={lead} mode={MODE} lens="decisions" limit={4} />
         </Section>
