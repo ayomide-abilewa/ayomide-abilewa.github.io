@@ -151,10 +151,9 @@ export function ClassroomScene() {
       </g>
 
       {/* --- The front row. Each student lights after the lamp, not with it. --- */}
-      {SEATS.map((seat, i) => (
+      {SEATS.map((seat) => (
         <g key={seat.x}>
-          <g
-          >
+          <g>
             {/* Head. */}
             <circle
               cx={seat.x}

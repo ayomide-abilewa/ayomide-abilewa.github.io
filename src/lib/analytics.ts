@@ -48,7 +48,6 @@ function send(event: AnalyticsEvent): void {
   if (process.env.NODE_ENV === 'development') {
     // Visible during development so the event vocabulary stays honest, and so a
     // dev session never lands in the real numbers.
-    // eslint-disable-next-line no-console
     console.debug('[analytics]', event)
     return
   }
