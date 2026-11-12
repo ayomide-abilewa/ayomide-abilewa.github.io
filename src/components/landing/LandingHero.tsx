@@ -91,7 +91,7 @@ export function LandingHero() {
           scroll anyway — one of those bugs that only ever bites the people the
           setting exists for. It also now works with no JavaScript at all. */}
       <a
-        href="#choose"
+        href="#work"
         className="group mt-14 flex min-h-11 items-center gap-3 self-start text-left"
       >
         <span
@@ -101,7 +101,7 @@ export function LandingHero() {
           <span className="scroll-cue-dot absolute left-[-1.5px] top-0 block h-1.5 w-1 rounded-full bg-accent" />
         </span>
         <span className="font-mono text-micro uppercase tracking-[0.14em] text-content-faint transition-colors group-hover:text-accent">
-          What brings you here?
+          See the work first
         </span>
       </a>
     </section>

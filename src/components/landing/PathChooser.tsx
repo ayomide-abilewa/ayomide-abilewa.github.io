@@ -72,7 +72,7 @@ export function PathChooser({
   return (
     <section className="shell pb-section" id="choose" aria-labelledby="choose-heading">
       <div className="mb-9 max-w-measure">
-        <p className="eyebrow mb-3">Four channels, one signal</p>
+        <p className="eyebrow mb-3">Go deeper, your way</p>
         <h2 id="choose-heading" className="text-h2 font-medium tracking-tight text-balance">
           What brings you here?
         </h2>

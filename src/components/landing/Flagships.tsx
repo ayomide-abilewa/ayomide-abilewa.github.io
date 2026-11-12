@@ -1,0 +1,66 @@
+import { flagshipProjects, projectPeriod } from '@/lib/select'
+import { ProjectLink } from '@/components/landing/ProjectLink'
+import { RevealGroup, RevealItem } from '@/components/motion/Reveal'
+import { EvidenceBadges, ProjectFacts } from '@/components/work/ProjectMeta'
+
+/**
+ * Real work within one scroll of the landing page, whichever door a visitor
+ * would have picked. Server-rendered; the only client code is the click count.
+ *
+ * Cards here and rows everywhere else: three side by side is a sample, not a
+ * ranking, so they get equal rectangles. The trace rule along each top edge is
+ * the same accent-to-hairline line the section dividers use.
+ */
+export function Flagships() {
+  const projects = flagshipProjects()
+
+  return (
+    <section className="shell pb-section" id="work" aria-labelledby="work-heading">
+      <div className="mb-9 max-w-measure">
+        <p className="eyebrow mb-3">Start with the work</p>
+        <h2 id="work-heading" className="text-h2 font-medium tracking-tight text-balance">
+          Three projects, before any questions
+        </h2>
+        <p className="mt-3 text-body text-content-muted text-pretty">
+          A shipped software build, a group project I defended, and a hardware device. The doors
+          below go deeper, each in its own order.
+        </p>
+      </div>
+
+      <RevealGroup as="ul" className="grid gap-5 lg:grid-cols-3">
+        {projects.map((project) => (
+          <RevealItem as="li" key={project.slug} className="flex">
+            <ProjectLink
+              slug={project.slug}
+              className="group flex w-full flex-col bg-surface-raised p-5 sm:p-6"
+            >
+              <span aria-hidden="true" className="trace-rule -mx-5 -mt-5 mb-5 block sm:-mx-6 sm:-mt-6 sm:mb-6" />
+              <span className="font-mono text-micro text-content-faint">{projectPeriod(project)}</span>
+              <span className="mt-2 text-h3 font-medium tracking-tight text-content text-balance transition-colors group-hover:text-accent">
+                {project.name}
+              </span>
+              <span className="mt-3 block flex-1 text-body text-content-muted text-pretty">
+                {project.tagline}
+              </span>
+              <span className="mt-5 block">
+                <ProjectFacts project={project} stack={3} />
+              </span>
+              <span className="mt-3 block">
+                <EvidenceBadges project={project} />
+              </span>
+              <span className="mt-6 inline-flex min-h-11 items-center gap-2 text-caption font-medium text-accent">
+                Read the case study
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                >
+                  →
+                </span>
+              </span>
+            </ProjectLink>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+    </section>
+  )
+}
