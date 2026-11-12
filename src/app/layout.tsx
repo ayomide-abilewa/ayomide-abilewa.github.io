@@ -171,14 +171,16 @@ const PLAUSIBLE_STUB =
 /**
  * Pre-paint decisions, inlined and synchronous.
  *
- * Two things have to be known before the browser paints anything:
+ * Three things have to be known before the browser paints anything:
  *
  *   1. Which visitor mode applies — otherwise someone opening /research from a
  *      shared link gets a frame of the dark engineering theme before the light
  *      paper theme takes over. Route wins over the stored session choice, since
  *      the route is an explicit request.
- *   2. Whether the opening sequence will run behind the landing hero. Reduced
- *      motion and a repeat visit this session skip it.
+ *   2. Whether lofi is on for this session, so a lofi page never flashes the
+ *      full tier first.
+ *   3. Whether the opening sequence will run behind the landing hero. Reduced
+ *      motion, lofi and a repeat visit this session skip it.
  *
  * Kept to a few hundred bytes, wrapped in try/catch (private browsing throws on
  * sessionStorage), and a no-op when scripting is off — nothing is hidden by
@@ -191,9 +193,11 @@ var p=location.pathname.replace(/\\/+$/,'')||'/';
 var byPath={'/engineering':'engineering','/research':'research','/scholarship':'scholarship','/everything':'everything'};
 var m=byPath[p]||(s&&s.getItem('aa.mode'))||null;
 if(m&&/^(engineering|research|scholarship|everything)$/.test(m)){d.classList.add('mode-'+m);d.setAttribute('data-mode',m);}
+if(s&&s.getItem('aa.lofi')==='on')d.classList.add('lofi');
 if(p!=='/')return;
 if(s&&s.getItem('aa.intro')==='seen')return;
 if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+if(d.classList.contains('lofi'))return;
 d.setAttribute('data-intro','on');
 }catch(e){}})();`
 

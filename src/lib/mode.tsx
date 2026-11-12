@@ -27,6 +27,7 @@ import { LOFI_THEME_COLOR, THEME_COLOR } from './theme'
 
 const STORAGE_KEY = 'aa.mode'
 const LOFI_SEQUENCE = 'lofi'
+const LOFI_KEY = 'aa.lofi'
 
 type ModeContextValue = {
   mode: VisitorMode
@@ -81,6 +82,7 @@ export function ModeProvider({ children }: { children: ReactNode }) {
         setUnset(false)
       }
       if (window.sessionStorage.getItem('aa.intro') === 'seen') setIntroSeen(true)
+      if (window.sessionStorage.getItem(LOFI_KEY) === 'on') setLofi(true)
     } catch {
       // Private browsing or storage disabled — mode simply stays per-page.
     }
@@ -94,7 +96,14 @@ export function ModeProvider({ children }: { children: ReactNode }) {
     root.dataset.mode = mode
   }, [mode])
 
+  // The pre-paint script in layout.tsx has already applied a stored lofi choice;
+  // the first run here would only strip it before the restore above lands.
+  const lofiSynced = useRef(false)
   useEffect(() => {
+    if (!lofiSynced.current) {
+      lofiSynced.current = true
+      return
+    }
     document.documentElement.classList.toggle('lofi', lofi)
   }, [lofi])
 
@@ -138,10 +147,13 @@ export function ModeProvider({ children }: { children: ReactNode }) {
   const toggleLofi = useCallback(() => {
     setLofi((v) => {
       const next = !v
+      try {
+        window.sessionStorage.setItem(LOFI_KEY, next ? 'on' : 'off')
+      } catch {
+        /* no-op */
+      }
       setAnnouncement(
-        next
-          ? 'Low fidelity mode on. Animation and imagery reduced.'
-          : 'Low fidelity mode off.',
+        next ? 'Low fidelity mode on. Animation and imagery off.' : 'Low fidelity mode off.',
       )
       return next
     })

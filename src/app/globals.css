@@ -1038,11 +1038,11 @@ html[data-intro='on'] .trace-after-intro {
   transform: none;
 }
 
+/* "No imagery" means none: photos, canvases and decorative drawings go. */
 .lofi img,
 .lofi canvas,
 .lofi svg[data-decorative='true'] {
-  filter: grayscale(1) contrast(1.15);
-  opacity: 0.6;
+  display: none !important;
 }
 
 .lofi [data-lofi-hide='true'] {
