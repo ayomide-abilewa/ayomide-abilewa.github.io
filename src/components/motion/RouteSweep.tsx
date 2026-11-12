@@ -23,7 +23,7 @@ import { usePrefersReducedMotion } from '@/lib/motion'
  *   - It stood between the visitor and the content, and a second click during
  *     the wipe hit an overlay.
  *
- * Same job — confirming the click landed — at 520ms, over nothing, and
+ * Same job — confirming the click landed — at 300ms, over nothing, and
  * pointer-transparent. The App Router's own route announcer already handles the
  * screen-reader side, so this stays decorative.
  */

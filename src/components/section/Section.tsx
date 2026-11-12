@@ -42,7 +42,7 @@ export function Section({
       data-section={id}
       className={
         register
-          ? `bg-surface py-section text-content transition-colors duration-700 ${className}`
+          ? `bg-surface py-section text-content transition-colors duration-300 ${className}`
           : `py-section ${className}`
       }
     >

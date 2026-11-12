@@ -214,8 +214,8 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     /* Mode transition: the site retunes rather than reloads. */
-    transition: background-color 480ms cubic-bezier(0.4, 0, 0.2, 1),
-      color 480ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 280ms cubic-bezier(0.4, 0, 0.2, 1),
+      color 280ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /*
@@ -459,7 +459,7 @@
   background-size: 68px 68px;
   -webkit-mask-image: radial-gradient(ellipse 78% 62% at 50% 50%, #000 30%, transparent 100%);
   mask-image: radial-gradient(ellipse 78% 62% at 50% 50%, #000 30%, transparent 100%);
-  animation: acquireField 460ms ease-out both;
+  animation: acquireField 280ms ease-out both;
 }
 
 .acquire-band {
@@ -593,7 +593,7 @@
     transparent 100%
   );
   transform: translate3d(-100%, 0, 0);
-  animation: routeSweep 520ms cubic-bezier(0.36, 0, 0.2, 1) both;
+  animation: routeSweep 300ms cubic-bezier(0.36, 0, 0.2, 1) both;
 }
 
 @keyframes routeSweep {
@@ -615,7 +615,7 @@
  * Keyed on the pathname in PageEnter.tsx, so it re-runs per navigation.
  * --------------------------------------------------------------------------- */
 .page-enter {
-  animation: page-enter 520ms cubic-bezier(0.16, 0.84, 0.24, 1) both;
+  animation: page-enter 280ms cubic-bezier(0.16, 0.84, 0.24, 1) both;
 }
 
 @keyframes page-enter {
@@ -732,7 +732,7 @@
   background: rgb(var(--accent));
   transform: scaleX(0);
   transform-origin: 0 50%;
-  transition: transform 440ms cubic-bezier(0.16, 0.84, 0.24, 1);
+  transition: transform 280ms cubic-bezier(0.16, 0.84, 0.24, 1);
 }
 
 .row-live:hover::after,
@@ -742,7 +742,7 @@
 
 .row-arrow {
   display: inline-block;
-  transition: transform 320ms cubic-bezier(0.16, 0.84, 0.24, 1);
+  transition: transform 240ms cubic-bezier(0.16, 0.84, 0.24, 1);
 }
 
 .row-live:hover .row-arrow,
@@ -751,7 +751,7 @@
 }
 
 .row-index {
-  transition: color 260ms ease, transform 380ms cubic-bezier(0.16, 0.84, 0.24, 1);
+  transition: color 200ms ease, transform 240ms cubic-bezier(0.16, 0.84, 0.24, 1);
 }
 
 .row-live:hover .row-index,
@@ -799,8 +799,8 @@
    * "this is a thing, and the thing is clickable" without a shadow or a scale.
    */
   .panel-live {
-    transition: transform 360ms cubic-bezier(0.16, 0.84, 0.24, 1), border-color 260ms ease,
-      background-color 260ms ease;
+    transition: transform 260ms cubic-bezier(0.16, 0.84, 0.24, 1), border-color 200ms ease,
+      background-color 200ms ease;
   }
 
   .panel-live:hover,
@@ -832,7 +832,7 @@
 }
 
 .group:hover .probe-trace {
-  animation: probe-redraw 720ms cubic-bezier(0.16, 0.84, 0.24, 1);
+  animation: probe-redraw 300ms cubic-bezier(0.16, 0.84, 0.24, 1);
 }
 
 /* The rule under the nav link the route just landed on. */
@@ -842,7 +842,7 @@
   height: 1.5px;
   background: rgb(var(--accent));
   transform-origin: 0 50%;
-  animation: nav-active 420ms cubic-bezier(0.16, 0.84, 0.24, 1) both;
+  animation: nav-active 240ms cubic-bezier(0.16, 0.84, 0.24, 1) both;
 }
 
 @keyframes nav-active {
@@ -881,31 +881,31 @@
  * --------------------------------------------------------------------------- */
 :root,
 .mode-everything {
-  --reveal-duration: 480ms;
+  --reveal-duration: 280ms;
   --reveal-ease: cubic-bezier(0.16, 1.08, 0.3, 1);
   --reveal-rise: 16px;
-  --reveal-stagger: 60ms;
+  --reveal-stagger: 40ms;
 }
 
 .mode-engineering {
-  --reveal-duration: 340ms;
+  --reveal-duration: 220ms;
   --reveal-ease: cubic-bezier(0.2, 0.9, 0.1, 1);
   --reveal-rise: 14px;
-  --reveal-stagger: 45ms;
+  --reveal-stagger: 30ms;
 }
 
 .mode-research {
-  --reveal-duration: 680ms;
+  --reveal-duration: 300ms;
   --reveal-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --reveal-rise: 8px;
-  --reveal-stagger: 90ms;
+  --reveal-stagger: 50ms;
 }
 
 .mode-scholarship {
-  --reveal-duration: 580ms;
+  --reveal-duration: 300ms;
   --reveal-ease: cubic-bezier(0.16, 1.08, 0.3, 1);
   --reveal-rise: 24px;
-  --reveal-stagger: 75ms;
+  --reveal-stagger: 45ms;
 }
 
 [data-reveal='hidden'],

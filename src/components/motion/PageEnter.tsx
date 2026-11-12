@@ -9,7 +9,7 @@ import { useRef, type ReactNode } from 'react'
  * Keying a wrapper on the pathname is the whole mechanism: React tears down the
  * old subtree and mounts a new one, the CSS animation on `.page-enter` starts from
  * the beginning, and the content rises 14px into place while <RouteSweep /> runs
- * along the top edge. Two signals, one gesture, 520ms, nothing covered.
+ * along the top edge. Two signals, one gesture, 280ms, nothing covered.
  *
  * Why not `motion`: this needs to run on the first frame of a new route for every
  * page on the site, including the ones that are otherwise entirely static and ship
