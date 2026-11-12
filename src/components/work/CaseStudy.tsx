@@ -9,19 +9,20 @@ import { framingFor, projectNeighbours, projectPeriod } from '@/lib/select'
 import { Reveal } from '@/components/motion/Reveal'
 import { Section, Field, TickList } from '@/components/section/Section'
 import { CtaRow } from '@/components/section/Cta'
-import { StatusPill } from '@/components/work/ProjectRow'
+import { StatusPill } from '@/components/work/ProjectMeta'
 import { DecisionList } from '@/components/work/DecisionList'
 import { ArchitectureDiagram } from '@/components/work/ArchitectureDiagram'
 import { SettledTrace } from '@/components/brand/SettledTrace'
-import { Photo } from '@/components/media/Photo'
+import { CaseEvidence, hasEvidence } from '@/components/work/CaseEvidence'
 import { facts } from '@/lib/facts'
 
 /**
  * Case study.
  *
- * One long document per project, in the order an engineer would actually ask the
- * questions: what was wrong, why bother, how it was approached, what it is made of,
- * what fought back, what was decided and why, what came out, what was learned.
+ * One long document per project, the same template for all of them: the problem,
+ * what fought back, what was decided and the failure that forced it, how it was
+ * built and what it is made of, the evidence, what came out, what was learned, and
+ * what I would do next.
  *
  * Two things adapt to the active lens without changing a single fact: the framing
  * sentence under the title, and the previous/next order at the foot of the page —
@@ -130,6 +131,27 @@ export function CaseStudy({ project }: { project: Project }) {
         </div>
       </Section>
 
+      {project.challenges.length > 0 && (
+        <Section
+          id="challenges"
+          eyebrow="Challenges"
+          heading="What fought back"
+        >
+          <TickList items={project.challenges} className="max-w-measure" />
+        </Section>
+      )}
+
+      {project.decisions.length > 0 && (
+        <Section
+          id="decisions"
+          eyebrow="Engineering decisions"
+          heading="Every choice, and the thing that forced it"
+          lede="Left column is what I built. Right column is the failure mode it exists to survive."
+        >
+          <DecisionList items={project.decisions} />
+        </Section>
+      )}
+
       <Section id="approach" eyebrow="Approach" heading="How I built it">
         <ol className="max-w-measure space-y-4">
           {project.approach.map((step, i) => (
@@ -154,42 +176,14 @@ export function CaseStudy({ project }: { project: Project }) {
         </Section>
       )}
 
-      {project.images && project.images.length > 0 && (
-        <Section id="images" eyebrow="In use" heading="What it looks like running">
-          <div className="grid gap-x-10 gap-y-10 lg:grid-cols-2">
-            {project.images.map((image) => (
-              <figure key={image.asset}>
-                <Photo id={image.asset} sizes="(min-width: 1024px) 38rem, 100vw" />
-                {image.caption && (
-                  <figcaption className="mt-3 border-t border-hairline pt-2.5 text-caption text-content-muted text-pretty">
-                    {image.caption}
-                  </figcaption>
-                )}
-              </figure>
-            ))}
-          </div>
-        </Section>
-      )}
-
-      {project.decisions.length > 0 && (
+      {hasEvidence(project) && (
         <Section
-          id="decisions"
-          eyebrow="Engineering decisions"
-          heading="Every choice, and the thing that forced it"
-          lede="Left column is what I built. Right column is the failure mode it exists to survive."
+          id="evidence"
+          eyebrow="Evidence"
+          heading="What you can check besides this page"
+          lede="A slot marked not published yet is one I have not put online."
         >
-          <DecisionList items={project.decisions} />
-        </Section>
-      )}
-
-      {project.challenges.length > 0 && (
-        <Section
-          id="challenges"
-          eyebrow="Challenges"
-          heading="What fought back"
-          className="pb-0"
-        >
-          <TickList items={project.challenges} className="max-w-measure" />
+          <CaseEvidence project={project} />
         </Section>
       )}
 
@@ -206,6 +200,12 @@ export function CaseStudy({ project }: { project: Project }) {
           heading="What it changed about how I build"
         >
           <TickList items={project.learned} className="max-w-measure" />
+        </Section>
+      )}
+
+      {project.next && project.next.length > 0 && (
+        <Section id="what-next" eyebrow="Next" heading="What I would do next">
+          <TickList items={project.next} className="max-w-measure" />
         </Section>
       )}
 

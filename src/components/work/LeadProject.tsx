@@ -6,7 +6,7 @@ import { track } from '@/lib/analytics'
 import { projectPeriod } from '@/lib/select'
 import { Reveal } from '@/components/motion/Reveal'
 import { Field, TickList } from '@/components/section/Section'
-import { StatusPill } from '@/components/work/ProjectRow'
+import { StatusPill } from '@/components/work/ProjectMeta'
 import { DecisionList } from '@/components/work/DecisionList'
 import { ArchitectureDiagram } from '@/components/work/ArchitectureDiagram'
 

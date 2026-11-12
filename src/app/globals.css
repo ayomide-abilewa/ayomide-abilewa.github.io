@@ -325,6 +325,19 @@
     color: rgb(var(--content-faint));
   }
 
+  /* Evidence tag on project cards: a label, not a button, so no hover state. */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgb(var(--hairline));
+    border-radius: 2px;
+    padding: 0.125rem 0.4rem;
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+    font-size: theme('fontSize.micro[0]');
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+  }
+
   /* A 1px rule that reads as a signal trace rather than a border. */
   .trace-rule {
     height: 1px;

@@ -184,6 +184,19 @@ export type ProjectImage = {
   caption?: string
 }
 
+/**
+ * Evidence beyond the repository and the photographs. Every field is optional
+ * because none of it may be published before it exists: an empty slot renders as
+ * "not published yet", never as a placeholder image.
+ */
+export type ProjectEvidence = {
+  /** Wiring diagram or schematic. */
+  wiring?: ProjectImage
+  /** Oscilloscope traces or serial-monitor captures. */
+  captures?: ProjectImage[]
+  video?: { href: string; label: string }
+}
+
 export type Project = {
   slug: string
   name: string
@@ -209,7 +222,12 @@ export type Project = {
   decisions: Decision[]
   results: string[]
   learned: string[]
+  /** What I would do next with it. Left out until I have written it. */
+  next?: string[]
   images?: ProjectImage[]
+  /** A physical build: its case study keeps slots for photos, wiring, captures and video. */
+  hardware?: boolean
+  evidence?: ProjectEvidence
 
   // ---- Audience adaptation ----
   /** Position within each path. Absent key = not surfaced in that path. */

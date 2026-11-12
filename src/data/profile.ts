@@ -566,6 +566,8 @@ export const profile: Profile = {
       start: '2025',
       end: '2025',
       status: 'complete',
+      // TODO(assets): photos, wiring diagram, serial or scope captures, demo video.
+      hardware: true,
       technologies: ['ESP32', 'GY-2561', 'GY-31', 'I2C', 'Blynk IoT Cloud', 'C++'],
       domains: ['Embedded systems', 'Instrumentation', 'Sensing', 'IoT'],
       problem:
@@ -657,6 +659,8 @@ export const profile: Profile = {
       start: '2024',
       end: '2024',
       status: 'complete',
+      // TODO(assets): photos, wiring diagram, serial or scope captures, demo video.
+      hardware: true,
       technologies: ['Arduino', 'C++', 'PWM', 'NTC thermistor'],
       domains: ['Embedded systems', 'Control systems'],
       team: 'Led the team',
@@ -740,6 +744,8 @@ export const profile: Profile = {
       start: '2023',
       end: '2023',
       status: 'complete',
+      // TODO(assets): photos, wiring diagram, serial or scope captures, demo video.
+      hardware: true,
       technologies: ['Arduino', 'C++', 'GSM module', 'Flame sensor', 'Smoke sensor'],
       domains: ['Embedded systems', 'Sensing', 'Safety systems'],
       problem:

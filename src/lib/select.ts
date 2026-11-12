@@ -100,6 +100,37 @@ export function projectsByCompletion(): Project[] {
   return [...profile.projects].sort((a, b) => endKey(a.end).localeCompare(endKey(b.end)))
 }
 
+/**
+ * The three projects the landing page shows before the doors: the shipped
+ * software build, the defended group project, and the hardware device with the
+ * most measurement in it.
+ */
+const FLAGSHIPS = ['aniwe', 'smart-attendance-system', 'multispectral-hydroponics']
+
+export function flagshipProjects(): Project[] {
+  return FLAGSHIPS.map(projectBySlug).filter((p): p is Project => Boolean(p))
+}
+
+export type EvidenceKind = 'source' | 'hardware' | 'video'
+
+export const EVIDENCE_LABEL: Record<EvidenceKind, string> = {
+  source: 'Source code',
+  hardware: 'Hardware docs',
+  video: 'Demo video',
+}
+
+/** What a reader can check for themselves, in the order cards list it. */
+export function evidenceFor(project: Project): EvidenceKind[] {
+  const kinds: EvidenceKind[] = []
+  if (project.repo) kinds.push('source')
+  const e = project.evidence
+  if (project.hardware && (project.images?.length || e?.wiring || e?.captures?.length)) {
+    kinds.push('hardware')
+  }
+  if (e?.video) kinds.push('video')
+  return kinds
+}
+
 /** Every slug, for generateStaticParams and the sitemap. */
 export function allProjectSlugs(): string[] {
   return profile.projects.map((p) => p.slug)

@@ -1,10 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import type { Project, ProjectStatus, VisitorMode } from '@/data/types'
+import type { Project, VisitorMode } from '@/data/types'
 import { framingFor, projectPeriod } from '@/lib/select'
 import { track } from '@/lib/analytics'
 import { RevealGroup, RevealItem } from '@/components/motion/Reveal'
+import { EvidenceBadges, ProjectFacts } from '@/components/work/ProjectMeta'
 
 /**
  * Project list row.
@@ -16,27 +17,6 @@ import { RevealGroup, RevealItem } from '@/components/motion/Reveal'
  * The framing line is per-path: the same project introduced by what that
  * audience came for. Content is identical, the door is different.
  */
-
-const STATUS_LABEL: Record<ProjectStatus, string> = {
-  shipped: 'Shipped',
-  complete: 'Complete',
-  ongoing: 'Ongoing',
-  'in-progress': 'In progress',
-}
-
-export function StatusPill({ status, note }: { status: ProjectStatus; note?: string }) {
-  const live = status === 'in-progress' || status === 'ongoing'
-  return (
-    <span className="inline-flex items-center gap-1.5 font-mono text-micro uppercase tracking-[0.12em] text-content-faint">
-      <span
-        aria-hidden="true"
-        className={`h-1.5 w-1.5 rounded-full ${live ? 'bg-accent' : 'bg-content-faint'}`}
-      />
-      {STATUS_LABEL[status]}
-      {note && <span className="sr-only">. {note}</span>}
-    </span>
-  )
-}
 
 export function ProjectRow({
   project,
@@ -72,12 +52,11 @@ export function ProjectRow({
             {framingFor(project, mode)}
           </span>
 
-          <span className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-            <StatusPill status={project.status} note={project.statusNote} />
-            <span aria-hidden="true" className="h-3 w-px bg-hairline" />
-            <span className="font-mono text-micro text-content-faint">
-              {project.technologies.slice(0, 5).join(' · ')}
-            </span>
+          <span className="mt-3 block">
+            <ProjectFacts project={project} stack={5} />
+          </span>
+          <span className="mt-3 block">
+            <EvidenceBadges project={project} />
           </span>
         </span>
 
