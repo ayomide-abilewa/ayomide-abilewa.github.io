@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { ImageResponse } from 'next/og'
 import { tracePath } from '@/lib/trace'
 import { allProjectSlugs, projectBySlug, projectPeriod } from '@/lib/select'
@@ -11,14 +13,21 @@ import { cap, facts } from '@/lib/facts'
  * before, but it exports files with no extension and GitHub Pages serves those
  * as application/octet-stream, which LinkedIn and X refuse to render.
  *
- * The brand carries on geometry rather than type. The graticule and the settling
- * trace are drawn as an inline SVG data URI, so the recognisable part of the card
- * needs no font at all — which also sidesteps the usual failure where a build
- * machine lacks the typeface and silently renders a card in something else. Text
- * is kept to a few lines at sizes that read on a phone-sized preview, and the
- * hierarchy is carried by size, colour and letterspacing rather than by weight,
- * since the bundled fallback face cannot be relied on for a true bold.
+ * The graticule and the settling trace are drawn as an inline SVG data URI. Type
+ * is IBM Plex, the site's own face, read from WOFF files committed beside this
+ * module (Satori cannot read WOFF2 or system fonts), so a build machine without
+ * the font still renders the same card. Mono for the eyebrow and footer, sans for
+ * the headline and the supporting line, as on the site.
  */
+
+const FONT_DIR = path.join(process.cwd(), 'src/lib/og-fonts')
+const font = (file: string) => readFileSync(path.join(FONT_DIR, file))
+
+const FONTS = [
+  { name: 'Plex Sans', data: font('ibm-plex-sans-latin-400-normal.woff'), weight: 400, style: 'normal' },
+  { name: 'Plex Sans', data: font('ibm-plex-sans-latin-500-normal.woff'), weight: 500, style: 'normal' },
+  { name: 'Plex Mono', data: font('ibm-plex-mono-latin-400-normal.woff'), weight: 400, style: 'normal' },
+] as const
 
 export const OG_SIZE = { width: 1200, height: 630 } as const
 export const OG_CONTENT_TYPE = 'image/png'
@@ -37,48 +46,49 @@ type Palette = {
 }
 
 /**
- * The same three-colour mixes the site uses, resolved to hex.
+ * The mode tokens from globals.css, resolved to hex. `grid` is the hairline mixed
+ * halfway into the surface, so the graticule stays behind the type.
  *
- * Duplicated from globals.css deliberately: Satori cannot read CSS custom
- * properties, and the alternative — parsing the stylesheet at build time — would
- * be far more fragile than five lines of hex per mode.
+ * Duplicated deliberately: Satori cannot read CSS custom properties, and parsing
+ * the stylesheet at build time would be more fragile than six lines per mode.
+ * Change these whenever the tokens change.
  */
 const PALETTES: Record<OgTone, Palette> = {
   engineering: {
-    surface: '#070B0D',
-    content: '#F5F1EA',
-    muted: '#97A9AF',
-    faint: '#6E858D',
-    accent: '#E09A2E',
-    accentAlt: '#4E96A6',
-    grid: '#16232A',
+    surface: '#0C1E29',
+    content: '#F7F5EF',
+    muted: '#9ABAC5',
+    faint: '#84A6B3',
+    accent: '#FBB33A',
+    accentAlt: '#62D6E8',
+    grid: '#1A3542',
   },
   research: {
-    surface: '#FBF9F5',
-    content: '#0D1417',
-    muted: '#35474F',
-    faint: '#5C7178',
-    accent: '#2E7488',
-    accentAlt: '#A8762E',
-    grid: '#DFD9CE',
+    surface: '#F6F9FB',
+    content: '#0D171E',
+    muted: '#384F5C',
+    faint: '#586D7A',
+    accent: '#096480',
+    accentAlt: '#AA620A',
+    grid: '#E0E7EC',
   },
   scholarship: {
-    surface: '#F5F1EA',
-    content: '#171310',
-    muted: '#4A3E35',
-    faint: '#7A6857',
-    accent: '#A84E28',
-    accentAlt: '#5C6B3C',
-    grid: '#DDD3C2',
+    surface: '#F9F1E1',
+    content: '#21170F',
+    muted: '#594330',
+    faint: '#765E46',
+    accent: '#B23E12',
+    accentAlt: '#5E7628',
+    grid: '#EEE0C8',
   },
   everything: {
-    surface: '#070B0D',
-    content: '#F5F1EA',
-    muted: '#97A9AF',
-    faint: '#6E858D',
-    accent: '#E09A2E',
-    accentAlt: '#4E96A6',
-    grid: '#16232A',
+    surface: '#0C1E29',
+    content: '#F7F5EF',
+    muted: '#9ABAC5',
+    faint: '#84A6B3',
+    accent: '#FBB33A',
+    accentAlt: '#62D6E8',
+    grid: '#1A3542',
   },
 }
 
@@ -141,14 +151,16 @@ export function ogCard({ tone, eyebrow, title, subtitle }: OgCard): ImageRespons
           height: '100%',
           backgroundColor: p.surface,
           padding: '64px 72px',
+          fontFamily: 'Plex Sans',
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
               display: 'flex',
+              fontFamily: 'Plex Mono',
               fontSize: 21,
-              letterSpacing: 5,
+              letterSpacing: 4,
               color: p.accent,
             }}
           >
@@ -160,6 +172,7 @@ export function ogCard({ tone, eyebrow, title, subtitle }: OgCard): ImageRespons
               display: 'flex',
               marginTop: 22,
               fontSize: 62,
+              fontWeight: 500,
               lineHeight: 1.08,
               letterSpacing: -1.5,
               color: p.content,
@@ -196,6 +209,7 @@ export function ogCard({ tone, eyebrow, title, subtitle }: OgCard): ImageRespons
           style={{
             display: 'flex',
             justifyContent: 'space-between',
+            fontFamily: 'Plex Mono',
             fontSize: 21,
             letterSpacing: 1,
             color: p.faint,
@@ -206,7 +220,7 @@ export function ogCard({ tone, eyebrow, title, subtitle }: OgCard): ImageRespons
         </div>
       </div>
     ),
-    { ...OG_SIZE },
+    { ...OG_SIZE, fonts: [...FONTS] },
   )
 }
 
