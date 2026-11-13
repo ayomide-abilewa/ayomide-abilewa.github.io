@@ -38,6 +38,8 @@ export type MediaAsset = {
    * scene as it actually was.
    */
   flip?: boolean
+  /** Region of the (rotated) original to keep, in source pixels, before resizing. */
+  crop?: { left: number; top: number; width: number; height: number }
   /** Which CV variants may use this image, if any. Currently none: all four CVs
    *  are text-only for ATS parsing. Kept so the rule is explicit. */
   cvUse?: CvVariant[]
@@ -46,32 +48,32 @@ export type MediaAsset = {
 export const media: MediaAsset[] = [
   {
     id: 'portrait',
-    source: 'IMG_20260624_062753.jpg',
+    source: 'portrait-suit-2026-09.jpg',
     out: 'portrait',
     aspect: 3 / 4,
     widths: [400, 640, 900],
-    flip: true,
-    alt: 'Ayomide Abilewa in Chevron coveralls, carrying a backpack, in an office corridor before a shift.',
-    caption: 'Lagos, June 2026 — start of a rotation day on the electrical and instrumentation team.',
+    crop: { left: 330, top: 420, width: 1200, height: 1600 },
+    alt: 'Ayomide Abilewa in a navy suit and tie, hands in pockets, standing against a tiled wall.',
+    caption: 'Lagos, September 2026.',
   },
   {
     id: 'cohort-group',
-    source: 'IMG-20260714-WA0217.jpg',
+    source: 'cohort-ppe-2026.jpg',
     out: 'cohort-group',
     aspect: 4 / 3,
     widths: [640, 1000, 1440],
-    alt: 'Seven engineering interns in Chevron coveralls, hard hats and safety glasses standing together in an office.',
-    caption:
-      'The 2026 facilities engineering intern cohort. Everyone in this photograph is on the same programme; the site work behind it is not shown.',
+    alt: 'Seven Chevron Nigeria interns in navy coveralls, blue hard hats and safety glasses standing together in an office.',
+    caption: 'Intern cohort in full PPE, 2026. People only; the site work is not shown.',
   },
   {
     id: 'cohort-line',
-    source: 'IMG-20260714-WA0209.jpg',
+    source: 'interns-outside-2026-09.jpg',
     out: 'cohort-line',
-    aspect: 4 / 3,
-    widths: [640, 1000, 1440],
-    alt: 'The same intern cohort in full personal protective equipment, gathered before a plant walkthrough.',
-    caption: 'Full PPE before a walkthrough — hard hat, safety glasses, gloves, steel toe caps.',
+    aspect: 16 / 9,
+    widths: [640, 1000],
+    crop: { left: 0, top: 30, width: 1080, height: 608 },
+    alt: 'A large group of Chevron Nigeria interns in office wear standing outside an office building.',
+    caption: 'Chevron Nigeria interns outside the office, September 2026.',
   },
 ]
 

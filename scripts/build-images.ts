@@ -14,7 +14,8 @@ async function buildPhoto(item: (typeof media)[number]) {
 
   for (const width of item.widths) {
     const height = Math.round(width / item.aspect)
-    const base = sharp(source).rotate()
+    const rotated = sharp(source).rotate()
+    const base = item.crop ? rotated.extract(item.crop) : rotated
     const oriented = item.flip ? base.flop() : base
     const resized = oriented.resize(width, height, {
       fit: 'cover',
