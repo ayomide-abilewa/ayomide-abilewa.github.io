@@ -54,7 +54,7 @@ export function EverythingPath() {
         mode={MODE}
         eyebrow="All of it, in one pass"
         heading="One person, read three different ways — engineering, research and the teaching that came out of both."
-        lede={`Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}. Embedded systems, computer vision and instrumentation, and an internship on Chevron Nigeria's electrical and instrumentation team.`}
+        lede={`Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}. Embedded systems, computer vision and instrumentation, and an internship with Chevron Nigeria's Offshore Project team, including time on the electrical and instrumentation team.`}
         detail={`${cap(facts.projects)} builds, ${facts.yearsBuilding} years, ${facts.interests} questions I keep coming back to, and a curriculum that came out of all of it.`}
         actions={[
           { label: 'Start the pass', href: '#build', weight: 'primary' },

@@ -72,7 +72,7 @@ const PITCH: Record<VisitorMode, Pitch> = {
   scholarship: {
     eyebrow: 'Scholarships, fellowships and programmes',
     heading: 'Ask me anything a committee needs — including the things a CV has no room for.',
-    lede: `Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}, with an internship on Chevron Nigeria’s electrical and instrumentation team behind me and a six-session course I teach to secondary school students.`,
+    lede: `Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}, with an internship on Chevron Nigeria’s Offshore Project and electrical and instrumentation teams behind me and a six-session course I teach to secondary school students.`,
     open: [
       'Scholarship and fellowship applications, including anything that needs references, transcripts or verification.',
       'Programmes with a teaching or community component. SPAW is in its third cohort and I rewrite the lesson plans each time based on what went wrong in the last one.',
@@ -145,7 +145,7 @@ export function ContactPage() {
 
   return (
     <>
-      <header className="shell border-b border-hairline pb-section pt-14 sm:pt-20">
+      <header className="page-hero shell pb-section pt-14 sm:pt-20">
         <Reveal>
           <p className="eyebrow flex items-center gap-2.5">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
@@ -155,7 +155,7 @@ export function ContactPage() {
             </span>
           </p>
 
-          <h1 className="mt-5 max-w-[34ch] text-h1 font-medium tracking-tight text-balance">
+          <h1 className="mt-5 page-title max-w-[26ch] font-medium text-balance">
             {pitch.heading}
           </h1>
 

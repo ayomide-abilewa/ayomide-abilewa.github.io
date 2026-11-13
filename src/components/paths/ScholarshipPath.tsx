@@ -57,7 +57,7 @@ export function ScholarshipPath() {
         mode={MODE}
         eyebrow="Journey, teaching and what the work is for"
         heading="I learn something, then I go and teach it to someone who has never seen it before."
-        lede={`Electrical and electronics engineering at Obafemi Awolowo University, ${facts.graduation}. I lead a six-session embedded systems curriculum for secondary school students, instruct a practical electronics workshop for people with no prior background, and interned on Chevron Nigeria's electrical and instrumentation team.`}
+        lede={`Electrical and electronics engineering at Obafemi Awolowo University, ${facts.graduation}. I lead a six-session embedded systems curriculum for secondary school students, instruct a practical electronics workshop for people with no prior background, and interned with Chevron Nigeria's Offshore Project team, where I also joined the electrical and instrumentation team.`}
         detail={`The pattern has held for ${facts.yearsTeaching} years. Whatever I get access to, whether a robotics lab, a plant rotation or a circuit bench, becomes a set of lesson plans within a term.`}
         actions={[
           { label: 'The journey', href: '#journey', weight: 'primary' },

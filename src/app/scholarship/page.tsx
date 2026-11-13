@@ -13,7 +13,7 @@ import { ScholarshipPath } from '@/components/paths/ScholarshipPath'
  */
 
 const DESCRIPTION =
-  `Ayomide Abilewa — electrical and electronics engineering at Obafemi Awolowo University, ${facts.graduation}. Interned on Chevron Nigeria’s electrical and instrumentation team. Leads a six-session embedded systems curriculum for secondary school students and instructs a practical electronics workshop for absolute beginners.`
+  `Ayomide Abilewa — electrical and electronics engineering at Obafemi Awolowo University, ${facts.graduation}. Interned with Chevron Nigeria’s Offshore Project team, with time on the electrical and instrumentation team too. Leads a six-session embedded systems curriculum for secondary school students and instructs a practical electronics workshop for absolute beginners.`
 
 export const viewport: Viewport = { themeColor: THEME_COLOR.scholarship }
 

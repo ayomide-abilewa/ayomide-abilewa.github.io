@@ -66,13 +66,13 @@ export const profile: Profile = {
    */
   summaries: {
     technical:
-      'Builds embedded and computer-vision systems, with a habit of designing for the conditions that break them: poor lighting, no network, unreliable input. Interned on the electrical and instrumentation team at Chevron Nigeria and worked with the control loops and signal standards behind the same measurement problems at industrial scale.',
+      'Builds embedded and computer-vision systems, with a habit of designing for the conditions that break them: poor lighting, no network, unreliable input. Interned with the Offshore Project team at Chevron Nigeria, joined the electrical and instrumentation team as well, and worked with the control loops and signal standards behind the same measurement problems at industrial scale.',
     research:
       'Most of the work so far has gone into measurement and detection under non-ideal conditions. Recent projects: a two-stage cascaded detector that fuses RGB and edge-enhanced models for pipe anomaly identification, a multi-sensor multispectral acquisition node, and control-systems practice on Quanser robotics hardware using MATLAB and Simulink.',
     scholarship:
-      'Has taught electronics since 2023, alongside the degree rather than after it. Leads SPAW 3.0, a six-session embedded systems and entrepreneurship curriculum for secondary school students, and instructs a practical electronics workshop for students with no prior background. Completed an internship on Chevron Nigeria’s electrical and instrumentation team.',
+      'Has taught electronics since 2023, alongside the degree rather than after it. Leads SPAW 3.0, a six-session embedded systems and entrepreneurship curriculum for secondary school students, and instructs a practical electronics workshop for students with no prior background. Completed an internship with Chevron Nigeria’s Offshore Project team, with time on the electrical and instrumentation team.',
     general:
-      'Works across embedded systems, instrumentation and computer vision. Has built sensing and detection systems from microcontroller nodes up to full-stack applications, and has taught electronics to secondary school students since 2023. Completed an internship on Chevron Nigeria’s electrical and instrumentation team.',
+      'Works across embedded systems, instrumentation and computer vision. Has built sensing and detection systems from microcontroller nodes up to full-stack applications, and has taught electronics to secondary school students since 2023. Completed an internship with Chevron Nigeria’s Offshore Project team, with time on the electrical and instrumentation team.',
   },
 
   education: [
@@ -100,18 +100,18 @@ export const profile: Profile = {
   experience: [
     {
       id: 'chevron',
-      role: 'Facilities Engineering Management Intern (SIWES)',
+      role: 'Offshore Project Team Intern (SIWES)',
       organisation: 'Chevron Nigeria Limited',
       location: 'Lagos, Nigeria',
       start: 'Apr 2026',
       end: 'Sep 2026',
-      shortRole: 'Electrical and Instrumentation intern',
+      shortRole: 'Offshore Project Team intern',
       shortOrganisation: 'Chevron Nigeria',
       summary:
-        'Rotated across the Electrical and Instrumentation team, working on oil and gas field instrumentation and electrical systems.',
+        'Interned with the Offshore Project team and also joined the Electrical and Instrumentation team, working on oil and gas field instrumentation and electrical systems.',
       bullets: [
         {
-          text: 'Rotated through the Electrical and Instrumentation (E&I) team on field instrumentation and electrical systems.',
+          text: 'Interned on the Offshore Project team and also joined the Electrical and Instrumentation (E&I) team on field instrumentation and electrical systems.',
           emphasis: ['technical', 'research', 'scholarship', 'general'],
         },
         {
@@ -1047,7 +1047,7 @@ export const profile: Profile = {
     { year: '2024', label: 'SPAW project lead, IEEE OAU', detail: 'Leads a six-session embedded systems and entrepreneurship curriculum for secondary school students.', kind: 'service' },
     { year: '2025', label: 'Multispectral acquisition node', detail: 'ESP32 node measuring light intensity and colour spectrum for hydroponics, streaming live telemetry.', kind: 'project' },
     { year: '2026', label: 'Smart Attendance System', detail: 'Face-recognition attendance for real lecture halls; invited to build a production version.', kind: 'project' },
-    { year: '2026', label: 'Chevron Nigeria, E&I team', detail: 'Facilities engineering management intern across electrical and instrumentation — P&IDs, control loops, pneumatic standards, hazardous area classification.', kind: 'work' },
+    { year: '2026', label: 'Chevron Nigeria, Offshore Project team', detail: 'Offshore Project team intern who also joined the E&I team: P&IDs, control loops, pneumatic standards, hazardous area classification.', kind: 'work' },
     { year: '2026', label: 'Pipe anomaly detection', detail: 'Two-stage cascaded detector fusing RGB and edge-enhanced models for industrial inspection. In progress.', kind: 'project' },
     { year: '2027', label: 'Expected graduation', detail: 'B.Sc. Electronic and Electrical Engineering, OAU.', kind: 'education' },
   ],
