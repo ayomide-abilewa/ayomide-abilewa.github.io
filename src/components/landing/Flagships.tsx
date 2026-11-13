@@ -28,14 +28,17 @@ export function Flagships() {
       </div>
 
       <RevealGroup as="ul" className="grid gap-5 lg:grid-cols-3">
-        {projects.map((project) => (
+        {projects.map((project, index) => (
           <RevealItem as="li" key={project.slug} className="flex">
             <ProjectLink
               slug={project.slug}
-              className="group flex w-full flex-col bg-surface-raised p-5 sm:p-6"
+              className="spot group relative flex w-full flex-col border border-hairline bg-surface-raised p-5 transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-accent/60 sm:p-6"
             >
               <span aria-hidden="true" className="trace-rule -mx-5 -mt-5 mb-5 block sm:-mx-6 sm:-mt-6 sm:mb-6" />
-              <span className="font-mono text-micro text-content-faint">{projectPeriod(project)}</span>
+              <span className="flex items-baseline justify-between font-mono text-micro text-content-faint">
+                <span>{projectPeriod(project)}</span>
+                <span aria-hidden="true" className="card-index">{String(index + 1).padStart(2, '0')}</span>
+              </span>
               <span className="mt-2 text-h3 font-medium tracking-tight text-content text-balance transition-colors group-hover:text-accent">
                 {project.name}
               </span>

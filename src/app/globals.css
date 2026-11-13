@@ -1180,3 +1180,229 @@ html[data-intro='on'] .trace-after-intro {
     background-image: none !important;
   }
 }
+
+/*
+ * Home redesign: the scope face, ticker, bento tiles, spotlight panels and the
+ * closing band. Motion here is decoration; every piece of it stops under reduced
+ * motion and lofi, and nothing it animates carries content.
+ */
+.scope-face {
+  background-image:
+    radial-gradient(120% 90% at 50% 0%, transparent 55%, rgb(var(--surface-sunken) / 0.85) 100%),
+    linear-gradient(rgb(var(--accent-alt) / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--accent-alt) / 0.07) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 12.5%, 10% 100%;
+}
+
+.scope-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.scope-canvas {
+  z-index: 0;
+}
+
+.hero-name {
+  font-size: clamp(4.5rem, 1rem + 12vw, 10rem);
+}
+
+.hero-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(var(--content));
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .hero-outline {
+    color: rgb(var(--content));
+  }
+}
+
+.hero-letter {
+  animation: letter-in 700ms cubic-bezier(0.16, 0.84, 0.24, 1) both;
+}
+
+.hero-fade {
+  animation: hero-fade 800ms 450ms cubic-bezier(0.16, 0.84, 0.24, 1) both;
+}
+
+@keyframes letter-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.4em, 0) rotate(4deg);
+    filter: blur(10px);
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+}
+
+.live-dot {
+  box-shadow: 0 0 0 0 rgb(var(--accent) / 0.6);
+  animation: live-dot 1.8s ease-out infinite;
+}
+
+@keyframes live-dot {
+  70% {
+    box-shadow: 0 0 0 8px rgb(var(--accent) / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(var(--accent) / 0);
+  }
+}
+
+.scope-inset {
+  padding: 0.75rem;
+  border: 1px solid rgb(var(--hairline));
+  background: rgb(var(--surface-sunken) / 0.6);
+}
+
+.scope-inset::before,
+.scope-inset::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgb(var(--accent));
+  border-style: solid;
+}
+
+.scope-inset::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.scope-inset::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+.hero-photo {
+  filter: saturate(0.85) contrast(1.05);
+  transition: filter 400ms ease, transform 700ms cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+
+.scope-inset:hover .hero-photo {
+  filter: none;
+  transform: scale(1.03);
+}
+
+.probe-hint {
+  transition: opacity 300ms ease;
+}
+
+[data-probing='true'] .probe-hint {
+  opacity: 0;
+}
+
+.ticker {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.ticker-track {
+  animation: ticker 48s linear infinite;
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes ticker {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.stat-num {
+  font-size: clamp(3.5rem, 2rem + 4vw, 5.5rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+
+.spot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(var(--accent) / 0.14),
+    transparent 60%
+  );
+}
+
+.spot:hover::before {
+  opacity: 1;
+}
+
+.spot > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card-index {
+  font-size: 0.875rem;
+  color: rgb(var(--accent));
+}
+
+.big-mail {
+  font-size: clamp(1.75rem, 0.9rem + 4.4vw, 5.25rem);
+  line-height: 1.05;
+  background-image: linear-gradient(rgb(var(--accent)), rgb(var(--accent)));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 3px;
+  padding-bottom: 0.1em;
+  transition: background-size 500ms cubic-bezier(0.16, 0.84, 0.24, 1), color 300ms ease;
+}
+
+.big-mail:hover,
+.big-mail:focus-visible {
+  color: rgb(var(--accent));
+  background-size: 100% 3px;
+}
+
+.contact-band {
+  background-image: radial-gradient(70% 90% at 85% 110%, rgb(var(--accent) / 0.16), transparent 60%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-letter,
+  .hero-fade,
+  .live-dot,
+  .ticker-track {
+    animation: none !important;
+  }
+}
+
+.lofi .scope-face,
+.lofi .contact-band {
+  background-image: none;
+}
+
+.lofi .scope-face::after,
+.lofi .spot::before {
+  display: none;
+}
+
+.lofi .hero-outline {
+  color: rgb(var(--content));
+  -webkit-text-stroke: 0;
+}

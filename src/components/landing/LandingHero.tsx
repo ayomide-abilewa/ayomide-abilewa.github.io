@@ -1,26 +1,19 @@
 import { profile } from '@/data/profile'
 import { formatRange } from '@/lib/dates'
-import { latestRole } from '@/lib/select'
+import { cvFile, latestRole } from '@/lib/select'
 import { degree, facts } from '@/lib/facts'
-import { SettledTrace } from '@/components/brand/SettledTrace'
-import { PhotoFigure } from '@/components/media/Photo'
+import { Photo } from '@/components/media/Photo'
+import { ActionButton } from '@/components/section/Cta'
+import { ScopeCanvas } from './ScopeCanvas'
+import { LagosClock } from './LagosClock'
 
 /**
- * Landing hero.
+ * Landing hero: an oscilloscope face.
  *
- * A server component: there is no state and no handler left in here, so none of
- * this text costs the visitor any JavaScript. Only the underline is a client
- * component, and only because it draws itself.
- *
- * Visible from the first paint. The opening sequence plays behind this copy and
- * never holds it back.
- *
- * The underline below the name is the same curve the opening settles into, drawn
- * from the same function. That is the entire handoff: no shared element, no
- * layout animation, just the same shape arriving where it belongs.
- *
- * Copy rule: every claim below is traceable to the CV or a repository. No
- * adjectives standing in for evidence.
+ * The copy is server-rendered and readable before any script runs. The trace
+ * behind it is one canvas island (ScopeCanvas) that the visitor can probe with
+ * the pointer; the HUD around the edges is the scope's readout. Everything
+ * printed here is traceable to profile.ts.
  */
 
 const latest = latestRole()
@@ -32,89 +25,102 @@ const FACTS = [
         `${latest.role.shortRole} · ${latest.role.shortOrganisation} · ${formatRange(latest.role.start, latest.role.end)}`,
       ]
     : []),
-  'Lagos, Nigeria',
 ]
 
-export function LandingHero() {
+/** Letters of a word as staggered spans; the h1 carries the readable name. */
+function Letters({ word, offset }: { word: string; offset: number }) {
   return (
-    <section className="shell relative flex min-h-[86svh] flex-col justify-center pb-14 pt-16 sm:pt-20">
-      <div className="grid items-center gap-x-16 lg:grid-cols-[minmax(0,46rem)_minmax(0,19rem)] lg:justify-between">
+    <span aria-hidden="true" className="block">
+      {word.split('').map((ch, i) => (
+        <span
+          key={i}
+          className="hero-letter inline-block"
+          style={{ animationDelay: `${(offset + i) * 38}ms` }}
+        >
+          {ch}
+        </span>
+      ))}
+    </span>
+  )
+}
+
+export function LandingHero() {
+  const [first = '', ...rest] = profile.identity.name.split(' ')
+  const last = rest.join(' ')
+
+  return (
+    <section
+      className="scope-face relative isolate flex min-h-[100svh] flex-col overflow-hidden"
+      aria-labelledby="hero-name"
+    >
+      <ScopeCanvas />
+
+      {/* Top readout */}
+      <div className="shell relative flex items-center justify-between pt-6 font-mono text-micro uppercase tracking-[0.14em] text-content-faint">
+        <span className="flex items-center gap-2">
+          <span aria-hidden="true" className="live-dot h-1.5 w-1.5 rounded-full bg-accent" />
+          CH1 · 2.00 V/div
+        </span>
+        <span className="hidden sm:inline">Timebase 5 ms/div · Trig auto</span>
+      </div>
+
+      <div className="shell relative grid flex-1 items-center gap-x-16 gap-y-10 pb-32 pt-6 lg:grid-cols-[minmax(0,1fr)_17rem] lg:pb-24">
         <div>
-          <p className="eyebrow">
-            Instrumentation · Embedded systems · Computer vision
-          </p>
+          <p className="eyebrow">Instrumentation · Embedded systems · Computer vision</p>
 
           <h1
-            className="mt-5 text-display font-medium leading-[0.95] tracking-tight"
+            id="hero-name"
+            aria-label={profile.identity.name}
+            className="hero-name mt-5 font-medium leading-[0.86] tracking-[-0.045em]"
           >
-            {profile.identity.name}
+            <Letters word={first} offset={0} />
+            <span className="hero-outline block pl-[0.6em]">
+              <Letters word={last} offset={first.length} />
+            </span>
           </h1>
 
-          {/* The settled trace, doubling as the underline: the same curve the opening
-              settles into. `afterIntro` holds the draw until the sweep finishes. */}
-          <div
-            className="mt-1 h-9 w-full max-w-[34rem] sm:h-11"
-          >
-            <SettledTrace className="h-full w-full" delay={0.34} strokeWidth={2} afterIntro />
-          </div>
-
-          <p
-            className="mt-7 max-w-measure text-lead leading-snug text-content text-pretty"
-          >
+          <p className="hero-fade mt-8 max-w-[38rem] text-lead leading-snug text-content text-pretty">
             I build systems that measure the physical world, and I design them to keep working when
             conditions are far from ideal.
           </p>
 
-          <p
-            className="mt-5 max-w-measure text-body text-content-muted text-pretty"
-          >
-            Think uneven lighting, a network that drops out, or a sensor that tells you nothing until
-            it has been calibrated. Most of my projects have a fallback built in, because most of them
-            had to run somewhere less than perfect.
-          </p>
-
-          <ul
-            className="mt-9 space-y-1.5 border-l border-hairline pl-4"
-          >
+          <ul className="hero-fade mt-6 space-y-1 font-mono text-micro leading-relaxed text-content-faint">
             {FACTS.map((fact) => (
-              <li key={fact} className="font-mono text-micro leading-relaxed text-content-faint">
-                {fact}
-              </li>
+              <li key={fact}>{fact}</li>
             ))}
           </ul>
+
+          <nav aria-label="Start here" className="hero-fade mt-8 flex flex-wrap gap-3">
+            <ActionButton action={{ label: 'See the work', href: '#work', weight: 'primary' }} />
+            <ActionButton action={{ label: 'Download CV', href: cvFile('general', 'pdf'), download: true }} />
+            <ActionButton action={{ label: 'Get in touch', href: '/contact/', weight: 'quiet' }} />
+          </nav>
         </div>
 
-        {/* Desktop only: on a phone the portrait would push the work below two
-            screens of scrolling. Lazy, so phones never fetch it. */}
-        <PhotoFigure
-          id="portrait"
-          sizes="19rem"
-          className="hidden lg:block"
-        />
+        {/* Portrait as a scope inset, desktop only. Lazy, so phones never fetch it. */}
+        <figure className="scope-inset hero-fade relative hidden lg:block">
+          <div className="relative overflow-hidden">
+            <Photo id="portrait" sizes="17rem" rounded={false} className="hero-photo" />
+          </div>
+          <figcaption className="mt-3 flex justify-between font-mono text-micro uppercase tracking-[0.12em] text-content-faint">
+            <span>Ref · Lagos</span>
+            <span>2026</span>
+          </figcaption>
+        </figure>
       </div>
 
-      {/* Scroll cue. A sampling dot travelling down a measurement line — the
-          same visual language, doing an actual navigational job.
-
-          An anchor rather than a button with scrollIntoView: the smooth scroll is
-          already CSS on <html>, which means it is switched off automatically under
-          prefers-reduced-motion. The JS version overrode that and animated the
-          scroll anyway — one of those bugs that only ever bites the people the
-          setting exists for. It also now works with no JavaScript at all. */}
-      <a
-        href="#work"
-        className="group mt-14 flex min-h-11 items-center gap-3 self-start text-left"
-      >
-        <span
-          aria-hidden="true"
-          className="relative block h-10 w-px overflow-hidden bg-hairline"
-        >
-          <span className="scroll-cue-dot absolute left-[-1.5px] top-0 block h-1.5 w-1 rounded-full bg-accent" />
+      {/* Bottom readout */}
+      <div className="shell relative flex flex-wrap items-end justify-between gap-3 pb-6 font-mono text-micro uppercase tracking-[0.14em] text-content-faint">
+        <span className="probe-readout hidden md:inline" aria-hidden="true">
+          Probe&nbsp; t = <span id="scope-x" className="text-accent">00.0</span> ms&nbsp; v ={' '}
+          <span id="scope-y" className="text-accent">0.00</span> V
         </span>
-        <span className="font-mono text-micro uppercase tracking-[0.14em] text-content-faint transition-colors group-hover:text-accent">
-          See the work first
+        <span className="probe-hint hidden md:inline">Move your cursor along the trace. It is live.</span>
+        <span className="md:hidden">Tap the trace</span>
+        <span>
+          Lagos <LagosClock /> WAT
         </span>
-      </a>
+      </div>
     </section>
   )
 }
