@@ -73,7 +73,7 @@ export function EngineeringPath() {
         <div className="space-y-8">
           <BenchScene />
 
-          <dl className="grid-field-fine rounded-panel border border-hairline bg-surface-sunken/40 p-6">
+          <dl className="spot grid-field-fine rounded-panel border border-hairline bg-surface-sunken/40 p-6">
             {[
               { k: 'Discipline', v: 'Electronic and Electrical Engineering, OAU' },
               ...(latest

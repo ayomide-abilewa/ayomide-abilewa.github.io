@@ -54,7 +54,7 @@ export function SceneFrame({
 }) {
   return (
     <figure className={`min-w-0 ${className}`}>
-      <div className="overflow-hidden rounded-panel border border-hairline bg-surface-sunken/40">
+      <div className="spot overflow-hidden rounded-panel border border-hairline bg-surface-sunken/40">
         <svg
           viewBox={viewBox}
           role="img"

@@ -17,6 +17,7 @@ import { CtaRow } from '@/components/section/Cta'
 import { SettledTrace } from '@/components/brand/SettledTrace'
 import { Reveal } from '@/components/motion/Reveal'
 import { CvPreview } from '@/components/cv/CvPreview'
+import { Scene3D } from '@/components/motion/Scene3D'
 
 /**
  * The CV page.
@@ -200,6 +201,7 @@ export function CvLibrary() {
   return (
     <>
       <header className="page-hero shell pb-section pt-14 sm:pt-20">
+        <Scene3D shape="stack" />
         <Reveal>
           <p className="eyebrow flex items-center gap-2.5">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />

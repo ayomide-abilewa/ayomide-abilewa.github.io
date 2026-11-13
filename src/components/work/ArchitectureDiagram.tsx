@@ -182,7 +182,7 @@ export function ArchitectureDiagram({ architecture }: { architecture: Architectu
       <div
         ref={containerRef}
         aria-hidden="true"
-        className="relative hidden grid-field-fine rounded-panel border border-hairline bg-surface-sunken/40 p-6 md:grid"
+        className="spot relative hidden grid-field-fine rounded-panel border border-hairline bg-surface-sunken/40 p-6 md:grid"
         style={{
           gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
           gridTemplateRows: `repeat(${rows}, minmax(0, auto))`,

@@ -28,6 +28,7 @@ import {
   LeadershipList,
   Timeline,
 } from '@/components/section/Blocks'
+import { Scene3D } from '@/components/motion/Scene3D'
 
 /**
  * The story behind the work.
@@ -291,6 +292,7 @@ export function AboutStory() {
   return (
     <>
       <header className="page-hero shell pb-section pt-14 sm:pt-20">
+        <Scene3D shape="none" />
         <div className="grid items-start gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
           <Reveal>
             <p className="eyebrow flex items-center gap-2.5">

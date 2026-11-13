@@ -7,6 +7,7 @@ import { CtaRow, type Action } from '@/components/section/Cta'
 import { ModeSwitcher } from '@/components/chrome/ModeSwitcher'
 import { SettledTrace } from '@/components/brand/SettledTrace'
 import { Reveal } from '@/components/motion/Reveal'
+import { Scene3D, type SceneShape } from '@/components/motion/Scene3D'
 
 /**
  * The header block at the top of each path route.
@@ -23,6 +24,7 @@ export function PathHero({
   lede,
   detail,
   actions,
+  scene = 'none',
   children,
 }: {
   mode: VisitorMode
@@ -32,11 +34,14 @@ export function PathHero({
   /** Second paragraph. Optional, because not every path needs one. */
   detail?: string
   actions: Action[]
+  /** Wireframe object turning behind the copy; the terrain floor is always drawn. */
+  scene?: SceneShape
   /** Path-specific visual, rendered beside the copy on wide screens. */
   children?: ReactNode
 }) {
   return (
     <header className="page-hero shell pb-section pt-14 sm:pt-20">
+      <Scene3D shape={scene} />
       <div
         className={
           children

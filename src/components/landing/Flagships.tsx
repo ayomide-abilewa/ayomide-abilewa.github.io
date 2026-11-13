@@ -32,7 +32,7 @@ export function Flagships() {
           <RevealItem as="li" key={project.slug} className="flex">
             <ProjectLink
               slug={project.slug}
-              className="spot group relative flex w-full flex-col border border-hairline bg-surface-raised p-5 transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-accent/60 sm:p-6"
+              className="spot group relative flex w-full flex-col border border-hairline bg-surface-raised p-5 hover:border-accent/60 sm:p-6"
             >
               <span aria-hidden="true" className="trace-rule -mx-5 -mt-5 mb-5 block sm:-mx-6 sm:-mt-6 sm:mb-6" />
               <span className="flex items-baseline justify-between font-mono text-micro text-content-faint">

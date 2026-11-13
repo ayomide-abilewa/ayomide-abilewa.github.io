@@ -52,6 +52,7 @@ export function EverythingPath() {
     <>
       <PathHero
         mode={MODE}
+        scene="torus"
         eyebrow="All of it, in one pass"
         heading="One person, read three different ways — engineering, research and the teaching that came out of both."
         lede={`Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}. Embedded systems, computer vision and instrumentation, and an internship with Chevron Nigeria's Offshore Project team, including time on the electrical and instrumentation team.`}

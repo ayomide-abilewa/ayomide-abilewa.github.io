@@ -15,6 +15,7 @@ import { ArchitectureDiagram } from '@/components/work/ArchitectureDiagram'
 import { SettledTrace } from '@/components/brand/SettledTrace'
 import { CaseEvidence, hasEvidence } from '@/components/work/CaseEvidence'
 import { facts } from '@/lib/facts'
+import { Scene3D } from '@/components/motion/Scene3D'
 
 /**
  * Case study.
@@ -49,6 +50,7 @@ export function CaseStudy({ project }: { project: Project }) {
   return (
     <>
       <header className="page-hero shell pb-section pt-10 sm:pt-14">
+        <Scene3D shape="chip" />
         <Reveal>
           <Link
             href="/work/"
