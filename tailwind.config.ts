@@ -90,7 +90,7 @@ const config: Config = {
       },
       spacing: {
         gutter: 'clamp(1.25rem, 0.6rem + 3vw, 3rem)',
-        section: 'clamp(4rem, 2rem + 9vw, 8.5rem)',
+        section: 'clamp(3.5rem, 1.5rem + 6vw, 6rem)',
       },
       maxWidth: {
         measure: '68ch', // comfortable reading measure for body copy
