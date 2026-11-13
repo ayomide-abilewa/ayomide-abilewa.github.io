@@ -8,7 +8,6 @@ import { facts } from '@/lib/facts'
 import { Ticker } from '@/components/landing/Ticker'
 import { Glance } from '@/components/landing/Glance'
 import { ContactBand } from '@/components/landing/ContactBand'
-import { Spotlight } from '@/components/landing/Spotlight'
 
 /**
  * Landing page.
@@ -27,7 +26,6 @@ export default function LandingPage() {
   return (
     <>
       <OpeningMount />
-      <Spotlight />
       <LandingHero />
       <Ticker />
       <Glance />

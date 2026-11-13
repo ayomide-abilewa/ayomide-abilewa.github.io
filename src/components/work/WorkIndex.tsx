@@ -42,7 +42,7 @@ export function WorkIndex() {
 
   return (
     <>
-      <header className="shell border-b border-hairline pb-section pt-14 sm:pt-20">
+      <header className="page-hero shell pb-section pt-14 sm:pt-20">
         <Reveal>
           <p className="eyebrow flex items-center gap-2.5">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
@@ -52,7 +52,7 @@ export function WorkIndex() {
             </span>
           </p>
 
-          <h1 className="mt-5 max-w-[38ch] text-h1 font-medium tracking-tight text-balance">
+          <h1 className="mt-5 page-title max-w-[26ch] font-medium text-balance">
             {cap(facts.projects)} projects, and what nearly broke each one.
           </h1>
 

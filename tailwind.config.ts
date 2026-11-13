@@ -84,7 +84,7 @@ const config: Config = {
         lead: ['clamp(1.125rem, 0.95rem + 0.7vw, 1.375rem)', { lineHeight: '1.55' }],
         h4: ['clamp(1.0625rem, 0.98rem + 0.35vw, 1.1875rem)', { lineHeight: '1.4', letterSpacing: '-0.005em' }],
         h3: ['clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem)', { lineHeight: '1.3', letterSpacing: '-0.01em' }],
-        h2: ['clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem)', { lineHeight: '1.2', letterSpacing: '-0.018em' }],
+        h2: ['clamp(1.75rem, 1.2rem + 2vw, 2.75rem)', { lineHeight: '1.12', letterSpacing: '-0.025em' }],
         h1: ['clamp(2.125rem, 1.5rem + 2.8vw, 3.25rem)', { lineHeight: '1.08', letterSpacing: '-0.025em' }],
         display: ['clamp(2.75rem, 1.4rem + 6vw, 6rem)', { lineHeight: '0.95', letterSpacing: '-0.035em' }],
       },

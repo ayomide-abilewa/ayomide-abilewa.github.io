@@ -48,7 +48,7 @@ export function CaseStudy({ project }: { project: Project }) {
 
   return (
     <>
-      <header className="shell border-b border-hairline pb-section pt-10 sm:pt-14">
+      <header className="page-hero shell pb-section pt-10 sm:pt-14">
         <Reveal>
           <Link
             href="/work/"
@@ -63,7 +63,7 @@ export function CaseStudy({ project }: { project: Project }) {
             All projects
           </Link>
 
-          <h1 className="mt-6 max-w-[34ch] text-h1 font-medium tracking-tight text-balance">
+          <h1 className="mt-6 page-title max-w-[26ch] font-medium text-balance">
             {project.name}
           </h1>
 

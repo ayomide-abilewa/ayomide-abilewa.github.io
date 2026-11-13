@@ -95,7 +95,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-wrap items-baseline justify-between gap-3 border-t border-hairline/60 pt-5">
+        <p aria-hidden="true" className="footer-mark mt-14 overflow-hidden font-medium">
+          {identity.name}
+        </p>
+
+        <div className="mt-6 flex flex-wrap items-baseline justify-between gap-3 border-t border-hairline/60 pt-5">
           <p className="text-micro text-content-faint">
             © {identity.name}. Designed and built by me, in Next.js, deployed on GitHub Pages.
           </p>

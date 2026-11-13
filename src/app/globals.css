@@ -1333,28 +1333,34 @@ html[data-intro='on'] .trace-after-intro {
   font-variant-numeric: tabular-nums;
 }
 
-.spot::before {
+.spot,
+.panel-live,
+.row-live {
+  position: relative;
+  isolation: isolate;
+}
+
+.spot::before,
+.panel-live::before,
+.row-live::before {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
   opacity: 0;
   transition: opacity 300ms ease;
   background: radial-gradient(
     420px circle at var(--mx, 50%) var(--my, 50%),
-    rgb(var(--accent) / 0.14),
+    rgb(var(--accent) / 0.12),
     transparent 60%
   );
 }
 
-.spot:hover::before {
+.spot:hover::before,
+.panel-live:hover::before,
+.row-live:hover::before {
   opacity: 1;
-}
-
-.spot > * {
-  position: relative;
-  z-index: 1;
 }
 
 .card-index {
@@ -1405,4 +1411,70 @@ html[data-intro='on'] .trace-after-intro {
 .lofi .hero-outline {
   color: rgb(var(--content));
   -webkit-text-stroke: 0;
+}
+
+/*
+ * Inner-page headers share the home page's scope face: a full-bleed graticule,
+ * grain and an accent glow behind the shell-width copy. The bleed comes from a
+ * pseudo-element pushed out to the viewport edges; body clips the overshoot.
+ */
+body {
+  overflow-x: clip;
+}
+
+.page-hero {
+  position: relative;
+  isolation: isolate;
+}
+
+.page-hero::before,
+.page-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0 calc(50% - 50vw);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.page-hero::before {
+  border-bottom: 1px solid rgb(var(--hairline));
+  background-image:
+    radial-gradient(70% 110% at 88% 0%, rgb(var(--accent) / 0.12), transparent 62%),
+    linear-gradient(to bottom, transparent 55%, rgb(var(--surface)) 100%),
+    linear-gradient(rgb(var(--accent-alt) / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--accent-alt) / 0.08) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 64px, 64px 100%;
+}
+
+.page-hero::after {
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.lofi .page-hero::before {
+  background-image: none;
+}
+
+.page-title {
+  font-size: clamp(2.25rem, 1.3rem + 3.2vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.footer-mark {
+  font-size: clamp(3.5rem, 1rem + 11.5vw, 12rem);
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(var(--hairline));
+  transition: -webkit-text-stroke-color 400ms ease;
+}
+
+.footer-mark:hover {
+  -webkit-text-stroke-color: rgb(var(--accent));
+}
+
+.lofi .footer-mark {
+  display: none;
 }

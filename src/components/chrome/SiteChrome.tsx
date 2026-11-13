@@ -5,6 +5,7 @@ import { Header } from './Header'
 import { Footer } from './Footer'
 import { RouteSweep } from '@/components/motion/RouteSweep'
 import { PageEnter } from '@/components/motion/PageEnter'
+import { Spotlight } from '@/components/landing/Spotlight'
 
 /**
  * Page frame. Skip link first in the tab order, then persistent nav, then the
@@ -14,6 +15,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col">
       <RouteSweep />
+      <Spotlight />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-control focus:border focus:border-accent focus:bg-surface-raised focus:inline-flex focus:min-h-11 focus:items-center focus:px-3 focus:text-caption focus:text-content"

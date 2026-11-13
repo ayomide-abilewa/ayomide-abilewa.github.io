@@ -36,7 +36,7 @@ export function PathHero({
   children?: ReactNode
 }) {
   return (
-    <header className="shell border-b border-hairline pb-section pt-14 sm:pt-20">
+    <header className="page-hero shell pb-section pt-14 sm:pt-20">
       <div
         className={
           children
@@ -56,7 +56,7 @@ export function PathHero({
             <p className="eyebrow">{eyebrow}</p>
           </div>
 
-          <h1 className="mt-5 max-w-[38ch] text-h1 font-medium tracking-tight text-balance">
+          <h1 className="mt-5 page-title max-w-[26ch] font-medium text-balance">
             {heading}
           </h1>
 

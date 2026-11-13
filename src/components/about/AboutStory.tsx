@@ -77,7 +77,7 @@ const INTRO: Record<VisitorMode, { heading: string; lede: string }> = {
   everything: {
     heading:
       `${cap(facts.yearsAtUniversity)} years of learning something new, then turning it into something other people can use.`,
-    lede: `Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}. Embedded systems, instrumentation and computer vision, and an internship on Chevron Nigeria’s electrical and instrumentation team. Teaching the same material to students who have never seen a circuit before.`,
+    lede: `Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}. Embedded systems, instrumentation and computer vision, and an internship with Chevron Nigeria’s Offshore Project team that also took me onto the electrical and instrumentation team. Teaching the same material to students who have never seen a circuit before.`,
   },
 }
 
@@ -180,8 +180,9 @@ export function AboutStory() {
             text-to-speech falls through three tiers so that the last one cannot fail.
           </p>
           <p>
-            In {startYear('chevron')} this stopped being coursework. On Chevron Nigeria’s electrical and instrumentation
-            team the same loops showed up with real consequences: 4–20 mA current signalling,
+            In {startYear('chevron')} this stopped being coursework. I interned with Chevron Nigeria’s Offshore
+            Project team and was lucky enough to join the electrical and instrumentation team as well,
+            where the same loops showed up with real consequences: 4–20 mA current signalling,
             3–15 PSI pneumatics, I/P converters, hazardous area classification, P&amp;IDs to read
             before touching anything. Industrial instrumentation has been solving the problem I keep
             running into for decades, at a scale where getting it wrong is expensive.
@@ -289,7 +290,7 @@ export function AboutStory() {
 
   return (
     <>
-      <header className="shell border-b border-hairline pb-section pt-14 sm:pt-20">
+      <header className="page-hero shell pb-section pt-14 sm:pt-20">
         <div className="grid items-start gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
           <Reveal>
             <p className="eyebrow flex items-center gap-2.5">
@@ -297,7 +298,7 @@ export function AboutStory() {
               <span>About{unset ? '' : ` — read for ${MODE_LABELS[mode]}`}</span>
             </p>
 
-            <h1 className="mt-5 max-w-[38ch] text-h1 font-medium tracking-tight text-balance">
+            <h1 className="mt-5 page-title max-w-[26ch] font-medium text-balance">
               {intro.heading}
             </h1>
 
