@@ -76,7 +76,7 @@ const INTRO: Record<VisitorMode, { heading: string; lede: string }> = {
   },
   everything: {
     heading:
-      `One person, ${facts.yearsAtUniversity} years, and a habit of turning whatever I have just learned into something someone else can use.`,
+      `${cap(facts.yearsAtUniversity)} years of learning something new, then turning it into something other people can use.`,
     lede: `Electronic and electrical engineering at Obafemi Awolowo University, ${facts.graduation}. Embedded systems, instrumentation and computer vision, and an internship on Chevron Nigeria’s electrical and instrumentation team. Teaching the same material to students who have never seen a circuit before.`,
   },
 }
@@ -160,15 +160,15 @@ export function AboutStory() {
         id="thread"
         eyebrow="The thread"
         heading="It started with an alarm nobody could hear"
-        lede={`${cap(facts.projects)} builds, ${facts.yearsBuilding} years, and one lesson that keeps arriving in a new disguise: a measurement is not finished until it reaches somebody who can act on it.`}
+        lede={`${cap(facts.projects)} builds, ${facts.yearsBuilding} years, and one lesson that keeps coming back in different forms: a measurement is not finished until it reaches someone who can act on it.`}
       >
         <div className="max-w-measure space-y-5 text-body-lg text-content-muted text-pretty">
           <p>
             The first thing I built, in {startYear('fire-alarm-system')}, was a fire alarm that detected flame and smoke and rang
             a buzzer. The lesson it taught me had nothing to do with sensors: a local alarm only helps
             somebody who is already in earshot, so the build was not finished until a GSM module could
-            get the alert out of the building. Detection and notification turned out to be two
-            different problems wearing one name.
+            get the alert out of the building. Detecting a fire and telling someone about it
+            turned out to be two separate problems.
           </p>
           <p>
             Everything since has had that shape. A fan that matches its speed to the temperature
@@ -181,7 +181,7 @@ export function AboutStory() {
           </p>
           <p>
             In {startYear('chevron')} this stopped being coursework. On Chevron Nigeria’s electrical and instrumentation
-            team the same loops turned up with consequences attached — 4–20 mA current signalling,
+            team the same loops showed up with real consequences: 4–20 mA current signalling,
             3–15 PSI pneumatics, I/P converters, hazardous area classification, P&amp;IDs to read
             before touching anything. Industrial instrumentation has been solving the problem I keep
             running into for decades, at a scale where getting it wrong is expensive.
@@ -265,7 +265,7 @@ export function AboutStory() {
         id="teaching"
         eyebrow="Teaching and leadership"
         heading="Whatever I get access to becomes a lesson plan"
-        lede="Circuit Zero to Hero starts with students who have never held a multimeter. Read the bullets, not the titles."
+        lede="Circuit Zero to Hero starts with students who have never held a multimeter."
       >
         <LeadershipList items={leadershipForMode(mode)} variant={variant} />
       </Section>

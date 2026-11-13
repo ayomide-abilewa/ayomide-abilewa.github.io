@@ -50,8 +50,8 @@ export function EngineeringPath() {
       <PathHero
         mode={MODE}
         eyebrow="Systems, hardware and the failure modes behind them"
-        heading="I build systems that measure the physical world, then design them for the moment conditions stop cooperating."
-        lede="Embedded nodes, computer-vision pipelines and control loops — mostly built for rooms and sites where the lighting is uneven, the network is unreliable and the sensor reading means nothing until it has been calibrated."
+        heading="I build systems that measure the physical world, and design them to keep working when conditions are far from ideal."
+        lede="Embedded nodes, computer-vision pipelines and control loops, mostly built for places where the lighting is uneven, the network is unreliable and the sensor reading means nothing until it has been calibrated."
         detail="Interned on the electrical and instrumentation team at Chevron Nigeria, where I worked with the 4–20 mA loops and pneumatic standards that solve the same measurement problems at industrial scale."
         actions={[
           { label: 'See the systems', href: '#systems', weight: 'primary' },
@@ -118,7 +118,7 @@ export function EngineeringPath() {
       <Section
         id="stack"
         eyebrow="Stack"
-        heading="Nothing on this list is aspirational"
+        heading="Tools I have actually used"
         lede="Everything here is something I have used on something that ran. Where I am still at fundamentals, the list says fundamentals."
       >
         <SkillGrid groups={skillsForVariant(VARIANT)} />

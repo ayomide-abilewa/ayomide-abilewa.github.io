@@ -19,11 +19,11 @@ export function Flagships() {
       <div className="mb-9 max-w-measure">
         <p className="eyebrow mb-3">Start with the work</p>
         <h2 id="work-heading" className="text-h2 font-medium tracking-tight text-balance">
-          Three projects, before any questions
+          Three projects to start with
         </h2>
         <p className="mt-3 text-body text-content-muted text-pretty">
-          A shipped software build, a group project I defended, and a hardware device. The doors
-          below go deeper, each in its own order.
+          A software build I shipped, a group project I defended, and a hardware device. If you want
+          more, the paths below go deeper.
         </p>
       </div>
 

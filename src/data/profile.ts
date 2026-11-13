@@ -223,7 +223,7 @@ export const profile: Profile = {
       problem:
         'A costume-rating booth at a convention has to work in the worst possible conditions for software: shared wifi that may be blocked entirely, a hall too loud for voice activity detection, a queue of people who will not wait, and a laptop that gets set up five minutes before doors open. It also has to be entertaining enough that people queue at all.',
       why:
-        'Built as a booth experience rather than a demo. That framing forced every design decision to answer a specific way the evening could go wrong, which is a more interesting engineering constraint than accuracy alone.',
+        'I built it as a booth for a real event, not as a demo. That meant every design decision had to answer a specific way the evening could go wrong, which turned out to be a more interesting problem than chasing accuracy.',
       approach: [
         'Ten original hosts with distinct voices, among them a tsundere rival and a Nigerian hype-man mixing Pidgin with anime slang. Each is paired with a per-session mood and quirk, giving roughly five hundred behavioural combinations.',
         'A vision-language model scores a photo across seven criteria out of ten, which collapse into a single score out of one hundred and a rank letter from S down to D.',
@@ -307,7 +307,7 @@ export const profile: Profile = {
       ],
       learned: [
         'Designing each feature against a specific failure mode produces a system you can actually trust in the field, and it makes the code easier to explain.',
-        'A fast offline test suite is a deployment feature, not just a development one — it is what makes it safe to change something under time pressure.',
+        'A fast offline test suite matters at deployment as much as in development. It is what makes it safe to change something under time pressure.',
         'Constraining a model twice, in the prompt and again in code, is the only way to make output length a guarantee.',
       ],
       rank: { engineering: 1, everything: 1 },
@@ -340,7 +340,7 @@ export const profile: Profile = {
       slug: 'smart-attendance-system',
       name: 'AI-Powered Smart Attendance System',
       tagline:
-        'Face-recognition attendance for real lecture halls — detection, embedding and cosine matching behind a full-stack application built for lecturers, not for a benchmark.',
+        'Face-recognition attendance for real lecture halls: detection, embedding and cosine matching behind a full-stack app that lecturers can actually use.',
       start: 'Feb 2026',
       end: 'Mar 2026',
       status: 'complete',
@@ -435,7 +435,7 @@ export const profile: Profile = {
       rank: { engineering: 2, research: 3, scholarship: 2, everything: 2 },
       framing: {
         engineering:
-          'A complete system rather than a model demo: detection, embedding, matching, session state and export, front to back.',
+          'The whole system end to end: detection, embedding, matching, session state and export.',
         research:
           'A recognition pipeline evaluated in an operating classroom rather than on curated frontal portraits.',
         scholarship:
@@ -539,7 +539,7 @@ export const profile: Profile = {
       rank: { engineering: 3, research: 1, everything: 3 },
       framing: {
         engineering:
-          'Two detectors, two preprocessing paths, one fused output — built for footage that will not cooperate.',
+          'Two detectors with different preprocessing, merged into one output, for inspection footage that is rarely clean.',
         research:
           'The clearest statement of what I am investigating: how to hold detection precision steady when the imaging conditions will not.',
       },
@@ -626,11 +626,11 @@ export const profile: Profile = {
       ],
       rank: { engineering: 4, research: 2, scholarship: 3, everything: 4 },
       framing: {
-        engineering: 'Two sensors, one bus, calibrated readings, live telemetry — instrumentation from the pins up.',
+        engineering: 'Two calibrated sensors on a shared bus, streaming live data. Instrumentation built up from the pins.',
         research:
           'Direct instrumentation work: separating intensity from spectral composition and calibrating both so the data is interpretable.',
         scholarship:
-          'Applied to food growing — the kind of measurement problem that decides whether a crop works.',
+          'Built for food growing, where getting the light measurement right can decide whether a crop does well.',
       },
       bullets: [
         {
@@ -713,7 +713,7 @@ export const profile: Profile = {
       ],
       rank: { engineering: 5, research: 4, scholarship: 4, everything: 5 },
       framing: {
-        engineering: 'The smallest complete control loop — sensor, control law, actuator, feedback.',
+        engineering: 'A small but complete control loop: sensor, control law, actuator and feedback.',
         research: 'A first-principles closed loop, later formalised on Quanser hardware.',
         scholarship: 'The first time I led a build team rather than joining one.',
       },
@@ -792,7 +792,7 @@ export const profile: Profile = {
       ],
       rank: { engineering: 6, scholarship: 5, everything: 6 },
       framing: {
-        engineering: 'Two sensing modalities, two notification paths, one event.',
+        engineering: 'Two ways to detect a fire, and two ways to raise the alarm.',
       },
       bullets: [
         {

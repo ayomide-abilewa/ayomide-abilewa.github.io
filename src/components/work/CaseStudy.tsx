@@ -120,7 +120,7 @@ export function CaseStudy({ project }: { project: Project }) {
         </Reveal>
       </header>
 
-      <Section id="problem" eyebrow="The problem" heading="What was wrong">
+      <Section id="problem" eyebrow="The problem" heading="What needed solving">
         <div className="grid gap-x-14 gap-y-9 lg:grid-cols-2">
           <Field label="Problem">
             <p className="text-body text-content-muted text-pretty">{project.problem}</p>
@@ -135,7 +135,7 @@ export function CaseStudy({ project }: { project: Project }) {
         <Section
           id="challenges"
           eyebrow="Challenges"
-          heading="What fought back"
+          heading="What got in the way"
         >
           <TickList items={project.challenges} className="max-w-measure" />
         </Section>
@@ -145,8 +145,8 @@ export function CaseStudy({ project }: { project: Project }) {
         <Section
           id="decisions"
           eyebrow="Engineering decisions"
-          heading="Every choice, and the thing that forced it"
-          lede="Left column is what I built. Right column is the failure mode it exists to survive."
+          heading="Key decisions, and why I made them"
+          lede="On the left is what I chose to do. On the right is the problem it solves."
         >
           <DecisionList items={project.decisions} />
         </Section>

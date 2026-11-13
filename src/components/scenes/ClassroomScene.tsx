@@ -36,9 +36,9 @@ export function ClassroomScene() {
       label="A teacher at a board draws a circuit — battery, resistor and lamp. The lamp lights when the loop closes, and four students seated in front of the board light up one after another."
       caption={
         <>
-          The lamp is not the end of the lesson. Six sessions of SPAW 3.0 exist because the circuit
-          working and the room understanding why are two different events, and the second one is the
-          harder build.
+          Getting the lamp to light is only half the lesson. SPAW 3.0 runs over six sessions because a
+          working circuit and a room that understands why it works are two different things, and the
+          second takes far more effort.
         </>
       }
     >

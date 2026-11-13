@@ -34,8 +34,8 @@ export function LensScene() {
       caption={
         <>
           Two passes over the same frame. The plain pass finds the obvious defect; the edge-enhanced
-          pass finds the faint one it missed. Fusing them is the method — a single model would have
-          had to choose which of the two to be good at.
+          pass finds the faint one it missed. Fusing the two is the heart of the method, since a single
+          model would have to trade one strength for the other.
         </>
       }
     >

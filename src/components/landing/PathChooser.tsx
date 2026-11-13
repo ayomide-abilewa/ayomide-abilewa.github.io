@@ -77,8 +77,8 @@ export function PathChooser({
           What brings you here?
         </h2>
         <p className="mt-3 text-body text-content-muted text-pretty">
-          Same {projects} projects behind every door. What changes is what you meet first, and which CV the
-          download button hands you. Switch whenever you like; the header keeps all four.
+          Every path covers the same {projects} projects. What changes is the order you see them in
+          and which CV the download button gives you. You can switch at any time from the header.
         </p>
       </div>
 

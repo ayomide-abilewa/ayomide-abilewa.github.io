@@ -85,7 +85,7 @@ const PITCH: Record<VisitorMode, Pitch> = {
   },
   everything: {
     eyebrow: 'Anything at all',
-    heading: 'Email is the front door. There is nothing behind a form.',
+    heading: 'Email is the best way to reach me.',
     lede: 'Engineering work, research collaboration, scholarship enquiries, teaching, or a question about something you read here. Same address for all of it.',
     open: [
       'Engineering internships and placements now; graduate roles from 2027.',
@@ -95,7 +95,7 @@ const PITCH: Record<VisitorMode, Pitch> = {
     ],
     subject: 'Hello — from your portfolio',
     body: 'Hi Ayomide,\n\nI found your portfolio while\n\nWhat I am writing about:\n\n',
-    note: 'One address, read by one person. I am a full-time student, so give it a day or two.',
+    note: 'I read every message myself. I am a full-time student, so please allow a day or two for a reply.',
   },
 }
 
@@ -205,7 +205,7 @@ export function ContactPage() {
         id="open"
         eyebrow="Currently open to"
         heading="What is worth writing about"
-        lede="Listed so nobody has to guess whether their message belongs here."
+        lede="If your message fits any of these, it belongs in my inbox."
       >
         <TickList items={pitch.open} className="max-w-measure" />
 

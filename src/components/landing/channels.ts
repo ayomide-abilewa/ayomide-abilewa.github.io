@@ -21,7 +21,7 @@ export const CHANNELS: Channel[] = [
     href: '/engineering/',
     label: 'Engineering',
     audience: 'Recruiters · engineers · collaborators',
-    promise: 'Architecture, source code, and the failure each decision exists to survive.',
+    promise: 'Architecture, source code, and the reasoning behind each design decision.',
   },
   {
     mode: 'research',

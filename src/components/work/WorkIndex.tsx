@@ -53,7 +53,7 @@ export function WorkIndex() {
           </p>
 
           <h1 className="mt-5 max-w-[38ch] text-h1 font-medium tracking-tight text-balance">
-            {cap(facts.projects)} systems, and the thing that nearly broke each one.
+            {cap(facts.projects)} projects, and what nearly broke each one.
           </h1>
 
           <div className="mt-2 h-6 w-full max-w-[22rem]">

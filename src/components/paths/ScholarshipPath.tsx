@@ -81,7 +81,7 @@ export function ScholarshipPath() {
         id="journey"
         eyebrow="Journey"
         heading={`${cap(facts.yearsAtUniversity)} years, in the order they happened`}
-        lede={`The teaching starts in ${facts.teachingSince} and has not stopped since. That is the line I would look at first.`}
+        lede={`I started teaching in ${facts.teachingSince} and have not stopped since. If you follow one thread on this page, make it that one.`}
       >
         <Timeline entries={profile.timeline} />
       </Section>
@@ -99,7 +99,7 @@ export function ScholarshipPath() {
         id="cohort"
         eyebrow="The internship"
         heading="Inside the internship"
-        lede="I am not publishing the engineering photographs from this rotation. The control systems, switchgear and instrumentation in them belong to the client, not to me. What I can show you is the cohort I went through it with."
+        lede="I am not sharing the engineering photographs from this rotation, because the control systems, switchgear and instrumentation in them are not mine to publish. What I can show you is the cohort I went through it with."
       >
         <div className="grid gap-x-10 gap-y-10 lg:grid-cols-2">
           <PhotoFigure id="cohort-group" sizes="(min-width: 1024px) 38rem, 100vw" />
@@ -123,7 +123,7 @@ export function ScholarshipPath() {
         id="work"
         eyebrow="Projects"
         heading="Built for someone in particular"
-        lede="Each of these started with a person who had a problem — a lecturer losing teaching time to a paper register, a grower who needs light intensity and light colour measured as two separate things, a building whose alarm has nobody in it to hear it go off."
+        lede="Each of these started with a person who had a problem: a lecturer losing teaching time to a paper register, a grower who needs light intensity and light colour measured as two separate things, a building whose alarm has nobody in it to hear it go off."
       >
         <ProjectList projects={projects} mode={MODE} />
       </Section>
@@ -153,7 +153,7 @@ export function ScholarshipPath() {
             'Finish the pipe anomaly detection work: the two-stage cascaded detector is built and in progress, and the fused RGB and edge-enhanced stage still needs evaluating properly.',
             'Build the extended production version of the Smart Attendance System, which was invited after the prototype was defended at a final-year project review.',
             'Keep running SPAW: the third cohort of the six-session embedded systems curriculum, with the lesson plans and tutor guides rewritten each time from what went wrong in the last one.',
-            'Go deeper into instrumentation and control — the Chevron rotation was the first time the loops from coursework had consequences attached, and that is the direction the rest follows.',
+            'Go deeper into instrumentation and control. The Chevron rotation was the first time the loops from my coursework had real consequences, and that is the direction I want to keep going in.',
           ]}
         />
       </Section>
