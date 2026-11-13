@@ -3,6 +3,7 @@ import { formatRange } from '@/lib/dates'
 import { latestRole } from '@/lib/select'
 import { degree, facts } from '@/lib/facts'
 import { SettledTrace } from '@/components/brand/SettledTrace'
+import { PhotoFigure } from '@/components/media/Photo'
 
 /**
  * Landing hero.
@@ -37,49 +38,59 @@ const FACTS = [
 export function LandingHero() {
   return (
     <section className="shell relative flex min-h-[86svh] flex-col justify-center pb-14 pt-16 sm:pt-20">
-      <div className="max-w-[46rem]">
-        <p className="eyebrow">
-          Instrumentation · Embedded systems · Computer vision
-        </p>
+      <div className="grid items-center gap-x-16 lg:grid-cols-[minmax(0,46rem)_minmax(0,19rem)] lg:justify-between">
+        <div>
+          <p className="eyebrow">
+            Instrumentation · Embedded systems · Computer vision
+          </p>
 
-        <h1
-          className="mt-5 text-display font-medium leading-[0.95] tracking-tight"
-        >
-          {profile.identity.name}
-        </h1>
+          <h1
+            className="mt-5 text-display font-medium leading-[0.95] tracking-tight"
+          >
+            {profile.identity.name}
+          </h1>
 
-        {/* The settled trace, doubling as the underline: the same curve the opening
-            settles into. `afterIntro` holds the draw until the sweep finishes. */}
-        <div
-          className="mt-1 h-9 w-full max-w-[34rem] sm:h-11"
-        >
-          <SettledTrace className="h-full w-full" delay={0.34} strokeWidth={2} afterIntro />
+          {/* The settled trace, doubling as the underline: the same curve the opening
+              settles into. `afterIntro` holds the draw until the sweep finishes. */}
+          <div
+            className="mt-1 h-9 w-full max-w-[34rem] sm:h-11"
+          >
+            <SettledTrace className="h-full w-full" delay={0.34} strokeWidth={2} afterIntro />
+          </div>
+
+          <p
+            className="mt-7 max-w-measure text-lead leading-snug text-content text-pretty"
+          >
+            I build systems that measure the physical world, and I design them to keep working when
+            conditions are far from ideal.
+          </p>
+
+          <p
+            className="mt-5 max-w-measure text-body text-content-muted text-pretty"
+          >
+            Think uneven lighting, a network that drops out, or a sensor that tells you nothing until
+            it has been calibrated. Most of my projects have a fallback built in, because most of them
+            had to run somewhere less than perfect.
+          </p>
+
+          <ul
+            className="mt-9 space-y-1.5 border-l border-hairline pl-4"
+          >
+            {FACTS.map((fact) => (
+              <li key={fact} className="font-mono text-micro leading-relaxed text-content-faint">
+                {fact}
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <p
-          className="mt-7 max-w-measure text-lead leading-snug text-content text-pretty"
-        >
-          I build systems that measure the physical world, and I design them for the moment the
-          conditions stop cooperating.
-        </p>
-
-        <p
-          className="mt-5 max-w-measure text-body text-content-muted text-pretty"
-        >
-          Uneven lighting. A network link that is not there. A sensor whose reading means nothing
-          until it has been calibrated. Most of what I have built has a fallback path in it, because
-          most of what I have built had to run somewhere imperfect.
-        </p>
-
-        <ul
-          className="mt-9 space-y-1.5 border-l border-hairline pl-4"
-        >
-          {FACTS.map((fact) => (
-            <li key={fact} className="font-mono text-micro leading-relaxed text-content-faint">
-              {fact}
-            </li>
-          ))}
-        </ul>
+        {/* Desktop only: on a phone the portrait would push the work below two
+            screens of scrolling. Lazy, so phones never fetch it. */}
+        <PhotoFigure
+          id="portrait"
+          sizes="19rem"
+          className="hidden lg:block"
+        />
       </div>
 
       {/* Scroll cue. A sampling dot travelling down a measurement line — the
